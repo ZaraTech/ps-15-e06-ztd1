@@ -1,4 +1,6 @@
-package com.example.smartcatalogue;
+package com.zaratech.smartcatalogue;
+
+import com.example.smartcatalogue.R;
 
 import android.os.Bundle;
 import android.app.Activity;

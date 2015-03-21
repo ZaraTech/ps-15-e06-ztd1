@@ -1,8 +1,18 @@
 <resources>
 
-    <string name="app_name">SmartCatalogue</string>
-    <string name="hello_world">Hola mundo, somos ZaraTech!</string>
-    <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">MainActivity</string>
+    <!-- Aplicacion -->
+	    <string name="app_name">SmartCatalogue</string>
+	    <string name="title_activity_main">MainActivity</string>
+    
+    <!-- Miscelanea -->
+	    <string name="hello_world">Hola mundo, somos ZaraTech!</string>
+	    
+	    <string name="menu_settings">Settings</string>
+    
+    <!-- Lista de productos -->
+    
+	    <string name="no_hay_productos">No hay productos que mostrar.</string>
+	    <string name="img_producto">Esta es la imágen del producto.</string>
+    
 
 </resources>

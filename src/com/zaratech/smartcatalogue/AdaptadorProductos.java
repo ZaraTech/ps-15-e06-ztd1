@@ -41,12 +41,12 @@ public class AdaptadorProductos extends ArrayAdapter<Producto> {
 		TextView precio = (TextView) convertView.findViewById(R.id.Precio);
 		
 		
-		// Populate the data into the template view using the data object
+		// Rellenar elementos xml con valores del producto
 		nombre.setText(producto.getNombre());
 		marca.setText(producto.getMarca());
 		precio.setText(Double.toString(producto.getPrecio()) + " euros");
 		
-		// Return the completed view to render on screen
+		
 		return convertView;
 	}
 }

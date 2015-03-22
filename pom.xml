@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.zaratech</groupId>
 	<artifactId>SmartCatalogue</artifactId>
-	<version>0.0.9</version>
+	<version>0.0.10</version>
 	<packaging>apk</packaging>
 	<name>SmartCatalogue</name>
 
@@ -16,6 +16,16 @@
 		<project.codeVersion>1</project.codeVersion>
 	</properties>
 	<pluginRepositories>
+		<pluginRepository>
+			<id>central</id>
+			<name>Maven Repository Switchboard</name>
+			<layout>default</layout>
+			<url>http://repo1.maven.org/maven2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+
+		</pluginRepository>
 		<pluginRepository>
 			<snapshots>
 				<enabled>false</enabled>

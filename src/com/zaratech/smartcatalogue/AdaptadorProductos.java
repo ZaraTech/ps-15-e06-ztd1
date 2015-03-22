@@ -2,7 +2,7 @@ package com.zaratech.smartcatalogue;
 
 import java.util.ArrayList;
 
-import com.example.smartcatalogue.R;
+import com.zaratech.smartcatalogue.R;
 
 import android.content.Context;
 import android.view.LayoutInflater;

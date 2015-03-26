@@ -18,12 +18,12 @@ public class Producto {
 		this.precio = precio;
 		this.descripcion = "";
 	}
-	public Producto(String nombre, String marca, double precio, String desc) {
+	public Producto(String nombre, String marca, double precio, String descripcion) {
 		
 		this.nombre = nombre;
 		this.marca = marca;
 		this.precio = precio;
-		this.descripcion = desc;
+		this.descripcion = descripcion;
 	}
 
 	
@@ -58,7 +58,7 @@ public class Producto {
 		return descripcion;
 	}
 
-	public void setDescripcion(String desc) {
-		this.descripcion = desc;
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 }

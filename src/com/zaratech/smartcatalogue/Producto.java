@@ -8,6 +8,7 @@ public class Producto {
 	
 	private double precio;
 	
+	private String descripcion;
 	
 	
 	public Producto(String nombre, String marca, double precio) {
@@ -15,6 +16,14 @@ public class Producto {
 		this.nombre = nombre;
 		this.marca = marca;
 		this.precio = precio;
+		this.descripcion = "";
+	}
+	public Producto(String nombre, String marca, double precio, String descripcion) {
+		
+		this.nombre = nombre;
+		this.marca = marca;
+		this.precio = precio;
+		this.descripcion = descripcion;
 	}
 
 	
@@ -43,5 +52,13 @@ public class Producto {
 
 	public void setPrecio(double precio) {
 		this.precio = precio;
+	}
+	
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 }

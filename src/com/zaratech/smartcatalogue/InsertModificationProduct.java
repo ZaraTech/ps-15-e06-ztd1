@@ -186,7 +186,9 @@ public class InsertModificationProduct extends Activity {
 			cursor.close();
 
 			ImageView image = (ImageView) findViewById(R.id.AIMPProductImage);
-			image.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+			Bitmap bitmap=BitmapFactory.decodeFile(picturePath);
+			bitmap=Bitmap.createScaledBitmap(bitmap, 50, 50, true);
+			image.setImageBitmap(bitmap);
 		} else if (requestCode == RESULT_IMAGE_CAPTURE
 				&& resultCode == RESULT_OK) {
 			Bundle extras = data.getExtras();
@@ -218,7 +220,6 @@ public class InsertModificationProduct extends Activity {
 	 * Obtiene la marca selecionada
 	 */
 	private String getBrandSelected() {
-		Spinner brands = (Spinner) findViewById(R.id.AIMPBrandSpinner);
 		return brands.getSelectedItem() == null ? null : brands
 				.getSelectedItem().toString();
 	}

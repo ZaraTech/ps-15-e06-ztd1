@@ -12,12 +12,13 @@
         android:text="Busqueda"
         tools:ignore="HardcodedText" />
 
+    
     <AutoCompleteTextView
         android:id="@+id/myautocomplete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:completionThreshold="1"
-        android:ems="10" >
+        android:ems="10" > 
 
         <requestFocus />
     </AutoCompleteTextView>

@@ -1,8 +1,9 @@
-package com.zaratech.smartcatalogue;
+package com.zaratech.smartcatalogue.utiles;
 
 import java.util.ArrayList;
 
 import com.zaratech.smartcatalogue.R;
+import com.zaratech.smartcatalogue.componentes.Producto;
 
 import android.content.Context;
 import android.view.LayoutInflater;

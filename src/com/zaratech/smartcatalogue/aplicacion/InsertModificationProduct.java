@@ -1,8 +1,10 @@
-package com.zaratech.smartcatalogue;
+package com.zaratech.smartcatalogue.aplicacion;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+
+import com.zaratech.smartcatalogue.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;

@@ -1,4 +1,4 @@
-package com.zaratech.smartcatalogue;
+package com.zaratech.smartcatalogue.componentes;
 
 public class Producto {
 

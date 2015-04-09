@@ -1,8 +1,10 @@
-package com.zaratech.smartcatalogue;
+package com.zaratech.smartcatalogue.aplicacion;
 
 import java.util.ArrayList;
 
 import com.zaratech.smartcatalogue.R;
+import com.zaratech.smartcatalogue.componentes.Producto;
+import com.zaratech.smartcatalogue.utiles.AdaptadorProductos;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -11,7 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
-public class MainActivity extends Activity {
+public class ListaProductos extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,16 +40,32 @@ public class MainActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_main, menu);
+		
+		getMenuInflater().inflate(R.menu.activity_lista_productos, menu);
 		return true;
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		
 	    switch (item.getItemId()) {
-	        case R.id.menu_add_product:
-	        	startActivity(new Intent(this,InsertModificationProduct.class));
+	    
+	        case R.id.menu_opcion_add:
+	        	startActivity(new Intent(this, InsertModificationProduct.class));
 	            return true;
+	            
+	        case R.id.menu_opcion_busqueda:
+	        	startActivity(new Intent(this, Busqueda.class));
+	            return true;
+	            
+	        case R.id.menu_opcion_envio:
+	        	startActivity(new Intent(this, EnvioPedido.class));
+	            return true;
+	            
+	        case R.id.menu_opcion_info:
+	        	startActivity(new Intent(this, InfoProducto.class));
+	            return true;
+	            
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }

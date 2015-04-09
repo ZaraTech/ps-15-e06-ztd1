@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.zaratech</groupId>
 	<artifactId>SmartCatalogue</artifactId>
-	<version>0.0.21</version>
+	<version>0.0.22</version>
 	<packaging>apk</packaging>
 	<name>SmartCatalogue</name>
 
@@ -85,6 +85,26 @@
 									</pluginExecutionFilter>
 									<action>
 										<ignore />
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											versions-maven-plugin
+										</artifactId>
+										<versionRange>
+											[2.1-MOD,)
+										</versionRange>
+										<goals>
+											<goal>commit</goal>
+											<goal>increment</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>

@@ -3,6 +3,7 @@ package com.zaratech.smartcatalogue.utiles;
 import java.util.ArrayList;
 
 import com.zaratech.smartcatalogue.R;
+import com.zaratech.smartcatalogue.componentes.Marca;
 import com.zaratech.smartcatalogue.componentes.Producto;
 
 import android.content.Context;
@@ -41,16 +42,23 @@ public class AdaptadorProductos extends ArrayAdapter<Producto> {
 		ImageView imagen = (ImageView) convertView.findViewById(R.id.Imagen);
 		
 		TextView nombre = (TextView) convertView.findViewById(R.id.Nombre);
-		TextView marca = (TextView) convertView.findViewById(R.id.Marca);
+		TextView datos = (TextView) convertView.findViewById(R.id.Datos);
 		TextView precio = (TextView) convertView.findViewById(R.id.Precio);
 		
 		
 		// Rellenar elementos xml con valores del producto
+		
+		AdaptadorBD BD = new AdaptadorBD();
+		
+		
 		imagen.setImageBitmap(producto.getImagen());
 		
+		Marca marca = BD.obtenerMarca(producto.getMarca());
+		String tipo = AdaptadorBD.obtenerTipo(producto.getTipo());
+		
 		nombre.setText(producto.getNombre());
-		marca.setText(String.valueOf(producto.getMarca()));
-		precio.setText(String.valueOf(producto.getPrecio()) + " €");
+		datos.setText(tipo + " - " + marca.getNombre());
+		precio.setText(String.format("%.2f €", producto.getPrecio()));
 		
 		
 		return convertView;

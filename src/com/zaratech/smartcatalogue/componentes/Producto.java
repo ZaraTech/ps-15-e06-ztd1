@@ -2,8 +2,14 @@ package com.zaratech.smartcatalogue.componentes;
 
 import android.graphics.Bitmap;
 
-
 public class Producto {
+	
+	/**
+	 * IDENTIFICADOR del producto.
+	 * Corresponde al identificador en la BD
+	 * (se asigna cuando se recupera de la BD)
+	 */
+	private int id;
 
 	/**
 	 * NOMBRE del producto
@@ -17,6 +23,9 @@ public class Producto {
 	 * 
 	 */
 	private int tipo;
+	
+	public static final int TIPO_SMARTPHONE = 0;
+	public static final int TIPO_TABLET = 1;
 	
 	/**
 	 * Identificador de la MARCA del producto
@@ -35,6 +44,10 @@ public class Producto {
 	 * 2 - iOS
 	 */
 	private int sistemaOperativo;
+	
+	public static final int SO_ANDROID = 0;
+	public static final int SO_WINDOWSPHONE = 1;
+	public static final int SO_IOS = 2;
 	
 	/**
 	 * PRECIO del producto (cuando NO está en oferta)
@@ -58,24 +71,19 @@ public class Producto {
 	 */
 	private boolean enOferta;
 	
+	public static final boolean OFERTA_NO = false;
+	public static final boolean OFERTA_SI = true;
+	
 	/**
 	 * PRECIO del producto (cuando está en oferta)
 	 */
-	private double precioOferta;
-	
-	/* 
-	 * 
-	 * Ejemplo de uso de imagenes en bitmaps, con imageviews (xml)
-	 * ImageView image = (ImageView) findViewById(R.id.test_image);
-	 * Bitmap bMap = BitmapFactory.decodeFile("/sdcard/test2.png");
-	 * image.setImageBitmap(bMap);
-	 * 
-     */
+	private double precioOferta;	
 	
 	
 	
 	public Producto(String nombre, int marca, int tipo, double precio) {
 		
+		this.id = 0;
 		this.nombre = nombre;
 		this.tipo = tipo;
 		this.marca = marca;
@@ -91,6 +99,17 @@ public class Producto {
 	
 	
 	/* SETTERS & GETTERS */
+
+	
+	// IDENTIFICADOR
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 	
 	
 	// NOMBRE

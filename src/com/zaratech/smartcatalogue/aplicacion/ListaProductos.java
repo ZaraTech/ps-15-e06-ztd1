@@ -29,14 +29,20 @@ public class ListaProductos extends Activity {
 		ListView lista = (ListView) findViewById(R.id.lista_productos);
 		
 
+		// Obtener imagen
 		Resources res = getBaseContext().getResources();
 		int id = R.drawable.smarket; 
 		Bitmap imagen = BitmapFactory.decodeResource(res, id);
 
+		// Rellenar lista
 		ArrayList<Producto> valores = new ArrayList<Producto>();
 		
 		for (int i = 0; i < 19; ++i) {
-			Producto p = new Producto("Producto " + i, 0, 0, 11.11);
+			
+			int marca = (int)(Math.random() * 3.0);
+			
+			Producto p = new Producto("Producto " + i, marca, Producto.TIPO_SMARTPHONE, Math.random()*654.0);
+			
 			p.setImagen(imagen);
 			valores.add(p);
 		}

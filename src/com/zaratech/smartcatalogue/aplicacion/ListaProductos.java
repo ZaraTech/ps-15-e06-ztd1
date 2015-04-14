@@ -9,6 +9,9 @@ import com.zaratech.smartcatalogue.utiles.AdaptadorProductos;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -24,11 +27,18 @@ public class ListaProductos extends Activity {
 		/* ------------- EJEMPLO DE LLENADO DE LISTA ------------- */
 		
 		ListView lista = (ListView) findViewById(R.id.lista_productos);
+		
+
+		Resources res = getBaseContext().getResources();
+		int id = R.drawable.smarket; 
+		Bitmap imagen = BitmapFactory.decodeResource(res, id);
 
 		ArrayList<Producto> valores = new ArrayList<Producto>();
 		
 		for (int i = 0; i < 19; ++i) {
-			valores.add(new Producto("Producto " + i, "marca", 11.11));
+			Producto p = new Producto("Producto " + i, 0, 0, 11.11);
+			p.setImagen(imagen);
+			valores.add(p);
 		}
 		
 		AdaptadorProductos adaptador = new AdaptadorProductos(this, valores);

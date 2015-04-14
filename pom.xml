@@ -4,9 +4,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.zaratech</groupId>
 	<artifactId>SmartCatalogue</artifactId>
-	<version>0.0.22</version>
+	<version>0.0.23</version>
 	<packaging>apk</packaging>
-	<name>SmartCatalogue</name>
+	<name>Smarket</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

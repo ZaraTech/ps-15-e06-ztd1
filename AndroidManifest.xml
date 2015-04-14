@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zaratech.smartcatalogue"
     android:versionCode="1"
-    android:versionName="0.0.22" >
+    android:versionName="0.0.23" >
 
     <uses-sdk
         android:minSdkVersion="16"
@@ -12,50 +12,42 @@
 
     <application
         android:allowBackup="false"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/smarket"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
-        
         <!-- Listado de productos -->
 
-        <activity
-            android:name=".aplicacion.ListaProductos" >
-            
+        <activity android:name=".aplicacion.ListaProductos" >
             <intent-filter>
-                
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        
-        <!-- Búsqueda de productos -->
+        <!-- Busqueda de productos -->
 
         <activity
             android:name=".aplicacion.Busqueda"
             android:label="@string/titulo_activity_busqueda" >
         </activity>
 
-        
-        <!-- Edición de productos -->
+        <!-- Edicion de productos -->
 
         <activity
             android:name=".aplicacion.InsertModificationProduct"
             android:label="@string/titulo_activity_insert_modification_product" >
         </activity>
-        
-        
-        <!-- Envío de pedidos -->
+
+        <!-- Envio de pedidos -->
 
         <activity
             android:name=".aplicacion.EnvioPedido"
             android:label="@string/titulo_activity_envio_pedido" >
         </activity>
 
-        
-        <!-- Información de productos -->
+        <!-- Informacion de productos -->
 
         <activity
             android:name=".aplicacion.InfoProducto"

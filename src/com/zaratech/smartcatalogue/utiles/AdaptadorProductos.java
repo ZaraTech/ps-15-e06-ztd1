@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -37,15 +38,19 @@ public class AdaptadorProductos extends ArrayAdapter<Producto> {
 		}
 		
 		// Asociar elementos xml a variables
+		ImageView imagen = (ImageView) convertView.findViewById(R.id.Imagen);
+		
 		TextView nombre = (TextView) convertView.findViewById(R.id.Nombre);
 		TextView marca = (TextView) convertView.findViewById(R.id.Marca);
 		TextView precio = (TextView) convertView.findViewById(R.id.Precio);
 		
 		
 		// Rellenar elementos xml con valores del producto
+		imagen.setImageBitmap(producto.getImagen());
+		
 		nombre.setText(producto.getNombre());
-		marca.setText(producto.getMarca());
-		precio.setText(Double.toString(producto.getPrecio()) + " euros");
+		marca.setText(String.valueOf(producto.getMarca()));
+		precio.setText(String.valueOf(producto.getPrecio()) + " €");
 		
 		
 		return convertView;

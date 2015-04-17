@@ -8,6 +8,7 @@ import com.zaratech.smartcatalogue.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -16,6 +17,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.MediaStore.Images;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.Selection;
@@ -31,11 +33,13 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class InsertModificationProduct extends Activity {
 
 	private final int RESULT_LOAD_IMAGE = 1;
 	private final int RESULT_IMAGE_CAPTURE = 2;
+	private final int RESULT_PIC_CROP = 3;
 	private final String UM = "€";
 	private final String PULGADAS = "'";
 	private List<String> brs = new LinkedList<String>(Arrays.asList("LG",
@@ -46,7 +50,6 @@ public class InsertModificationProduct extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_insert_modification_product);
-
 		/*
 		 * Carga de imagenes
 		 */
@@ -85,6 +88,7 @@ public class InsertModificationProduct extends Activity {
 				discount.setEnabled(isChecked);
 			}
 		});
+		
 		/*
 		 * Simbolos de editTexts
 		 */
@@ -174,8 +178,10 @@ public class InsertModificationProduct extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK
-				&& null != data) {
+		if (resultCode == RESULT_CANCELED) { // Accion cancelada
+			return;
+		}
+		if (requestCode == RESULT_LOAD_IMAGE) {// Resultado de la galeria
 			Uri selectedImage = data.getData();
 			String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
@@ -186,17 +192,57 @@ public class InsertModificationProduct extends Activity {
 			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 			String picturePath = cursor.getString(columnIndex);
 			cursor.close();
+			Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
+			obtenerImagenRecortada(bitmap);
 
-			ImageView image = (ImageView) findViewById(R.id.AIMPProductImage);
-			Bitmap bitmap=BitmapFactory.decodeFile(picturePath);
-			bitmap=Bitmap.createScaledBitmap(bitmap, 50, 50, true);
-			image.setImageBitmap(bitmap);
-		} else if (requestCode == RESULT_IMAGE_CAPTURE
-				&& resultCode == RESULT_OK) {
+		} else if (requestCode == RESULT_IMAGE_CAPTURE) {// Resultado de la
+															// camara
 			Bundle extras = data.getExtras();
 			Bitmap imageBitmap = (Bitmap) extras.get("data");
+			obtenerImagenRecortada(imageBitmap);
+
+		} else if (requestCode == RESULT_PIC_CROP) {// Resultado de recortar la
+													// imagen
+			Bundle extras = data.getExtras();
+			Bitmap selectedBitmap = extras.getParcelable("data");
 			ImageView image = (ImageView) findViewById(R.id.AIMPProductImage);
-			image.setImageBitmap(imageBitmap);
+			image.setImageBitmap(selectedBitmap);
+		}
+	}
+
+	/*
+	 * LLama a la activity de recorte de imagenes a partir de un bitmap
+	 */
+	private void obtenerImagenRecortada(Bitmap image) {
+		String path = Images.Media.insertImage(getContentResolver(), image,
+				"Title", null);
+		Uri uri = Uri.parse(path);
+		obtenerImagenRecortada(uri);
+	}
+
+	/*
+	 * LLama a la activity de recorte de imagenes a partir de una URI
+	 */
+	private void obtenerImagenRecortada(Uri picUri) {
+		try {
+			Intent cropIntent = new Intent("com.android.camera.action.CROP");
+			cropIntent.setDataAndType(picUri, "image/*"); // Imagen que se desea
+															// modificar
+			cropIntent.putExtra("crop", "true");
+
+			// Proporcion 1:1
+			cropIntent.putExtra("aspectX", 1);
+			cropIntent.putExtra("aspectY", 1);
+			cropIntent.putExtra("return-data", true);
+			startActivityForResult(cropIntent, RESULT_PIC_CROP);
+
+		} catch (ActivityNotFoundException anfe) { // El dispositivo no tiene
+													// ninguna aplicacion
+													// para recortar la imagen
+			String errorMessage = "Su dispositivo no soporta la acción de recortar :(";
+			Toast toast = Toast
+					.makeText(this, errorMessage, Toast.LENGTH_SHORT);
+			toast.show();
 		}
 	}
 
@@ -230,7 +276,6 @@ public class InsertModificationProduct extends Activity {
 	 * Seleciona una marca
 	 */
 	private void selectBrand(String br) {
-
 		for (int i = 0; i < brands.getCount(); i++) {
 			if (brands.getItemAtPosition(i).toString() == br) {
 				brands.setId(i);

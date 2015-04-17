@@ -26,7 +26,7 @@
                 android:contentDescription="@string/description_photo"
                 android:maxHeight="100dp"
                 android:scaleType="matrix"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/smarket" />
 
             <Button
                 android:id="@+id/AIMPTakePhoto"

@@ -1,40 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="0.0.24" package="com.zaratech.smartcatalogue">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.zaratech.smartcatalogue"
+    android:versionCode="1"
+    android:versionName="0.0.25" >
 
-    <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="22"/>
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="22" />
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <application android:allowBackup="false" android:icon="@drawable/smarket" android:label="@string/app_name" android:theme="@style/AppTheme">
+    <application
+        android:allowBackup="false"
+        android:icon="@drawable/smarket"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
 
         <!-- Listado de productos -->
 
-        <activity android:name=".aplicacion.ListaProductos">
+        <activity android:name=".aplicacion.ListaProductos" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <!-- Busqueda de productos -->
 
-        <activity android:label="@string/titulo_activity_busqueda" android:name=".aplicacion.Busqueda">
+        <activity
+            android:name=".aplicacion.Busqueda"
+            android:label="@string/titulo_activity_busqueda" >
         </activity>
 
         <!-- Edicion de productos -->
 
-        <activity android:label="@string/titulo_activity_insert_modification_product" android:name=".aplicacion.InsertModificationProduct">
+        <activity
+            android:name=".aplicacion.InsertModificationProduct"
+            android:label="@string/titulo_activity_insert_modification_product" >
         </activity>
 
         <!-- Envio de pedidos -->
 
-        <activity android:label="@string/titulo_activity_envio_pedido" android:name=".aplicacion.EnvioPedido">
+        <activity
+            android:name=".aplicacion.EnvioPedido"
+            android:label="@string/titulo_activity_envio_pedido" >
         </activity>
 
         <!-- Informacion de productos -->
 
-        <activity android:label="@string/titulo_activity_info_producto" android:name=".aplicacion.InfoProducto">
+        <activity
+            android:name=".aplicacion.InfoProducto"
+            android:label="@string/titulo_activity_info_producto" >
         </activity>
     </application>
 

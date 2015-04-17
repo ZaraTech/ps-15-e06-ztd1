@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.zaratech.smartcatalogue.R;
+import com.zaratech.smartcatalogue.componentes.Producto;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -30,6 +31,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
@@ -45,11 +47,13 @@ public class InsertModificationProduct extends Activity {
 	private List<String> brs = new LinkedList<String>(Arrays.asList("LG",
 			"Sony"));
 	private Spinner brands;
+	private int ID;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_insert_modification_product);
+
 		/*
 		 * Carga de imagenes
 		 */
@@ -88,7 +92,7 @@ public class InsertModificationProduct extends Activity {
 				discount.setEnabled(isChecked);
 			}
 		});
-		
+
 		/*
 		 * Simbolos de editTexts
 		 */
@@ -131,9 +135,22 @@ public class InsertModificationProduct extends Activity {
 		save.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				finish();
+				Producto p = Formulario2Producto();
+				if (p != null) {
+					finish();
+				}
 			}
 		});
+
+		/*
+		 * Recuperar producto
+		 */
+		Producto p = new Producto("Producto ", 0, Producto.TIPO_SMARTPHONE,
+				Math.random() * 654.0);
+
+		if (p != null) {
+			Producto2Formulario(p);
+		}
 
 	}
 
@@ -247,6 +264,191 @@ public class InsertModificationProduct extends Activity {
 	}
 
 	/*
+	 * Obtiene los datos del formulario y devuelve un producto
+	 */
+	public Producto Formulario2Producto() {
+		// Nombre
+		EditText nombreEdit = (EditText) findViewById(R.id.AIMPNameEdit);
+		if (nombreEdit.getText() == null
+				|| nombreEdit.getText().toString().length() == 0) {
+			Toast.makeText(this, "No se ha completado el campo del nombre",
+					Toast.LENGTH_SHORT).show();
+			return null;
+		}
+
+		// Tipo
+		RadioButton smartphoneEdit = (RadioButton) findViewById(R.id.AIMPSmartphone);
+		RadioButton tabletEdit = (RadioButton) findViewById(R.id.AIMPTablet);
+		int tipo;
+		if (smartphoneEdit.isChecked()) {
+			tipo = Producto.TIPO_SMARTPHONE;
+		} else if (tabletEdit.isChecked()) {
+			tipo = Producto.TIPO_TABLET;
+		} else {
+			Toast.makeText(this, "No se ha selecionado un tipo",
+					Toast.LENGTH_SHORT).show();
+			return null;
+		}
+
+		// Descripcion
+		EditText descripcionEdit = (EditText) findViewById(R.id.AIMPDescriptionEdit);
+		if (descripcionEdit.getText() == null) {
+			Toast.makeText(this,
+					"No se ha completado el campo de la descripción",
+					Toast.LENGTH_SHORT).show();
+			return null;
+		}
+
+		// Pulgadas
+		EditText pulgadasEdit = (EditText) findViewById(R.id.AIMPInchesEdit);
+		if (pulgadasEdit.getText() == null
+				|| pulgadasEdit.getText().toString() == "") {
+			Toast.makeText(this,
+					"No se ha completado el campo de las pulgadas",
+					Toast.LENGTH_SHORT).show();
+			return null;
+		}
+		float pulgadas;
+		try {
+			pulgadas = Float.parseFloat(pulgadasEdit.getText().toString()
+					.replace(PULGADAS, ""));
+		} catch (Exception e) {
+			Toast.makeText(this, "El dato de las pulgadas es incorrecto",
+					Toast.LENGTH_SHORT).show();
+			return null;
+		}
+
+		// Precio
+		EditText precioEdit = (EditText) findViewById(R.id.AIMPPriceEdit);
+		if (precioEdit.getText() == null
+				|| precioEdit.getText().toString() == "") {
+			Toast.makeText(this, "No se ha completado el campo del precio",
+					Toast.LENGTH_SHORT).show();
+			return null;
+		}
+		float precio;
+		try {
+			precio = Float.parseFloat(precioEdit.getText().toString()
+					.replace(UM, ""));
+		} catch (Exception e) {
+			Toast.makeText(this, "El dato del precio es incorrecto",
+					Toast.LENGTH_SHORT).show();
+			return null;
+		}
+
+		// SO
+		Spinner soEdit = (Spinner) findViewById(R.id.AIMPSOSpinner);
+		if (soEdit.getSelectedItem() == null) {
+			Toast.makeText(this, "No se ha selecionado un sistema operativo",
+					Toast.LENGTH_SHORT).show();
+			return null;
+		}
+
+		// Marca
+		int marca = getBrandSelectedId();
+		if (marca == -1) {
+			Toast.makeText(this, "No se ha selecionado una marca",
+					Toast.LENGTH_SHORT).show();
+			return null;
+		}
+
+		// Oferta
+		CheckBox ofertaCheck = (CheckBox) findViewById(R.id.AIMPDiscountBox);
+		boolean oferta = ofertaCheck.isChecked();
+
+		Producto producto = new Producto(nombreEdit.getText().toString(),
+				marca, tipo, precio);
+		producto.setDescripcion(descripcionEdit.getText().toString());
+		producto.setTamañoPantalla(pulgadas);
+		producto.setSistemaOperativo(soEdit.getSelectedItemPosition());
+		producto.setId(ID);
+
+		if (oferta) {
+			// Descuento
+			EditText descuentoEdit = (EditText) findViewById(R.id.AIMPDiscountNum);
+			if (descuentoEdit.getText() == null
+					|| descuentoEdit.getText().toString() == "") {
+				Toast.makeText(this,
+						"No se ha completado el campo de descuento",
+						Toast.LENGTH_SHORT).show();
+				return null;
+			}
+			float descuento;
+			try {
+				descuento = Float.parseFloat(descuentoEdit.getText().toString()
+						.replace(UM, ""));
+			} catch (Exception e) {
+				Toast.makeText(this,
+						"El dato del precio de descuento es incorrecto",
+						Toast.LENGTH_SHORT).show();
+				return null;
+			}
+			producto.setOferta();
+			producto.setPrecioOferta(descuento);
+		}
+		return producto;
+	}
+
+	/*
+	 * A partir de un producto rellena el formulario
+	 */
+	public void Producto2Formulario(Producto producto) {
+		// Nombre
+		EditText nombreEdit = (EditText) findViewById(R.id.AIMPNameEdit);
+		nombreEdit.setText(producto.getNombre() != null ? producto.getNombre()
+				: "");
+
+		// Descripcion
+		EditText descripcionEdit = (EditText) findViewById(R.id.AIMPDescriptionEdit);
+		descripcionEdit.setText(producto.getDescripcion() != null ? producto
+				.getDescripcion() : "");
+
+		// Marca
+		int marca = getBrandSelectedId();
+		selectBrand(marca);
+
+		// Tipo
+		RadioButton smartphoneEdit = (RadioButton) findViewById(R.id.AIMPSmartphone);
+		RadioButton tabletEdit = (RadioButton) findViewById(R.id.AIMPTablet);
+		int tipo = producto.getTipo();
+		switch (tipo) {
+		case Producto.TIPO_SMARTPHONE:
+			smartphoneEdit.setSelected(true);
+			tabletEdit.setSelected(false);
+			break;
+		case Producto.TIPO_TABLET:
+			smartphoneEdit.setSelected(false);
+			tabletEdit.setSelected(true);
+			break;
+		default:
+			smartphoneEdit.setSelected(false);
+			tabletEdit.setSelected(false);
+			break;
+		}
+
+		// SO
+		Spinner soEdit = (Spinner) findViewById(R.id.AIMPSOSpinner);
+		if (soEdit.getCount() < producto.getSistemaOperativo()
+				&& soEdit.getCount() >= 0) {
+			soEdit.setId(producto.getSistemaOperativo());
+		}
+
+		// Precio
+		EditText precioEdit = (EditText) findViewById(R.id.AIMPPriceEdit);
+		precioEdit.setText(producto.getPrecio() + UM);
+
+		// Pulgadas
+		EditText pulgadasEdit = (EditText) findViewById(R.id.AIMPInchesEdit);
+		pulgadasEdit.setText(producto.getTamañoPantalla() + PULGADAS);
+
+		// Oferta
+		CheckBox ofertaCheck = (CheckBox) findViewById(R.id.AIMPDiscountBox);
+		ofertaCheck.setChecked(producto.isOferta());
+		EditText descuentoEdit = (EditText) findViewById(R.id.AIMPDiscountNum);
+		descuentoEdit.setText(producto.getPrecioOferta() + UM);
+	}
+
+	/*
 	 * Actualiza spinner de las marcas
 	 */
 	private void updateSpinner() {
@@ -273,6 +475,14 @@ public class InsertModificationProduct extends Activity {
 	}
 
 	/*
+	 * Obtiene el id de la marca selecionada
+	 */
+	private int getBrandSelectedId() {
+		return brands.getSelectedItem() == null ? -1 : brands
+				.getSelectedItemPosition();
+	}
+
+	/*
 	 * Seleciona una marca
 	 */
 	private void selectBrand(String br) {
@@ -281,6 +491,12 @@ public class InsertModificationProduct extends Activity {
 				brands.setId(i);
 				return;
 			}
+		}
+	}
+
+	private void selectBrand(int br) {
+		if (brands.getCount() > br) {
+			brands.setId(br);
 		}
 	}
 

@@ -24,9 +24,6 @@ public class Producto {
 	 */
 	private int tipo;
 	
-	public static final int TIPO_SMARTPHONE = 0;
-	public static final int TIPO_TABLET = 1;
-	
 	/**
 	 * Identificador de la MARCA del producto
 	 */
@@ -44,10 +41,6 @@ public class Producto {
 	 * 2 - iOS
 	 */
 	private int sistemaOperativo;
-	
-	public static final int SO_ANDROID = 0;
-	public static final int SO_WINDOWSPHONE = 1;
-	public static final int SO_IOS = 2;
 	
 	/**
 	 * PRECIO del producto (cuando NO está en oferta)
@@ -71,13 +64,30 @@ public class Producto {
 	 */
 	private boolean enOferta;
 	
-	public static final boolean OFERTA_NO = false;
-	public static final boolean OFERTA_SI = true;
-	
 	/**
 	 * PRECIO del producto (cuando está en oferta)
 	 */
 	private double precioOferta;	
+	
+	
+	/**
+	 * Tipo de Producto
+	 */
+	public static final int TIPO_SMARTPHONE = 0;
+	public static final int TIPO_TABLET = 1;
+	
+	/**
+	 * Sistema Operativo
+	 */
+	public static final int SO_ANDROID = 0;
+	public static final int SO_WINDOWSPHONE = 1;
+	public static final int SO_IOS = 2;
+	
+	/**
+	 * Ofertas
+	 */
+	public static final boolean OFERTA_NO = false;
+	public static final boolean OFERTA_SI = true;
 	
 	
 	

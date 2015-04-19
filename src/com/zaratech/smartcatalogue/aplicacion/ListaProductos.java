@@ -7,17 +7,30 @@ import com.zaratech.smartcatalogue.componentes.Producto;
 import com.zaratech.smartcatalogue.utiles.AdaptadorProductos;
 
 import android.os.Bundle;
-import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
-public class ListaProductos extends Activity {
+public class ListaProductos extends ListActivity {
+	
+	/**
+	 * Guarda la ultima posicion en la que se quedo el listado
+	 */
+	private int ultimaPosicion;
 
+	/**
+	 * Constante que hace referencia a la activity de informacion de Producto.
+	 * Se usara para identificar de donde se vuelve (startActivityForResult)
+	 */
+	private final int ACTIVITY_INFO = 0;
+	
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -25,8 +38,6 @@ public class ListaProductos extends Activity {
 
 		
 		/* ------------- EJEMPLO DE LLENADO DE LISTA ------------- */
-		
-		ListView lista = (ListView) findViewById(R.id.lista_productos);
 		
 
 		// Obtener imagen
@@ -41,7 +52,8 @@ public class ListaProductos extends Activity {
 			
 			int marca = (int)(Math.random() * 3.0);
 			
-			Producto p = new Producto("Producto " + i, marca, Producto.TIPO_SMARTPHONE, Math.random()*654.0);
+			Producto p = new Producto("Producto " + i, marca, 
+					Producto.TIPO_SMARTPHONE, Math.random()*654.0);
 			
 			p.setImagen(imagen);
 			valores.add(p);
@@ -49,11 +61,46 @@ public class ListaProductos extends Activity {
 		
 		AdaptadorProductos adaptador = new AdaptadorProductos(this, valores);
 
-		lista.setAdapter(adaptador);
+		this.setListAdapter(adaptador);
 		
 		/* ------------------- FIN DE EJEMPLO -------------------- */
 	}
+	
+	
+	
+	
+	@Override
+	/**
+	 * Se ejecuta al volver de otra Activity
+	 */
+	protected void onResume() {
 
+		super.onResume();
+		
+		setSelection(ultimaPosicion);
+	}
+	
+
+	@Override
+	protected void onListItemClick(ListView l, View v, int posicion, long id) {
+		
+		super.onListItemClick(l, v, posicion, id);
+		
+		ultimaPosicion = posicion;
+		
+		Intent i = new Intent(this, InfoProducto.class);
+		
+		// Añade Producto seleccionado
+		Producto p = (Producto) this.getListAdapter().getItem(posicion);
+		i.putExtra("Producto", p);
+
+		startActivityForResult(i, ACTIVITY_INFO);
+	}
+	
+	
+	
+	/* MENU SUPERIOR */
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		
@@ -76,10 +123,6 @@ public class ListaProductos extends Activity {
 	            
 	        case R.id.menu_opcion_envio:
 	        	startActivity(new Intent(this, EnvioPedido.class));
-	            return true;
-	            
-	        case R.id.menu_opcion_info:
-	        	startActivity(new Intent(this, InfoProducto.class));
 	            return true;
 	            
 	        default:

@@ -1,8 +1,10 @@
 package com.zaratech.smartcatalogue.componentes;
 
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Producto {
+public class Producto implements Parcelable{
 	
 	/**
 	 * IDENTIFICADOR del producto.
@@ -70,6 +72,9 @@ public class Producto {
 	private double precioOferta;	
 	
 	
+	
+	/* CONSTANTES */
+	
 	/**
 	 * Tipo de Producto
 	 */
@@ -91,6 +96,24 @@ public class Producto {
 	
 	
 	
+	/* CONSTRUCTORES */
+	
+	/**
+	 * Usado para obtener productos de un Intent
+	 * @param entrada Es el objeto que almacena el Producto
+	 */
+	public Producto(Parcel entrada){
+		
+		readFromParcel(entrada);
+	}
+	
+	/**
+	 * Crea un nuevo Producto
+	 * @param nombre es el nombre del Producto
+	 * @param marca es el identificador de la Marca del Producto
+	 * @param tipo es el identificador del Tipo del Producto
+	 * @param precio es el precio del Producto
+	 */
 	public Producto(String nombre, int marca, int tipo, double precio) {
 		
 		this.id = 0;
@@ -105,6 +128,81 @@ public class Producto {
 		this.enOferta = false;
 		this.precioOferta = 0.0;
 	}
+	
+	
+	
+	/* MOVILIDAD ENTRE ACTIVITIES */
+	
+	/**
+	 * Requerido por la interfaz
+	 */
+	public int describeContents() {
+		return 0;
+	}
+
+	/**
+	 * Escribe todos los atributos en un objeto Parcel
+	 * Permite enviar Productos en Intents
+	 */
+	public void writeToParcel(Parcel salida, int flags) {
+		
+		salida.writeInt(id);
+		salida.writeString(nombre);
+		salida.writeInt(tipo);
+		salida.writeInt(marca);
+		salida.writeDouble(tamañoPantalla);
+		salida.writeInt(sistemaOperativo);
+		salida.writeDouble(precio);
+		salida.writeString(descripcion);
+		
+		salida.writeParcelable(imagen, flags);
+		
+		byte enOferta = (byte) (this.enOferta ? 1 : 0);
+		
+		salida.writeByte(enOferta);
+		salida.writeDouble(precioOferta);	
+	}
+	
+	/**
+	 * Lee todos los atributos desde un objeto Parcel.
+	 * Permite recibir Productos desde Intents
+	 */
+	public void readFromParcel(Parcel entrada){
+		
+		this.id = entrada.readInt();
+		this.nombre = entrada.readString();
+		this.tipo = entrada.readInt();
+		this.marca = entrada.readInt();
+		this.tamañoPantalla = entrada.readDouble();
+		this.sistemaOperativo = entrada.readInt();
+		this.precio = entrada.readDouble();
+		this.descripcion = entrada.readString();
+		this.imagen = (Bitmap) entrada.readParcelable(getClass().getClassLoader());
+		this.enOferta = entrada.readByte() != 0;
+		this.precioOferta = entrada.readDouble();
+	}
+	
+	/**
+	 * Permite convertir objetos Parcelables en Productos
+	 * de forma transparente.
+	 */
+	@SuppressWarnings("rawtypes")
+	public static final Parcelable.Creator CREATOR =
+	
+	    	new Parcelable.Creator() {
+		
+	            public Producto createFromParcel(Parcel entrada) {
+	                return new Producto(entrada);
+	            }
+	 
+	            public Producto[] newArray(int size) {
+	                return new Producto[size];
+	            }
+	        };
+	
+	
+	
+	
 	
 	
 	
@@ -231,7 +329,5 @@ public class Producto {
 	public void unsetOferta() {
 		this.enOferta = false;
 	}
-	
-	
 
 }

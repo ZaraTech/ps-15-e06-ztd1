@@ -32,9 +32,9 @@ public class Producto implements Parcelable{
 	private int marca;
 	
 	/**
-	 * TAMAÑO DE PANTALLA en diagonal y en pulgadas, del producto
+	 * DIMENSION DE PANTALLA en diagonal y en pulgadas, del producto
 	 */
-	private double tamañoPantalla;
+	private double dimensionPantalla;
 	
 	/**
 	 * Identificador del SISTEMA OPERATIVO del producto:
@@ -120,7 +120,7 @@ public class Producto implements Parcelable{
 		this.nombre = nombre;
 		this.tipo = tipo;
 		this.marca = marca;
-		this.tamañoPantalla = 0.0;
+		this.dimensionPantalla = 0.0;
 		this.sistemaOperativo = 0;
 		this.precio = precio;
 		this.descripcion = "";
@@ -150,7 +150,7 @@ public class Producto implements Parcelable{
 		salida.writeString(nombre);
 		salida.writeInt(tipo);
 		salida.writeInt(marca);
-		salida.writeDouble(tamañoPantalla);
+		salida.writeDouble(dimensionPantalla);
 		salida.writeInt(sistemaOperativo);
 		salida.writeDouble(precio);
 		salida.writeString(descripcion);
@@ -173,7 +173,7 @@ public class Producto implements Parcelable{
 		this.nombre = entrada.readString();
 		this.tipo = entrada.readInt();
 		this.marca = entrada.readInt();
-		this.tamañoPantalla = entrada.readDouble();
+		this.dimensionPantalla = entrada.readDouble();
 		this.sistemaOperativo = entrada.readInt();
 		this.precio = entrada.readDouble();
 		this.descripcion = entrada.readString();
@@ -255,12 +255,12 @@ public class Producto implements Parcelable{
 	
 	// TAMAÑO DE PANTALLA
 	
-	public double getTamañoPantalla() {
-		return tamañoPantalla;
+	public double getDimensionPantalla() {
+		return dimensionPantalla;
 	}
 
-	public void setTamañoPantalla(double tamañoPantalla) {
-		this.tamañoPantalla = tamañoPantalla;
+	public void setDimensionPantalla(double dimensionPantalla) {
+		this.dimensionPantalla = dimensionPantalla;
 	}
 	
 	

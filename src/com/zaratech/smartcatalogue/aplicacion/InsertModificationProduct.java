@@ -359,7 +359,7 @@ public class InsertModificationProduct extends Activity {
 		Producto producto = new Producto(nombreEdit.getText().toString(),
 				marca, tipo, precio);
 		producto.setDescripcion(descripcionEdit.getText().toString());
-		producto.setTamañoPantalla(pulgadas);
+		producto.setDimensionPantalla(pulgadas);
 		producto.setSistemaOperativo(soEdit.getSelectedItemPosition());
 		producto.setId(ID);
 
@@ -439,7 +439,7 @@ public class InsertModificationProduct extends Activity {
 
 		// Pulgadas
 		EditText pulgadasEdit = (EditText) findViewById(R.id.AIMPInchesEdit);
-		pulgadasEdit.setText(producto.getTamañoPantalla() + PULGADAS);
+		pulgadasEdit.setText(producto.getDimensionPantalla() + PULGADAS);
 
 		// Oferta
 		CheckBox ofertaCheck = (CheckBox) findViewById(R.id.AIMPDiscountBox);

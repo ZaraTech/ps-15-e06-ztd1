@@ -23,9 +23,21 @@ import android.widget.TextView;
  * @author Juan
  */
 public class AdaptadorProductos extends ArrayAdapter<Producto> {
+	
+	/**
+	 * Almacena la conexion a una base de datos
+	 */
+	private AdaptadorBD bd;
 
-	public AdaptadorProductos(Context context, ArrayList<Producto> productos) {
+	
+	/**
+	 * Constructor del adaptador
+	 * @param bd conexion a una base de datos
+	 */
+	public AdaptadorProductos(Context context, ArrayList<Producto> productos, AdaptadorBD bd) {
 		super(context, 0, productos);
+		
+		this.bd = bd;
 	}
 	
 	/**

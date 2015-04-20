@@ -2,7 +2,9 @@ package com.zaratech.smarket.aplicacion;
 
 import java.util.ArrayList;
 
+import com.zaratech.smarket.componentes.Marca;
 import com.zaratech.smarket.componentes.Producto;
+import com.zaratech.smarket.utiles.AdaptadorBD;
 import com.zaratech.smarket.utiles.AdaptadorProductos;
 import com.zaratech.smarket.R;
 
@@ -46,36 +48,42 @@ public class ListaProductos extends ListActivity {
 		
 
 		// Obtener imagen
-		Resources res = getBaseContext().getResources();
-		int id = R.drawable.smarket; 
-		Bitmap imagen = BitmapFactory.decodeResource(res, id);
+				Resources res = getBaseContext().getResources();
+				int id = R.drawable.smarket; 
+				Bitmap imagen = BitmapFactory.decodeResource(res, id);
+				
+				AdaptadorBD bd = new AdaptadorBD();
+				bd.open();
+				
+				// PRUEBAS: bd
+				bd.crearMarca(new Marca("Samsung"));
+				Marca marcaSamsung = bd.obtenerMarca("Samsung");
+				
+				bd.crearProducto(new Producto("Galaxy S6", marcaSamsung.getId(), Producto.TIPO_SMARTPHONE, 678.0));
 
-		// Rellenar lista
-		ArrayList<Producto> valores = new ArrayList<Producto>();
-		
-		for (int i = 0; i < 19; ++i) {
-			
-			int marca = (int)(Math.random() * 3.0);
-			
-			double precio = Math.random()*654.0;
-			
-			Producto p = new Producto("Producto " + i, marca, 
-					Producto.TIPO_SMARTPHONE, precio);
-			
-			if((int)(Math.random()*2.0) == 0){
-				p.setOferta();
-				p.setPrecioOferta(precio * 0.75);
-			}
-			
-			p.setImagen(imagen);
-			valores.add(p);
-		}
-		
-		AdaptadorProductos adaptador = new AdaptadorProductos(this, valores);
+				
+				// Rellenar lista
+				ArrayList<Producto> productos = (ArrayList<Producto>) bd.obtenerProductos();
+				
+				
+				
+				// PRUEBAS: ofertas e imagenes
+				for (Producto p : productos) {
+					
+					
+					if((int)(Math.random()*2.0) == 0){
+						p.setOferta();
+						p.setPrecioOferta(p.getPrecio() * 0.75);
+					}
+					
+					p.setImagen(imagen);
+				}
+				
+				AdaptadorProductos adaptador = new AdaptadorProductos(this, productos, bd);
 
-		this.setListAdapter(adaptador);
-		
-		/* ------------------- FIN DE EJEMPLO -------------------- */
+				this.setListAdapter(adaptador);
+				
+				bd.close();
 	}
 	
 	

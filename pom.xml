@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.zaratech</groupId>
 	<artifactId>Smarket</artifactId>
-	<version>0.0.30</version>
+	<version>0.0.31</version>
 	<packaging>apk</packaging>
 	<name>Smarket</name>
 
@@ -81,6 +81,9 @@
 										<goals>
 											<goal>proguard</goal>
 											<goal>consume-aar</goal>
+											<goal>
+												generate-sources
+											</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>

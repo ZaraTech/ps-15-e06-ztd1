@@ -2,7 +2,6 @@ package com.zaratech.smarket.utiles;
 
 import java.util.ArrayList;
 
-import com.zaratech.smarket.componentes.Marca;
 import com.zaratech.smarket.componentes.Producto;
 import com.zaratech.smarket.R;
 
@@ -24,20 +23,13 @@ import android.widget.TextView;
  */
 public class AdaptadorProductos extends ArrayAdapter<Producto> {
 	
-	/**
-	 * Almacena la conexion a una base de datos
-	 */
-	private AdaptadorBD bd;
-
 	
 	/**
 	 * Constructor del adaptador
 	 * @param bd conexion a una base de datos
 	 */
-	public AdaptadorProductos(Context context, ArrayList<Producto> productos, AdaptadorBD bd) {
+	public AdaptadorProductos(Context context, ArrayList<Producto> productos) {
 		super(context, 0, productos);
-		
-		this.bd = bd;
 	}
 	
 	/**
@@ -75,11 +67,10 @@ public class AdaptadorProductos extends ArrayAdapter<Producto> {
 			
 			imagen.setImageBitmap(producto.getImagen());
 			
-			Marca marca = bd.obtenerMarca(producto.getMarca());
 			String tipo = AdaptadorBD.obtenerTipo(producto.getTipo());
 			
 			nombre.setText(producto.getNombre());
-			datos.setText(tipo + " - " + marca.getNombre());
+			datos.setText(tipo + " - " + producto.getMarca().getNombre());
 			precio.setText(String.format("%.2f €", producto.getPrecio()));
 			
 			
@@ -105,11 +96,11 @@ public class AdaptadorProductos extends ArrayAdapter<Producto> {
 			
 			imagen.setImageBitmap(producto.getImagen());
 			
-			Marca marca = bd.obtenerMarca(producto.getMarca());
+
 			String tipo = AdaptadorBD.obtenerTipo(producto.getTipo());
 			
 			nombre.setText(producto.getNombre());
-			datos.setText(tipo + " - " + marca.getNombre());
+			datos.setText(tipo + " - " + producto.getMarca().getNombre());
 			
 			precio.setText(String.format("%.2f €", producto.getPrecio()));
 			precio.setPaintFlags(precio.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);

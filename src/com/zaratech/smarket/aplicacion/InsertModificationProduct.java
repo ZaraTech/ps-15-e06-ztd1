@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.zaratech.smarket.componentes.Marca;
 import com.zaratech.smarket.componentes.Producto;
 import com.zaratech.smarket.R;
 
@@ -145,7 +146,7 @@ public class InsertModificationProduct extends Activity {
 		/*
 		 * Recuperar producto
 		 */
-		Producto p = new Producto("Producto ", 0, Producto.TIPO_SMARTPHONE,
+		Producto p = new Producto("Producto ", new Marca("Marca"), Producto.TIPO_SMARTPHONE,
 				Math.random() * 654.0);
 
 		if (p != null) {
@@ -357,7 +358,7 @@ public class InsertModificationProduct extends Activity {
 		boolean oferta = ofertaCheck.isChecked();
 
 		Producto producto = new Producto(nombreEdit.getText().toString(),
-				marca, tipo, precio);
+				new Marca(getBrandSelected()), tipo, precio);
 		producto.setDescripcion(descripcionEdit.getText().toString());
 		producto.setDimensionPantalla(pulgadas);
 		producto.setSistemaOperativo(soEdit.getSelectedItemPosition());

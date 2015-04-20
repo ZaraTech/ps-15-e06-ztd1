@@ -51,10 +51,10 @@ public class AdaptadorBD implements InterfazBD {
     	
     	for(int i=1; i<22; i++){
     		
-    		int marca = (int)(Math.random()*tabla_marcas.size() + 1);
+    		int marca = (int)(Math.random()*tabla_marcas.size());
     		int tipo = (int)(Math.random()*2.0);
     		double precio = Math.random()*300+50;
-    		Producto p = new Producto("Producto " + i, marca, tipo, precio);
+    		Producto p = new Producto("Producto " + i, tabla_marcas.get(marca), tipo, precio);
     		p.setId(i);
     		contadorProductos++;
     		

@@ -59,7 +59,7 @@ public class ListaProductos extends ListActivity {
 		bd.crearMarca(new Marca("Samsung"));
 		Marca marcaSamsung = bd.obtenerMarca("Samsung");
 		
-		bd.crearProducto(new Producto("Galaxy S6", marcaSamsung.getId(), Producto.TIPO_SMARTPHONE, 678.0));
+		bd.crearProducto(new Producto("Galaxy S6", marcaSamsung, Producto.TIPO_SMARTPHONE, 678.0));
 
 		
 		// Rellenar lista
@@ -79,7 +79,7 @@ public class ListaProductos extends ListActivity {
 			p.setImagen(imagen);
 		}
 		
-		AdaptadorProductos adaptador = new AdaptadorProductos(this, productos, bd);
+		AdaptadorProductos adaptador = new AdaptadorProductos(this, productos);
 
 		this.setListAdapter(adaptador);
 		

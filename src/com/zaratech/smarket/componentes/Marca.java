@@ -1,11 +1,15 @@
 package com.zaratech.smarket.componentes;
 
+import java.io.Serializable;
+
 /**
  * Clase que gestiona objetos Marca.
  * 
  * @author Juan
  */
-public class Marca {
+public class Marca implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * IDENTIFICADOR de la marca. Corresponde al identificador en la BD (se

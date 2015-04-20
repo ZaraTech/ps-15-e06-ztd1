@@ -32,9 +32,9 @@ public class Producto implements Parcelable{
 	private int tipo;
 	
 	/**
-	 * Identificador de la MARCA del producto
+	 * Marca del producto
 	 */
-	private int marca;
+	private Marca marca;
 	
 	/**
 	 * DIMENSION DE PANTALLA en diagonal y en pulgadas, del producto
@@ -115,11 +115,11 @@ public class Producto implements Parcelable{
 	/**
 	 * Crea un nuevo Producto
 	 * @param nombre es el nombre del Producto
-	 * @param marca es el identificador de la Marca del Producto
+	 * @param marca es la Marca del Producto
 	 * @param tipo es el identificador del Tipo del Producto
 	 * @param precio es el precio del Producto
 	 */
-	public Producto(String nombre, int marca, int tipo, double precio) {
+	public Producto(String nombre, Marca marca, int tipo, double precio) {
 		
 		this.id = 0;
 		this.nombre = nombre;
@@ -154,7 +154,7 @@ public class Producto implements Parcelable{
 		salida.writeInt(id);
 		salida.writeString(nombre);
 		salida.writeInt(tipo);
-		salida.writeInt(marca);
+		salida.writeSerializable(marca);
 		salida.writeDouble(dimensionPantalla);
 		salida.writeInt(sistemaOperativo);
 		salida.writeDouble(precio);
@@ -177,7 +177,7 @@ public class Producto implements Parcelable{
 		this.id = entrada.readInt();
 		this.nombre = entrada.readString();
 		this.tipo = entrada.readInt();
-		this.marca = entrada.readInt();
+		this.marca = (Marca) entrada.readSerializable();
 		this.dimensionPantalla = entrada.readDouble();
 		this.sistemaOperativo = entrada.readInt();
 		this.precio = entrada.readDouble();
@@ -249,11 +249,11 @@ public class Producto implements Parcelable{
 	
 	// MARCA
 
-	public int getMarca() {
+	public Marca getMarca() {
 		return marca;
 	}
 
-	public void setMarca(int marca) {
+	public void setMarca(Marca marca) {
 		this.marca = marca;
 	}
 	

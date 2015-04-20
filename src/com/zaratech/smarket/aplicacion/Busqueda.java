@@ -1,6 +1,6 @@
 package com.zaratech.smarket.aplicacion;
 
-import com.zaratech.smartcatalogue.R;
+import com.zaratech.smarket.R;
 
 import android.os.Bundle;
 import android.app.Activity;

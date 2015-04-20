@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.zaratech.smarket.componentes.Producto;
-import com.zaratech.smartcatalogue.R;
+import com.zaratech.smarket.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;

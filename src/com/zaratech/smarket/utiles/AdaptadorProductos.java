@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.zaratech.smarket.componentes.Marca;
 import com.zaratech.smarket.componentes.Producto;
-import com.zaratech.smartcatalogue.R;
+import com.zaratech.smarket.R;
 
 import android.content.Context;
 import android.graphics.Paint;

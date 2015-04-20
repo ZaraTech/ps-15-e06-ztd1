@@ -52,8 +52,15 @@ public class ListaProductos extends ListActivity {
 			
 			int marca = (int)(Math.random() * 3.0);
 			
+			double precio = Math.random()*654.0;
+			
 			Producto p = new Producto("Producto " + i, marca, 
-					Producto.TIPO_SMARTPHONE, Math.random()*654.0);
+					Producto.TIPO_SMARTPHONE, precio);
+			
+			if((int)(Math.random()*2.0) == 0){
+				p.setOferta();
+				p.setPrecioOferta(precio * 0.75);
+			}
 			
 			p.setImagen(imagen);
 			valores.add(p);

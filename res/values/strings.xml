@@ -61,9 +61,12 @@
     <string name="type_smartphone">Smartphone</string>
     <string name="type_tablet">Tablet</string>
     <string name="description">Descripción</string>
+    <string name="screen">Pantalla</string>
     <string name="inches">Pulgadas</string>
     <string name="price">Precio</string>
+    <string name="UINCH">\"</string>
     <string name="UM">€</string>
+    <string name="buy">Comprar</string>
     <string name="systems_operative_prompt">Sistema operativo</string>
 
     <string-array name="systems_operative">

@@ -71,14 +71,11 @@ public class AdaptadorProductos extends ArrayAdapter<Producto> {
 			TextView precio = (TextView) convertView.findViewById(R.id.Precio);
 			
 			
-			// Rellenar elementos xml con valores del producto
-			
-			AdaptadorBD BD = new AdaptadorBD();
-			
+			// Rellenar elementos xml con valores del producto			
 			
 			imagen.setImageBitmap(producto.getImagen());
 			
-			Marca marca = BD.obtenerMarca(producto.getMarca());
+			Marca marca = bd.obtenerMarca(producto.getMarca());
 			String tipo = AdaptadorBD.obtenerTipo(producto.getTipo());
 			
 			nombre.setText(producto.getNombre());
@@ -104,14 +101,11 @@ public class AdaptadorProductos extends ArrayAdapter<Producto> {
 			TextView precioOferta = (TextView) convertView.findViewById(R.id.Precio_Oferta);
 			
 			
-			// Rellenar elementos xml con valores del producto
-			
-			AdaptadorBD BD = new AdaptadorBD();
-			
+			// Rellenar elementos xml con valores del producto			
 			
 			imagen.setImageBitmap(producto.getImagen());
 			
-			Marca marca = BD.obtenerMarca(producto.getMarca());
+			Marca marca = bd.obtenerMarca(producto.getMarca());
 			String tipo = AdaptadorBD.obtenerTipo(producto.getTipo());
 			
 			nombre.setText(producto.getNombre());

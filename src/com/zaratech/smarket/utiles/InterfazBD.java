@@ -1,9 +1,9 @@
-package com.zaratech.smartcatalogue.utiles;
+package com.zaratech.smarket.utiles;
 
 import java.util.List;
 
-import com.zaratech.smartcatalogue.componentes.Marca;
-import com.zaratech.smartcatalogue.componentes.Producto;
+import com.zaratech.smarket.componentes.Marca;
+import com.zaratech.smarket.componentes.Producto;
 
 /**
  * Interfaz que abstrae la funcionalidad ofrecida por la base de datos.

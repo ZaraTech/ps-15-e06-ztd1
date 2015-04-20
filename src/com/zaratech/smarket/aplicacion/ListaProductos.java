@@ -1,10 +1,10 @@
-package com.zaratech.smartcatalogue.aplicacion;
+package com.zaratech.smarket.aplicacion;
 
 import java.util.ArrayList;
 
+import com.zaratech.smarket.componentes.Producto;
+import com.zaratech.smarket.utiles.AdaptadorProductos;
 import com.zaratech.smartcatalogue.R;
-import com.zaratech.smartcatalogue.componentes.Producto;
-import com.zaratech.smartcatalogue.utiles.AdaptadorProductos;
 
 import android.os.Bundle;
 import android.app.ListActivity;

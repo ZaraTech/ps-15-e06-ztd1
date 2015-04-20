@@ -1,4 +1,4 @@
-package com.zaratech.smartcatalogue.componentes;
+package com.zaratech.smarket.componentes;
 
 import android.graphics.Bitmap;
 import android.os.Parcel;

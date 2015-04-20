@@ -1,4 +1,4 @@
-package com.zaratech.smartcatalogue.componentes;
+package com.zaratech.smarket.componentes;
 
 public class Marca {
 

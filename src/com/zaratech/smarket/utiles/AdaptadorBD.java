@@ -1,9 +1,10 @@
-package com.zaratech.smartcatalogue.utiles;
+package com.zaratech.smarket.utiles;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.zaratech.smartcatalogue.componentes.Marca;
-import com.zaratech.smartcatalogue.componentes.Producto;
+
+import com.zaratech.smarket.componentes.Marca;
+import com.zaratech.smarket.componentes.Producto;
 
 /**
  * Clase que se utiliza como adaptador para una base de datos.

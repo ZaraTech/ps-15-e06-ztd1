@@ -1,10 +1,10 @@
-package com.zaratech.smartcatalogue.utiles;
+package com.zaratech.smarket.utiles;
 
 import java.util.ArrayList;
 
+import com.zaratech.smarket.componentes.Marca;
+import com.zaratech.smarket.componentes.Producto;
 import com.zaratech.smartcatalogue.R;
-import com.zaratech.smartcatalogue.componentes.Marca;
-import com.zaratech.smartcatalogue.componentes.Producto;
 
 import android.content.Context;
 import android.graphics.Paint;

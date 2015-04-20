@@ -1,7 +1,7 @@
-package com.zaratech.smartcatalogue.aplicacion;
+package com.zaratech.smarket.aplicacion;
 
+import com.zaratech.smarket.componentes.Producto;
 import com.zaratech.smartcatalogue.R;
-import com.zaratech.smartcatalogue.componentes.Producto;
 
 import android.os.Bundle;
 import android.widget.Toast;

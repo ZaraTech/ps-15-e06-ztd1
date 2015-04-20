@@ -10,7 +10,7 @@
 
         <!-- Listado de productos -->
 
-        <activity android:name=".aplicacion.ListaProductos">
+        <activity android:name="com.zaratech.smarket.aplicacion.ListaProductos">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -20,22 +20,22 @@
 
         <!-- Busqueda de productos -->
 
-        <activity android:label="@string/titulo_activity_busqueda" android:name=".aplicacion.Busqueda">
+        <activity android:label="@string/titulo_activity_busqueda" android:name="com.zaratech.smarket.aplicacion.Busqueda">
         </activity>
 
         <!-- Edicion de productos -->
 
-        <activity android:label="@string/titulo_activity_insert_modification_product" android:name=".aplicacion.InsertModificationProduct">
+        <activity android:label="@string/titulo_activity_insert_modification_product" android:name="com.zaratech.smarket.aplicacion.InsertModificationProduct">
         </activity>
 
         <!-- Envio de pedidos -->
 
-        <activity android:label="@string/titulo_activity_envio_pedido" android:name=".aplicacion.EnvioPedido">
+        <activity android:label="@string/titulo_activity_envio_pedido" android:name="com.zaratech.smarket.aplicacion.EnvioPedido">
         </activity>
 
         <!-- Informacion de productos -->
 
-        <activity android:label="@string/titulo_activity_info_producto" android:name=".aplicacion.InfoProducto">
+        <activity android:label="@string/titulo_activity_info_producto" android:name="com.zaratech.smarket.aplicacion.InfoProducto">
         </activity>
     </application>
 

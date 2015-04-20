@@ -1,17 +1,17 @@
-package com.zaratech.smartcatalogue.aplicacion;
+package com.zaratech.smarket.aplicacion;
 
 import com.zaratech.smartcatalogue.R;
 
 import android.os.Bundle;
 import android.app.Activity;
 
-public class Busqueda extends Activity {
+public class EnvioPedido extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_busqueda);
+		setContentView(R.layout.activity_envio_pedido);
 	}
 
 }

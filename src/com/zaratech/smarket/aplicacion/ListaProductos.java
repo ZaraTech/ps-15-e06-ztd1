@@ -48,42 +48,42 @@ public class ListaProductos extends ListActivity {
 		
 
 		// Obtener imagen
-				Resources res = getBaseContext().getResources();
-				int id = R.drawable.smarket; 
-				Bitmap imagen = BitmapFactory.decodeResource(res, id);
-				
-				AdaptadorBD bd = new AdaptadorBD();
-				bd.open();
-				
-				// PRUEBAS: bd
-				bd.crearMarca(new Marca("Samsung"));
-				Marca marcaSamsung = bd.obtenerMarca("Samsung");
-				
-				bd.crearProducto(new Producto("Galaxy S6", marcaSamsung.getId(), Producto.TIPO_SMARTPHONE, 678.0));
+		Resources res = getBaseContext().getResources();
+		int id = R.drawable.smarket; 
+		Bitmap imagen = BitmapFactory.decodeResource(res, id);
+		
+		AdaptadorBD bd = new AdaptadorBD();
+		bd.open();
+		
+		// PRUEBAS: bd
+		bd.crearMarca(new Marca("Samsung"));
+		Marca marcaSamsung = bd.obtenerMarca("Samsung");
+		
+		bd.crearProducto(new Producto("Galaxy S6", marcaSamsung.getId(), Producto.TIPO_SMARTPHONE, 678.0));
 
-				
-				// Rellenar lista
-				ArrayList<Producto> productos = (ArrayList<Producto>) bd.obtenerProductos();
-				
-				
-				
-				// PRUEBAS: ofertas e imagenes
-				for (Producto p : productos) {
-					
-					
-					if((int)(Math.random()*2.0) == 0){
-						p.setOferta();
-						p.setPrecioOferta(p.getPrecio() * 0.75);
-					}
-					
-					p.setImagen(imagen);
-				}
-				
-				AdaptadorProductos adaptador = new AdaptadorProductos(this, productos, bd);
+		
+		// Rellenar lista
+		ArrayList<Producto> productos = (ArrayList<Producto>) bd.obtenerProductos();
+		
+		
+		
+		// PRUEBAS: ofertas e imagenes
+		for (Producto p : productos) {
+			
+			
+			if((int)(Math.random()*2.0) == 0){
+				p.setOferta();
+				p.setPrecioOferta(p.getPrecio() * 0.75);
+			}
+			
+			p.setImagen(imagen);
+		}
+		
+		AdaptadorProductos adaptador = new AdaptadorProductos(this, productos, bd);
 
-				this.setListAdapter(adaptador);
-				
-				bd.close();
+		this.setListAdapter(adaptador);
+		
+		bd.close();
 	}
 	
 	

@@ -4,6 +4,11 @@ import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * Clase que gestiona objetos Producto.
+ * 
+ * @author Juan
+ */
 public class Producto implements Parcelable{
 	
 	/**
@@ -328,6 +333,19 @@ public class Producto implements Parcelable{
 	
 	public void unsetOferta() {
 		this.enOferta = false;
+	}
+
+	
+	// TO STRING
+	
+	@Override
+	public String toString() {
+		return "Producto [id=" + id + ", nombre=" + nombre + ", tipo=" + tipo
+				+ ", marca=" + marca + ", dimensionPantalla="
+				+ dimensionPantalla + ", sistemaOperativo=" + sistemaOperativo
+				+ ", precio=" + precio + ", descripcion=" + descripcion
+				+ ", imagen=" + imagen + ", enOferta=" + enOferta
+				+ ", precioOferta=" + precioOferta + "]";
 	}
 
 }

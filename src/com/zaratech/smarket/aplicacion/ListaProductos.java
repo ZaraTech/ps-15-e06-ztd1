@@ -17,6 +17,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+/**
+ * Activity que gestiona el listado de productos principal.
+ * 
+ * @author Juan
+ */
 public class ListaProductos extends ListActivity {
 	
 	/**

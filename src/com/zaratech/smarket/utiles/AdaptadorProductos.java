@@ -17,9 +17,10 @@ import android.widget.TextView;
 
 
 /**
+ * Adaptador que permite gestionar como se muestran los productos (oferta o no),
+ * al mismo tiempo que asigna los valores necesarios a los campos correspondientes
  * 
- * https://github.com/codepath/android_guides/wiki/Using-an-ArrayAdapter-with-ListView
- *
+ * @author Juan
  */
 public class AdaptadorProductos extends ArrayAdapter<Producto> {
 

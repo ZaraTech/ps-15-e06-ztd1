@@ -7,6 +7,8 @@ import com.zaratech.smarket.componentes.Producto;
 
 /**
  * Interfaz que abstrae la funcionalidad ofrecida por la base de datos.
+ * 
+ * @author Juan
  */
 public interface InterfazBD {
 	

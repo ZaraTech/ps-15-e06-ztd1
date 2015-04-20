@@ -1,5 +1,10 @@
 package com.zaratech.smarket.componentes;
 
+/**
+ * Clase que gestiona objetos Marca.
+ * 
+ * @author Juan
+ */
 public class Marca {
 
 	/**
@@ -13,6 +18,11 @@ public class Marca {
 	 */
 	private String nombre;
 
+	
+	/**
+	 * Crea un objeto de tipo Marca
+	 * @param nombre es el nombre asociado a la Marca
+	 */
 	public Marca(String nombre) {
 
 		this.id = 0;
@@ -43,6 +53,14 @@ public class Marca {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	
+	// TO STRING
+	
+	@Override
+	public String toString() {
+		return "Marca [id=" + id + ", nombre=" + nombre + "]";
 	}
 
 }

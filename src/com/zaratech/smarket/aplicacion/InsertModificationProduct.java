@@ -359,19 +359,14 @@ public class InsertModificationProduct extends Activity {
 		}
 
 		// Marca
-		int marca = getBrandSelectedId();
-		if (marca == -1) {
-			Toast.makeText(this, "No se ha selecionado una marca",
-					Toast.LENGTH_SHORT).show();
-			return null;
-		}
+		Marca marca = getBrandSelected();
 
 		// Oferta
 		CheckBox ofertaCheck = (CheckBox) findViewById(R.id.AIMPDiscountBox);
 		boolean oferta = ofertaCheck.isChecked();
 
 		Producto producto = new Producto(nombreEdit.getText().toString(),
-				new Marca(getBrandSelectedString()), tipo, precio);
+				marca, tipo, precio);
 		producto.setDescripcion(descripcionEdit.getText().toString());
 		producto.setDimensionPantalla(pulgadas);
 		producto.setSistemaOperativo(soEdit.getSelectedItemPosition());

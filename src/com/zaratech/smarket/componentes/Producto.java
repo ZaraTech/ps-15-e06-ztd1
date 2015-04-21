@@ -103,6 +103,10 @@ public class Producto implements Parcelable{
 	
 	/* CONSTRUCTORES */
 	
+	public Producto(){
+		
+	}
+	
 	/**
 	 * Usado para obtener productos de un Intent
 	 * @param entrada Es el objeto que almacena el Producto
@@ -346,6 +350,38 @@ public class Producto implements Parcelable{
 				+ ", precio=" + precio + ", descripcion=" + descripcion
 				+ ", imagen=" + imagen + ", enOferta=" + enOferta
 				+ ", precioOferta=" + precioOferta + "]";
+	}
+	
+	
+	// CLONAR
+	
+	/**
+	 * Duplica el Producto
+	 * @return un nuevo Producto
+	 */
+	public Producto clonar(){
+		Producto p = new Producto();
+		
+		p.setId(this.id);
+		p.setNombre(new String(this.nombre));
+		p.setTipo(this.tipo);
+		p.setMarca(this.marca.clonar());
+		p.setDimensionPantalla(this.dimensionPantalla);
+		p.setSistemaOperativo(this.sistemaOperativo);
+		p.setPrecio(this.precio);
+		p.setDescripcion(new String(this.descripcion));
+		p.setImagen(this.imagen.copy(this.imagen.getConfig(), true));
+		
+		if(enOferta){
+			p.setOferta();
+		}
+		else{
+			p.unsetOferta();
+		}
+		
+		p.setPrecioOferta(this.precioOferta);
+		
+		return p;
 	}
 
 }

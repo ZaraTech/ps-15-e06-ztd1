@@ -23,6 +23,12 @@ public class Marca implements Serializable{
 	private String nombre;
 
 	
+	// CONSTRUCTORES
+	
+	public Marca(){
+		
+	}
+	
 	/**
 	 * Crea un objeto de tipo Marca
 	 * @param nombre es el nombre asociado a la Marca
@@ -65,6 +71,22 @@ public class Marca implements Serializable{
 	@Override
 	public String toString() {
 		return "Marca [id=" + id + ", nombre=" + nombre + "]";
+	}
+	
+	
+	// CLONAR
+	
+	/**
+	 * Duplica la Marca
+	 * @return una nueva Marca
+	 */
+	public Marca clonar(){
+		Marca m = new Marca();
+		
+		m.setId(this.id);
+		m.setNombre(new String(this.nombre));
+		
+		return m;
 	}
 
 }

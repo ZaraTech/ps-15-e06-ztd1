@@ -52,6 +52,7 @@ public class ListaProductos extends ListActivity {
 		int id = R.drawable.smarket; 
 		Bitmap imagen = BitmapFactory.decodeResource(res, id);
 		
+		//Obtener BD
 		AdaptadorBD bd = new AdaptadorBD();
 		bd.open();
 		

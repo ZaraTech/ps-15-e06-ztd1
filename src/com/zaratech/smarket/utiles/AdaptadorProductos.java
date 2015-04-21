@@ -23,6 +23,11 @@ import android.widget.TextView;
  */
 public class AdaptadorProductos extends ArrayAdapter<Producto> {
 	
+	/**
+	 * Contexto de la aplicacion. Necesario para obtener strings
+	 */
+	private Context context;
+	
 	
 	/**
 	 * Constructor del adaptador
@@ -30,6 +35,8 @@ public class AdaptadorProductos extends ArrayAdapter<Producto> {
 	 */
 	public AdaptadorProductos(Context context, ArrayList<Producto> productos) {
 		super(context, 0, productos);
+		
+		this.context = context;
 	}
 	
 	/**
@@ -42,6 +49,9 @@ public class AdaptadorProductos extends ArrayAdapter<Producto> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		
+		// Obtiene el simbolo de la unidad monetaria a usar
+		String ud_monetaria = context.getString(R.string.ud_monetaria);
 		
 		// Obtener el producto correspondiente
 		Producto producto = getItem(position);
@@ -71,7 +81,7 @@ public class AdaptadorProductos extends ArrayAdapter<Producto> {
 			
 			nombre.setText(producto.getNombre());
 			datos.setText(tipo + " - " + producto.getMarca().getNombre());
-			precio.setText(String.format("%.2f €", producto.getPrecio()));
+			precio.setText(String.format("%.2f %s", producto.getPrecio(), ud_monetaria));
 			
 			
 		// SI ESTA EN OFERTA
@@ -102,10 +112,10 @@ public class AdaptadorProductos extends ArrayAdapter<Producto> {
 			nombre.setText(producto.getNombre());
 			datos.setText(tipo + " - " + producto.getMarca().getNombre());
 			
-			precio.setText(String.format("%.2f €", producto.getPrecio()));
+			precio.setText(String.format("%.2f %s", producto.getPrecio(), ud_monetaria));
 			precio.setPaintFlags(precio.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 			
-			precioOferta.setText(String.format("%.2f €", producto.getPrecioOferta()));
+			precioOferta.setText(String.format("%.2f %s", producto.getPrecioOferta(), ud_monetaria));
 			
 		}
 		

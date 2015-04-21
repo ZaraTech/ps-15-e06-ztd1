@@ -55,7 +55,7 @@ public class InfoProducto extends Activity {
 	    marcaText.setText (p.getMarca().getNombre());
 	    pantallaText.setText (String.format("%.2f %s", p.getDimensionPantalla(), getString(R.string.UINCH)));
 	    sistemaOpText.setText (String.format("%d", p.getSistemaOperativo()));
-	    precioText.setText (String.format("%.2f %s", p.getPrecio(), getString(R.string.UM)));
+	    precioText.setText (String.format("%.2f %s", p.getPrecio(), getString(R.string.ud_monetaria)));
 	    
 		comprarButt.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {

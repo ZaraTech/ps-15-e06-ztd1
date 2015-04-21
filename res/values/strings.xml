@@ -7,9 +7,9 @@
 
     
     
-    <!-- Miscelánea -->
+    <!-- General -->
     
-    <string name="hello_world">Hola mundo, somos ZaraTech!</string>
+    <string name="ud_monetaria">€</string>
 
     
     
@@ -65,7 +65,7 @@
     <string name="inches">Pulgadas</string>
     <string name="price">Precio</string>
     <string name="UINCH">\"</string>
-    <string name="UM">€</string>
+    
     <string name="buy">Comprar</string>
     <string name="systems_operative_prompt">Sistema operativo</string>
 

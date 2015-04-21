@@ -25,8 +25,12 @@ public class Marca implements Serializable{
 	
 	// CONSTRUCTORES
 	
+	/**
+	 * Crea un objeto de tipo Marca totalmente vacio
+	 */
 	public Marca(){
-		
+		id = -1;
+		nombre = null;
 	}
 	
 	/**
@@ -81,10 +85,11 @@ public class Marca implements Serializable{
 	 * @return una nueva Marca
 	 */
 	public Marca clonar(){
+		
 		Marca m = new Marca();
 		
-		m.setId(this.id);
-		m.setNombre(new String(this.nombre));
+		m.setId(id);
+		m.setNombre(new String(nombre));
 		
 		return m;
 	}

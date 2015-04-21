@@ -103,8 +103,22 @@ public class Producto implements Parcelable{
 	
 	/* CONSTRUCTORES */
 	
+	/**
+	 * Crea un objeto de tipo Producto totalmente vacio
+	 */
 	public Producto(){
 		
+		this.id = -1;
+		this.nombre = null;
+		this.tipo = 0;
+		this.marca = null;
+		this.dimensionPantalla = 0.0;
+		this.sistemaOperativo = 0;
+		this.precio = 0.0;
+		this.descripcion = null;
+		this.imagen = null;
+		this.enOferta = false;
+		this.precioOferta = 0.0;
 	}
 	
 	/**
@@ -360,17 +374,25 @@ public class Producto implements Parcelable{
 	 * @return un nuevo Producto
 	 */
 	public Producto clonar(){
+		
 		Producto p = new Producto();
 		
-		p.setId(this.id);
-		p.setNombre(new String(this.nombre));
-		p.setTipo(this.tipo);
-		p.setMarca(this.marca.clonar());
-		p.setDimensionPantalla(this.dimensionPantalla);
-		p.setSistemaOperativo(this.sistemaOperativo);
-		p.setPrecio(this.precio);
-		p.setDescripcion(new String(this.descripcion));
-		p.setImagen(this.imagen.copy(this.imagen.getConfig(), true));
+		p.setId(id);
+		p.setNombre(new String(nombre));
+		p.setTipo(tipo);
+		
+		if(marca != null){
+			p.setMarca(marca.clonar());
+		}
+		
+		p.setDimensionPantalla(dimensionPantalla);
+		p.setSistemaOperativo(sistemaOperativo);
+		p.setPrecio(precio);
+		p.setDescripcion(new String(descripcion));
+		
+		if(imagen != null){
+			p.setImagen(imagen.copy(imagen.getConfig(), true));
+		}
 		
 		if(enOferta){
 			p.setOferta();

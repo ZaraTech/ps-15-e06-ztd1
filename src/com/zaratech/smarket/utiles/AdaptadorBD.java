@@ -3,11 +3,13 @@ package com.zaratech.smarket.utiles;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.graphics.Bitmap;
+
 import com.zaratech.smarket.componentes.Marca;
 import com.zaratech.smarket.componentes.Producto;
 
 /**
- * Clase que se utiliza como adaptador para una base de datos.
+ * Clase que se utiliza como adaptador para interactuar con una base de datos.
  * 
  * @author Marta 
  * @author Juan
@@ -15,61 +17,24 @@ import com.zaratech.smarket.componentes.Producto;
 public class AdaptadorBD implements InterfazBD {
 
 	/**
-	 * Contadores para simular secuenciacion de identificadores 
+	 * Base de datos
 	 */
-	private static int contadorProductos = 0;
-	private static int contadorMarcas = 0;
+	private static BD bd = null;
 	
-	/** 
-	 * Tabla de productos 
+	/**
+	 * Constructor 
 	 */
-    List<Producto> tabla_productos = new ArrayList<Producto>();
-    
-    /**
-     * Tabla de marcas 
-     */
-    List<Marca> tabla_marcas = new ArrayList<Marca>();
-    
-
-    /**
-     * Metodo que conecta con la base de datos (en este caso se rellena una 
-     * base de datos simulada).
-     */
-    public void open(){
-    	
-    	/* Rellena tabla de marcas */
-    	
-    	for(int i=1; i<5; i++){
-    		Marca m = new Marca("Marca " + i);
-    		m.setId(i);
-    		contadorMarcas++;
-    		
-    		tabla_marcas.add(m);
-    	}
-    	
-    	/* Rellena tabla de productos*/
-    	
-    	for(int i=1; i<22; i++){
-    		
-    		int marca = (int)(Math.random()*tabla_marcas.size());
-    		int tipo = (int)(Math.random()*2.0);
-    		double precio = Math.random()*300+50;
-    		Producto p = new Producto("Producto " + i, tabla_marcas.get(marca), tipo, precio);
-    		p.setId(i);
-    		contadorProductos++;
-    		
-    		tabla_productos.add(p);
-    	}
-    }
-    
-    /**
-     * Cierra la conexion con la base de datos (en este caso en el que se
-     * trabaja con una base de datos virtual no hace nada).
-     */
-    public void close() {
-    	//
-    }
-    
+	public AdaptadorBD(){
+		
+		if(bd == null){
+			bd = new BD();
+			bd.open();
+		}
+	}
+	
+	public void close(){
+		bd.close();
+	}
 	/**
 	 * Devuelve el nombre del Sistema Operativo asociado
 	 * @param idSistemaOperativo Identificador del sistema operativo
@@ -107,16 +72,24 @@ public class AdaptadorBD implements InterfazBD {
 
 	public List<Producto> obtenerProductos() {
 
-		return tabla_productos;
+		List<Producto> productos = new ArrayList<Producto>();
+		
+		for(Producto p: bd.getTabla_productos()){
+			Producto nuevoProducto = p.clonar();
+			productos.add(nuevoProducto);
+		}
+		
+		return productos;
 
 	}
 
 	public Producto obtenerProducto(int id) {
 		
-		for(Producto p:tabla_productos){
+		for(Producto p: bd.getTabla_productos()){
 			
 			if(p.getId() == id){
-				return p;
+				Producto nuevoProducto = p.clonar();			
+				return nuevoProducto;
 			}
 		}
 
@@ -125,9 +98,11 @@ public class AdaptadorBD implements InterfazBD {
 
 	public Producto obtenerProducto(String nombre) {
 		
-		for(Producto p: tabla_productos){
+		for(Producto p: bd.getTabla_productos()){
+			
 			if(p.getNombre().compareTo(nombre) == 0){
-				return p;
+				Producto nuevoProducto = p.clonar();			
+				return nuevoProducto;
 			}
 		}
 		
@@ -136,11 +111,12 @@ public class AdaptadorBD implements InterfazBD {
 
 	public boolean crearProducto(Producto producto) {
 		
-		boolean exito = tabla_productos.add(producto);
+		producto.setId(bd.getContadorProductos());
+		
+		boolean exito = bd.getTabla_productos().add(producto);
 		
 		if(exito){
-			contadorProductos++;
-			producto.setId(contadorProductos);
+			bd.incrementarContadorProductos();			
 		}
 		
 		return exito;
@@ -148,23 +124,28 @@ public class AdaptadorBD implements InterfazBD {
 
 	public boolean actualizarProducto(Producto producto) {
 		
-		for(Producto p: tabla_productos){
+		for(Producto p: bd.getTabla_productos()){
 			
 			if(p.getId() == producto.getId()){
-				
-				p.setNombre(producto.getNombre());
+								
+				p.setNombre(new String(producto.getNombre()));
 				p.setTipo(producto.getTipo());
-				p.setMarca(producto.getMarca());
+				p.setMarca(producto.getMarca().clonar());
 				p.setDimensionPantalla(producto.getDimensionPantalla());
 				p.setSistemaOperativo(producto.getSistemaOperativo());
 				p.setPrecio(producto.getPrecio());
-				p.setDescripcion(producto.getDescripcion());
-				p.setImagen(producto.getImagen());
+				p.setDescripcion(new String(producto.getDescripcion()));
+				
+				Bitmap imagen = producto.getImagen();
+				Bitmap nuevaImagen = imagen.copy(imagen.getConfig(), true);
+				p.setImagen(nuevaImagen);
 				
 				if(producto.isOferta()){
 					p.setOferta();
-					p.setPrecioOferta(producto.getPrecioOferta());
+				} else {
+					p.unsetOferta();
 				}
+				p.setPrecioOferta(producto.getPrecioOferta());
 				
 				return true;
 			}
@@ -175,10 +156,11 @@ public class AdaptadorBD implements InterfazBD {
 
 	public boolean borrarProducto(int id) {
 
-		for(Producto p: tabla_productos){
+		for(Producto p: bd.getTabla_productos()){
 			
 			if(p.getId() == id){
-				return tabla_productos.remove(p);
+			
+				return bd.getTabla_productos().remove(p);
 			}
 		}
 		
@@ -187,27 +169,36 @@ public class AdaptadorBD implements InterfazBD {
 
 	public List<Marca> obtenerMarcas(){
 		
-		return tabla_marcas;
+		List<Marca> marcas = new ArrayList<Marca>();
+		
+		for(Marca m: bd.getTabla_marcas()){
+			Marca nuevaMarca = m.clonar();
+			marcas.add(nuevaMarca);
+		}
+		
+		return marcas;
 	}
 	
 	public Marca obtenerMarca(int id) {
 		
-		for(Marca m: tabla_marcas){
-
+		for(Marca m: bd.getTabla_marcas()){
+			
 			if(m.getId() == id){
-				return m;
+				Marca nuevaMarca = m.clonar();			
+				return nuevaMarca;
 			}
 		}
-		
+
 		return null;
 	}
 
 	public Marca obtenerMarca(String nombre) {
 		
-		for(Marca m: tabla_marcas){
+		for(Marca m: bd.getTabla_marcas()){
 			
 			if(m.getNombre().compareTo(nombre) == 0){
-				return m;
+				Marca nuevaMarca = m.clonar();			
+				return nuevaMarca;
 			}
 		}
 		
@@ -216,11 +207,12 @@ public class AdaptadorBD implements InterfazBD {
 
 	public boolean crearMarca(Marca marca) {
 		
-		boolean exito = tabla_marcas.add(marca);
+		marca.setId(bd.getContadorMarcas());
+		
+		boolean exito = bd.getTabla_marcas().add(marca);
 		
 		if(exito){
-			contadorMarcas++;
-			marca.setId(contadorMarcas);
+			bd.incrementarContadorMarcas();			
 		}
 		
 		return exito;
@@ -228,11 +220,10 @@ public class AdaptadorBD implements InterfazBD {
 
 	public boolean actualizarMarca(Marca marca) {
 		
-		
-		for(Marca m: tabla_marcas){
+		for(Marca m: bd.getTabla_marcas()){
 			
 			if(m.getId() == marca.getId()){				
-				m.setNombre(marca.getNombre());
+				m.setNombre(new String(marca.getNombre()));
 				return true;
 			}
 		}
@@ -242,10 +233,11 @@ public class AdaptadorBD implements InterfazBD {
 
 	public boolean borrarMarca(int id) {
 		
-		for(Marca m: tabla_marcas){
+		for(Marca m: bd.getTabla_marcas()){
 			
 			if(m.getId() == id){
-				return tabla_marcas.remove(m);
+				
+				return bd.getTabla_marcas().remove(m);
 			}
 		}
 		

@@ -54,7 +54,6 @@ public class ListaProductos extends ListActivity {
 		
 		//Obtener BD
 		AdaptadorBD bd = new AdaptadorBD();
-		bd.open();
 		
 		// PRUEBAS: bd
 		bd.crearMarca(new Marca("Samsung"));

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="0.0.41" package="com.zaratech.smarket">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="0.0.44" package="com.zaratech.smarket">
 
     <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="22"/>
 

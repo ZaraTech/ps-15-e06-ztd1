@@ -1,11 +1,11 @@
 package com.zaratech.smarket.aplicacion;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.zaratech.smarket.componentes.Marca;
 import com.zaratech.smarket.componentes.Producto;
+import com.zaratech.smarket.utiles.AdaptadorBD;
 import com.zaratech.smarket.R;
 
 import android.app.Activity;
@@ -40,20 +40,26 @@ import android.widget.Toast;
 
 public class InsertModificationProduct extends Activity {
 
-	private final int RESULT_LOAD_IMAGE = 1;
-	private final int RESULT_IMAGE_CAPTURE = 2;
-	private final int RESULT_PIC_CROP = 3;
-	private final String UM = "€";
-	private final String PULGADAS = "'";
-	private List<String> brs = new LinkedList<String>(Arrays.asList("LG",
-			"Sony"));
+	private static final String EXTRA_PRODUCTO = "Producto";
+	private static final int RESULT_LOAD_IMAGE = 1;
+	private static final int RESULT_IMAGE_CAPTURE = 2;
+	private static final int RESULT_PIC_CROP = 3;
+	private static final String UM = "€";
+	private static final String PULGADAS = "'";
 	private Spinner brands;
 	private int ID;
+	private AdaptadorBD bd;
+	private List<Marca> marcas;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_insert_modification_product);
+
+		/*
+		 * Inicializamos la BD
+		 */
+		bd = new AdaptadorBD();
 
 		/*
 		 * Carga de imagenes
@@ -121,9 +127,8 @@ public class InsertModificationProduct extends Activity {
 		RemoveBrand.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				String s = null;
-				if ((s = getBrandSelected()) != null) {
-					removeBrands(s);
+				if (getBrandSelectedString() != null) {
+					bd.borrarMarca(getBrandSelected().getId());
 					updateSpinner();
 				}
 			}
@@ -138,6 +143,11 @@ public class InsertModificationProduct extends Activity {
 			public void onClick(View v) {
 				Producto p = Formulario2Producto();
 				if (p != null) {
+					if (ID == -1) { // Producto nuevo
+						bd.crearProducto(p);
+					} else {// Producto modificado
+						bd.actualizarProducto(p);
+					}
 					finish();
 				}
 			}
@@ -146,11 +156,14 @@ public class InsertModificationProduct extends Activity {
 		/*
 		 * Recuperar producto
 		 */
-		Producto p = new Producto("Producto ", new Marca("Marca"), Producto.TIPO_SMARTPHONE,
-				Math.random() * 654.0);
 
-		if (p != null) {
+		if (getIntent().getExtras() != null
+				&& getIntent().getExtras().containsKey(EXTRA_PRODUCTO)) {
+			Producto p = this.getIntent().getExtras()
+					.getParcelable(EXTRA_PRODUCTO);
 			Producto2Formulario(p);
+		} else {
+			ID = -1;
 		}
 
 	}
@@ -173,7 +186,7 @@ public class InsertModificationProduct extends Activity {
 						String s = input.getText() == null ? null : input
 								.getText().toString();
 						if (s != null) {
-							addBrand(s);
+							bd.crearMarca(new Marca(s));
 							updateSpinner();
 							selectBrand(s);
 						}
@@ -358,7 +371,7 @@ public class InsertModificationProduct extends Activity {
 		boolean oferta = ofertaCheck.isChecked();
 
 		Producto producto = new Producto(nombreEdit.getText().toString(),
-				new Marca(getBrandSelected()), tipo, precio);
+				new Marca(getBrandSelectedString()), tipo, precio);
 		producto.setDescripcion(descripcionEdit.getText().toString());
 		producto.setDimensionPantalla(pulgadas);
 		producto.setSistemaOperativo(soEdit.getSelectedItemPosition());
@@ -394,6 +407,9 @@ public class InsertModificationProduct extends Activity {
 	 * A partir de un producto rellena el formulario
 	 */
 	public void Producto2Formulario(Producto producto) {
+		// ID
+		ID = producto.getId();
+
 		// Nombre
 		EditText nombreEdit = (EditText) findViewById(R.id.AIMPNameEdit);
 		nombreEdit.setText(producto.getNombre() != null ? producto.getNombre()
@@ -405,8 +421,7 @@ public class InsertModificationProduct extends Activity {
 				.getDescripcion() : "");
 
 		// Marca
-		int marca = getBrandSelectedId();
-		selectBrand(marca);
+		selectBrand(producto.getMarca().getNombre());
 
 		// Tipo
 		RadioButton smartphoneEdit = (RadioButton) findViewById(R.id.AIMPSmartphone);
@@ -464,13 +479,25 @@ public class InsertModificationProduct extends Activity {
 	 * Obtiene las marcas
 	 */
 	private List<String> getBrands() {
-		return brs;
+		marcas = bd.obtenerMarcas();
+		List<String> strs = new LinkedList<String>();
+		for (Marca m : marcas) {
+			strs.add(m.getNombre());
+		}
+		return strs;
 	}
 
 	/*
 	 * Obtiene la marca selecionada
 	 */
-	private String getBrandSelected() {
+	private Marca getBrandSelected() {
+		return marcas.get(getBrandSelectedId());
+	}
+
+	/*
+	 * Obtiene el string de la marca selecionada
+	 */
+	private String getBrandSelectedString() {
 		return brands.getSelectedItem() == null ? null : brands
 				.getSelectedItem().toString();
 	}
@@ -488,31 +515,11 @@ public class InsertModificationProduct extends Activity {
 	 */
 	private void selectBrand(String br) {
 		for (int i = 0; i < brands.getCount(); i++) {
-			if (brands.getItemAtPosition(i).toString() == br) {
-				brands.setId(i);
+			if (brands.getItemAtPosition(i).toString().equalsIgnoreCase(br)) {
+				brands.setSelection(i);
 				return;
 			}
 		}
-	}
-
-	private void selectBrand(int br) {
-		if (brands.getCount() > br) {
-			brands.setId(br);
-		}
-	}
-
-	/*
-	 * Añade una nueva marca
-	 */
-	private void addBrand(String br) {
-		brs.add(br);
-	}
-
-	/*
-	 * Elimina una marca
-	 */
-	private void removeBrands(String br) {
-		brs.remove(br);
 	}
 
 	/*

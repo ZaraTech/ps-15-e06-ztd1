@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -36,10 +35,8 @@ public class InfoProducto extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_info_producto);
 		
-		/* Prueba de recibir Producto */
 		p = this.getIntent().getExtras().getParcelable("Producto");
-		Toast.makeText(this, p.getNombre(), Toast.LENGTH_LONG).show();
-		/* ************************** */
+
         //setContentView(R.layout.note_edit);
         //setTitle(R.string.edit_note);
 		imagen = (ImageView) findViewById(R.id.image);

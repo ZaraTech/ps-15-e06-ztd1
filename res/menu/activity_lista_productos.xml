@@ -14,13 +14,5 @@
         android:orderInCategory="2"
         android:showAsAction="never"
         android:title="@string/menu_opcion_busqueda"/>
-    
-    
-    <!-- Envío de pedidos -->
-    <item
-        android:id="@+id/menu_opcion_envio"
-        android:orderInCategory="3"
-        android:showAsAction="never"
-        android:title="@string/menu_opcion_envio"/>
 
 </menu>

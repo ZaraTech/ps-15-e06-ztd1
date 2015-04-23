@@ -19,12 +19,16 @@
     <string name="img_producto">Esta es la imágen del producto.</string>
     
     
-	    <!-- Menú de la Lista de productos -->
+	    <!-- Menú de opciones de la Lista de productos -->
 	    
-	    <string name="menu_opcion_add">Añadir producto</string>
-	    <string name="menu_opcion_busqueda">Busqueda</string>
-	    <string name="menu_opcion_envio">Envío de producto</string>
-	    <string name="menu_opcion_info">Información de producto</string>
+	    <string name="menu_opcion_add">Añadir Producto</string>
+	    <string name="menu_opcion_busqueda">Búsqueda</string>
+	    
+	    
+        <!-- Menú contextual de la Lista de productos -->
+        
+        <string name="menu_opcion_editar">Editar Producto</string>
+        <string name="menu_opcion_eliminar">Eliminar Producto</string>
 	    
 	  
 	    

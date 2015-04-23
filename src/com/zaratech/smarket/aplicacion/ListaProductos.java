@@ -2,7 +2,6 @@ package com.zaratech.smarket.aplicacion;
 
 import java.util.ArrayList;
 
-import com.zaratech.smarket.componentes.Marca;
 import com.zaratech.smarket.componentes.Producto;
 import com.zaratech.smarket.utiles.AdaptadorBD;
 import com.zaratech.smarket.utiles.AdaptadorProductos;
@@ -11,12 +10,12 @@ import com.zaratech.smarket.R;
 import android.os.Bundle;
 import android.app.ListActivity;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 
 /**
@@ -32,11 +31,66 @@ public class ListaProductos extends ListActivity {
 	private int ultimaPosicion;
 
 	/**
-	 * Constante que hace referencia a la activity de informacion de Producto.
+	 * Constante que hace referencia a la activity InfoProducto.
 	 * Se usara para identificar de donde se vuelve (startActivityForResult)
 	 */
 	private final int ACTIVITY_INFO = 0;
 	
+	/**
+	 * Constante que hace referencia a la activity EdicionProducto.
+	 * Se usara para identificar de donde se vuelve (startActivityForResult)
+	 */
+	private final int ACTIVITY_EDICION = 1;
+	
+	/**
+	 * Constantes que hacen referencias a elementos del menu contextual
+	 */
+	private final int EDITAR_PRODUCTO = 0;
+	private final int ELIMINAR_PRODUCTO = 1;
+	
+	/**
+	 * Clave que identifica un Producto dentro del campo extras del Intent
+	 */
+	private final String EXTRA_PRODUCTO = "Producto";
+	
+	
+	private void cargarListado(){
+		
+		//Obtener BD
+		AdaptadorBD bd = new AdaptadorBD();
+		
+		
+		// Rellenar lista
+		ArrayList<Producto> productos = (ArrayList<Producto>) bd.obtenerProductos();
+		
+//
+//		// Obtener imagen
+//		Resources res = getBaseContext().getResources();
+//		int id = R.drawable.smarket; 
+//		Bitmap imagen = BitmapFactory.decodeResource(res, id);
+
+
+//		// PRUEBAS: ofertas e imagenes
+//		for (Producto p : productos) {
+//			
+//			
+//			if((int)(Math.random()*2.0) == 0){
+//				p.setOferta();
+//				p.setPrecioOferta(p.getPrecio() * 0.75);
+//			}
+//			
+//			p.setImagen(imagen);
+//		}
+		
+		AdaptadorProductos adaptador = new AdaptadorProductos(this, productos);
+
+		setListAdapter(adaptador);
+		
+		setSelection(ultimaPosicion - 2);
+	}
+	
+	
+	// INICIO de la aplicacion
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -44,63 +98,26 @@ public class ListaProductos extends ListActivity {
 		setContentView(R.layout.activity_lista_productos);
 
 		
-		/* ------------- EJEMPLO DE LLENADO DE LISTA ------------- */
+		cargarListado();
 		
-
-		// Obtener imagen
-		Resources res = getBaseContext().getResources();
-		int id = R.drawable.smarket; 
-		Bitmap imagen = BitmapFactory.decodeResource(res, id);
-		
-		//Obtener BD
-		AdaptadorBD bd = new AdaptadorBD();
-		
-		// PRUEBAS: bd
-		bd.crearMarca(new Marca("Samsung"));
-		Marca marcaSamsung = bd.obtenerMarca("Samsung");
-		
-		bd.crearProducto(new Producto("Galaxy S6", marcaSamsung, Producto.TIPO_SMARTPHONE, 678.0));
-
-		
-		// Rellenar lista
-		ArrayList<Producto> productos = (ArrayList<Producto>) bd.obtenerProductos();
-		
-		
-		
-		// PRUEBAS: ofertas e imagenes
-		for (Producto p : productos) {
-			
-			
-			if((int)(Math.random()*2.0) == 0){
-				p.setOferta();
-				p.setPrecioOferta(p.getPrecio() * 0.75);
-			}
-			
-			p.setImagen(imagen);
-		}
-		
-		AdaptadorProductos adaptador = new AdaptadorProductos(this, productos);
-
-		this.setListAdapter(adaptador);
-		
-		bd.close();
+		// Menu contextual
+		registerForContextMenu(getListView());
 	}
 	
-	
-	
+
+	// REANUDAR Activity
 	
 	@Override
-	/**
-	 * Se ejecuta al volver de otra Activity
-	 */
 	protected void onResume() {
 
 		super.onResume();
 		
-		setSelection(ultimaPosicion);
+		cargarListado();
 	}
 	
 
+	// CLICK en Producto del listado
+	
 	@Override
 	protected void onListItemClick(ListView l, View v, int posicion, long id) {
 		
@@ -111,15 +128,33 @@ public class ListaProductos extends ListActivity {
 		Intent i = new Intent(this, InfoProducto.class);
 		
 		// Añade Producto seleccionado
-		Producto p = (Producto) this.getListAdapter().getItem(posicion);
-		i.putExtra("Producto", p);
+		Producto p = (Producto) getListAdapter().getItem(posicion);
+		i.putExtra(EXTRA_PRODUCTO, p);
 
 		startActivityForResult(i, ACTIVITY_INFO);
 	}
 	
 	
+	// VUELTA de activity con RESULTADO
 	
-	/* MENU SUPERIOR */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		
+		super.onActivityResult(requestCode, resultCode, intent);
+		
+		// INFO
+		if (requestCode == ACTIVITY_INFO){
+			
+		}
+		// EDICION
+		else if (requestCode == ACTIVITY_EDICION) {
+			
+		}
+
+	}	
+	
+	
+	// MENU DE OPCIONES
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -131,22 +166,81 @@ public class ListaProductos extends ListActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		
-	    switch (item.getItemId()) {
-	    
-	        case R.id.menu_opcion_add:
-	        	startActivity(new Intent(this, InsertModificationProduct.class));
-	            return true;
-	            
-	        case R.id.menu_opcion_busqueda:
-	        	startActivity(new Intent(this, Busqueda.class));
-	            return true;
-	            
-	        case R.id.menu_opcion_envio:
-	        	startActivity(new Intent(this, EnvioPedido.class));
-	            return true;
-	            
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
+		int id = item.getItemId();
+		
+		// AÑADIR
+		if (id == R.id.menu_opcion_add) {
+			
+			Intent i = new Intent(this, InsertModificationProduct.class);
+			startActivityForResult(i, ACTIVITY_EDICION);
+			return true;
+			
+		// BUSCAR	
+		} else if (id == R.id.menu_opcion_busqueda) {
+			
+			startActivity(new Intent(this, Busqueda.class));
+			return true;
+			
+		// ???	
+		} else {
+			
+			return super.onOptionsItemSelected(item);
+		}
 	}
+	
+	
+	// MENU CONTEXTUAL
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		
+		super.onCreateContextMenu(menu, v, menuInfo);
+		
+		menu.add(0, EDITAR_PRODUCTO, 0, R.string.menu_opcion_editar );
+		menu.add(1, ELIMINAR_PRODUCTO, 1, R.string.menu_opcion_eliminar );
+		
+
+	}
+
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+
+		AdapterContextMenuInfo info = null;
+		
+		AdaptadorBD bd = new AdaptadorBD();
+		
+
+		// Identifica el Producto seleccionado
+		info = (AdapterContextMenuInfo) item.getMenuInfo();
+		Producto p = (Producto) getListAdapter().getItem(info.position);
+		
+		// Guarda posicion
+		ultimaPosicion = info.position;
+
+		
+		// EDITAR
+		if(item.getItemId() == EDITAR_PRODUCTO) {
+
+			Intent i = new Intent(this, InsertModificationProduct.class);
+			
+			// Añade Producto seleccionado
+			i.putExtra(EXTRA_PRODUCTO, p);
+			
+			startActivityForResult(i, ACTIVITY_EDICION);
+			
+			cargarListado();
+		
+		// ELIMINAR
+		} else if(item.getItemId() == ELIMINAR_PRODUCTO) {
+			
+			bd.borrarProducto(p.getId());
+			
+			cargarListado();
+		}
+
+		return super.onContextItemSelected(item);
+
+	}
+
 }

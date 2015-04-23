@@ -3,6 +3,7 @@ package com.zaratech.smarket.aplicacion;
 import com.zaratech.smarket.R;
 import com.zaratech.smarket.componentes.Producto;
 import com.zaratech.smarket.utiles.AdaptadorBD;
+import com.zaratech.smarket.utiles.EnviarMail;
 
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +16,7 @@ import android.app.Activity;
 import android.graphics.Paint;
 
 public class EnvioPedido extends Activity {
-	
+
 	/*
 	 * Variables asociadas a los campos del layout
 	 */
@@ -27,15 +28,15 @@ public class EnvioPedido extends Activity {
 	private TextView mSistemaOperativo;
 	private EditText mIdPedidoCliente;
 	private ImageView mImagenProducto;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_envio_pedido);
-		
+
 		Producto pPrueba = getIntent().getExtras().getParcelable("Producto");
-		
+
 		mNombreProducto = (TextView)findViewById(R.id.Nombre);
 		mMarcaProducto = (TextView)findViewById(R.id.Marca);
 		mTipoProducto = (TextView)findViewById(R.id.Tipo);
@@ -44,9 +45,9 @@ public class EnvioPedido extends Activity {
 		mPrecioOfertaProducto = (TextView)findViewById(R.id.Precio_oferta);
 		mIdPedidoCliente = (EditText)findViewById(R.id.PedidoCliente);
 		mImagenProducto = (ImageView) findViewById(R.id.Imagen);
-		
+
 		Button botonEnviar = (Button) findViewById(R.id.Enviar);
-		
+
 		mNombreProducto.setText(pPrueba.getNombre());
 		mMarcaProducto.setText(pPrueba.getMarca().getNombre());
 		mTipoProducto.setText(AdaptadorBD.obtenerTipo(pPrueba.getTipo()));
@@ -54,41 +55,41 @@ public class EnvioPedido extends Activity {
 				pPrueba.getSistemaOperativo()));
 		mPrecioProducto.setText(String.format("%.2f %s", pPrueba.getPrecio(),
 				getString(R.string.ud_monetaria)));
-		
+
 		if (pPrueba.isOferta()) {
 			mPrecioProducto.setPaintFlags(mPrecioProducto.getPaintFlags()
 					| Paint.STRIKE_THRU_TEXT_FLAG);
 
 			mPrecioOfertaProducto.setText(String.format("%.2f %s",
-							pPrueba.getPrecioOferta(),
-							getString(R.string.ud_monetaria)));
+					pPrueba.getPrecioOferta(),
+					getString(R.string.ud_monetaria)));
 		}
-		
+
 		if(pPrueba.getImagen() != null){
 			mImagenProducto.setImageBitmap(pPrueba.getImagen());
 		}	
-		
-		
+
+
 		botonEnviar.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
-				
+
 				// Enviar email
 				String idPedido = mIdPedidoCliente.getText().toString();
 
 				if (!idPedido.isEmpty()) {
-					
+
 					// Ejecuta el envio en 2o plano
 					EnviarMail em = new EnviarMail(EnvioPedido.this);
 					em.execute(idPedido);
-					
-					
+
+
 				} else {
 					Toast.makeText(getBaseContext(), R.string.pedido_envio_error,
 							Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
-		
+
 	}
 }

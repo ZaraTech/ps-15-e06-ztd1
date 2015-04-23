@@ -1,4 +1,4 @@
-package com.zaratech.smarket.aplicacion;
+package com.zaratech.smarket.utiles;
 
 import java.util.Properties;
 
@@ -9,6 +9,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import com.zaratech.smarket.R;
+import com.zaratech.smarket.aplicacion.ListaProductos;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -29,11 +30,11 @@ public class EnviarMail extends AsyncTask<String, Object, Object> {
 	 * Activity que realiza la peticion de envio.
 	 */
 	private Activity enviarMailActivity;
-	
+
 	/*
 	 * Datos a incluir en el correo
 	 */
-	private final String DESTINATARIO = "make_the_king@hotmail.com";
+	private final String DESTINATARIO = "smarket.zaratech@gmail.com";
 	private final String ASUNTO_MSJ = "[SMARKET] Orden de pedido - ";
 	private final String TEXTO_MSJ = "Texto de la orden de pedido...";
 
@@ -61,7 +62,7 @@ public class EnviarMail extends AsyncTask<String, Object, Object> {
 	 */
 	public EnviarMail(Activity activity) {
 		enviarMailActivity = activity;
-		
+
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.host", "smtp.gmail.com");
@@ -85,14 +86,14 @@ public class EnviarMail extends AsyncTask<String, Object, Object> {
 		estado.setMessage(values[0].toString());
 
 	}
-	
+
 	@Override
 	public void onPostExecute(Object result) {
 		estado.dismiss();
-		
+
 		AlertDialog.Builder b = new AlertDialog.Builder(enviarMailActivity);
 		String resultado = (String)result;
-		
+
 		if (resultado.compareTo(ENVIO_OK) == 0) {
 
 			b.setTitle(enviarMailActivity
@@ -127,11 +128,11 @@ public class EnviarMail extends AsyncTask<String, Object, Object> {
 					});
 
 		}
-		
+
 		AlertDialog a = b.create();
 		a.show();
 	}
-	
+
 	protected String doInBackground(String... idPedidoCliente) {
 		try {			
 			Session s = Session.getInstance(props);
@@ -149,12 +150,12 @@ public class EnviarMail extends AsyncTask<String, Object, Object> {
 			t.sendMessage(message, message.getAllRecipients());	
 
 			Log.i("Smarket_EnviarMail", "Correo enviado!");
-			
+
 			return ENVIO_OK;
 
 		} catch (Exception e) {
 			Log.e("Smarket_EnviarMail_Exception", e.getMessage());
-			
+
 			return ENVIO_KO;
 		}
 	}

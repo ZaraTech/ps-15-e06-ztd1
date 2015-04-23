@@ -91,16 +91,16 @@ public class EnviarMail extends AsyncTask<String, Object, Object> {
 	public void onPostExecute(Object result) {
 		estado.dismiss();
 
-		AlertDialog.Builder b = new AlertDialog.Builder(enviarMailActivity);
+		AlertDialog.Builder constructor = new AlertDialog.Builder(enviarMailActivity);
 		String resultado = (String)result;
 
 		if (resultado.compareTo(ENVIO_OK) == 0) {
 
-			b.setTitle(enviarMailActivity
+			constructor.setTitle(enviarMailActivity
 					.getString(R.string.pedido_envio_exito));
-			b.setMessage(String.format("\n%s\n",
+			constructor.setMessage(String.format("\n%s\n",
 					enviarMailActivity.getString(R.string.pedido_enviado)));
-			b.setNeutralButton(
+			constructor.setNeutralButton(
 					enviarMailActivity.getString(R.string.boton_aceptar),
 					new DialogInterface.OnClickListener() {
 
@@ -114,11 +114,11 @@ public class EnviarMail extends AsyncTask<String, Object, Object> {
 
 		} else {
 
-			b.setTitle(enviarMailActivity
+			constructor.setTitle(enviarMailActivity
 					.getString(R.string.pedido_envio_error));
-			b.setMessage(String.format("\n%s\n",
+			constructor.setMessage(String.format("\n%s\n",
 					enviarMailActivity.getString(R.string.pedido_no_enviado)));
-			b.setNeutralButton(
+			constructor.setNeutralButton(
 					enviarMailActivity.getString(R.string.boton_aceptar),
 					new DialogInterface.OnClickListener() {
 
@@ -129,15 +129,16 @@ public class EnviarMail extends AsyncTask<String, Object, Object> {
 
 		}
 
-		AlertDialog a = b.create();
-		a.show();
+		// Muestra el mensaje de alerta
+		AlertDialog alerta = constructor.create();
+		alerta.show();
 	}
 
 	protected String doInBackground(String... idPedidoCliente) {
 		try {			
-			Session s = Session.getInstance(props);
-			Transport t = s.getTransport("smtp");
-			Message message = new MimeMessage(s);
+			Session sesion = Session.getInstance(props);
+			Transport t = sesion.getTransport("smtp");
+			Message message = new MimeMessage(sesion);
 
 			message.setFrom(new InternetAddress(DIRECCION_ORIGEN));
 			message.setContent(TEXTO_MSJ, "text/html");

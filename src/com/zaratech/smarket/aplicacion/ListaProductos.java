@@ -57,7 +57,7 @@ public class ListaProductos extends ListActivity {
 	private void cargarListado(){
 		
 		//Obtener BD
-		AdaptadorBD bd = new AdaptadorBD();
+		AdaptadorBD bd = new AdaptadorBD(this);
 		
 		
 		// Rellenar lista
@@ -189,7 +189,7 @@ public class ListaProductos extends ListActivity {
 
 		AdapterContextMenuInfo info = null;
 		
-		AdaptadorBD bd = new AdaptadorBD();
+		AdaptadorBD bd = new AdaptadorBD(this);
 		
 
 		// Identifica el Producto seleccionado

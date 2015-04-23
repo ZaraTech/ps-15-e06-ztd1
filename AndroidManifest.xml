@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="0.0.49" package="com.zaratech.smarket">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="0.0.56" package="com.zaratech.smarket">
 
     <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="22"/>
 
@@ -11,7 +11,7 @@
 
         <!-- Listado de productos -->
 
-        <activity android:name="com.zaratech.smarket.aplicacion.ListaProductos" android:launchMode="singleTask">
+        <activity android:launchMode="singleTask" android:name="com.zaratech.smarket.aplicacion.ListaProductos">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

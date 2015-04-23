@@ -3,6 +3,7 @@ package com.zaratech.smarket.utiles;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.zaratech.smarket.componentes.Marca;
@@ -24,11 +25,11 @@ public class AdaptadorBD implements InterfazBD {
 	/**
 	 * Constructor 
 	 */
-	public AdaptadorBD(){
+	public AdaptadorBD(Context ctx){
 		
 		if(bd == null){
 			bd = new BD();
-			bd.open();
+			bd.open(ctx);
 		}
 	}
 	
@@ -127,18 +128,25 @@ public class AdaptadorBD implements InterfazBD {
 		for(Producto p: bd.getTabla_productos()){
 			
 			if(p.getId() == producto.getId()){
-								
-				p.setNombre(new String(producto.getNombre()));
+					
+				if(producto.getNombre() != null){
+					p.setNombre(new String(producto.getNombre()));
+				}
 				p.setTipo(producto.getTipo());
 				p.setMarca(producto.getMarca().clonar());
 				p.setDimensionPantalla(producto.getDimensionPantalla());
 				p.setSistemaOperativo(producto.getSistemaOperativo());
 				p.setPrecio(producto.getPrecio());
-				p.setDescripcion(new String(producto.getDescripcion()));
 				
+				if(producto.getDescripcion() != null){
+					p.setDescripcion(new String(producto.getDescripcion()));
+				}
+						
 				Bitmap imagen = producto.getImagen();
-				Bitmap nuevaImagen = imagen.copy(imagen.getConfig(), true);
-				p.setImagen(nuevaImagen);
+				if(imagen != null){
+					Bitmap nuevaImagen = imagen.copy(imagen.getConfig(), true);
+					p.setImagen(nuevaImagen);
+				}
 				
 				if(producto.isOferta()){
 					p.setOferta();

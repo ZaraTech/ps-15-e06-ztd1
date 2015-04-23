@@ -3,6 +3,12 @@ package com.zaratech.smarket.utiles;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import com.zaratech.smarket.R;
 import com.zaratech.smarket.componentes.Marca;
 import com.zaratech.smarket.componentes.Producto;
 
@@ -30,13 +36,18 @@ public class BD {
      * Tabla de marcas 
      */
     private List<Marca> tabla_marcas = new ArrayList<Marca>();
-    
-    
+        
     /**
      * Metodo que conecta con la base de datos (en este caso se rellena una 
      * base de datos simulada).
      */
-    public void open(){
+    public void open(Context ctx){
+    	
+    	/* Obtener imagen */ 
+    	
+    	Resources res = ctx.getResources();
+    	int id = R.drawable.smarket; 
+    	Bitmap imagen = BitmapFactory.decodeResource(res, id);
     	
     	/* Rellena tabla de marcas */
     	
@@ -56,11 +67,20 @@ public class BD {
     		int tipo = (int)(Math.random()*2.0);
     		double precio = Math.random()*300+50;
     		Producto p = new Producto("Producto " + i, tabla_marcas.get(marca), tipo, precio);
+    		
     		p.setId(i);
+    		p.setImagen(imagen);
+    		
+    		if((int)(Math.random()*2.0) == 0){
+    			p.setOferta();
+    			p.setPrecioOferta(p.getPrecio() * 0.75);
+    		}
+    		
     		contadorProductos++;
     		
     		tabla_productos.add(p);
     	}
+    	
     }
     
     /**

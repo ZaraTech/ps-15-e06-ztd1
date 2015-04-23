@@ -64,7 +64,7 @@ public class InsertModificationProduct extends Activity {
 		/*
 		 * Inicializamos la BD
 		 */
-		bd = new AdaptadorBD();
+		bd = new AdaptadorBD(this);
 
 		/*
 		 * Carga de imagenes

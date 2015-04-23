@@ -10,6 +10,10 @@
     <!-- General -->
     
     <string name="ud_monetaria">€</string>
+    <string name="tipo">Tipo</string>
+    <string name="descripcion">Descripción</string>
+    <string name="precio">Precio</string>
+    <string name="producto">Producto</string>
 
     
     
@@ -42,9 +46,16 @@
     
     <string name="titulo_activity_envio_pedido">Envío de Pedido</string>
     <string name="pedido">Inserte un nombre para identificar su pedido:</string>
-    <string name="producto">Producto</string>
     
-    <string name="boton_enviar">Enviar</string>
+    <string name="boton_enviar">Enviar pedido</string>
+    <string name="boton_aceptar">Vale</string>
+    
+    <string name="pedido_preparar">Preparando pedido...</string>
+    <string name="pedido_enviar">Enviando pedido...</string>
+    <string name="pedido_envio_exito">Enhorabuena</string>
+    <string name="pedido_envio_error">Error</string>
+    <string name="pedido_enviado">Pedido enviado!</string>
+    <string name="pedido_no_enviado">Pedido NO enviado</string>
     
     
     

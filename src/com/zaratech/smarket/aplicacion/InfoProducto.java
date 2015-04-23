@@ -29,13 +29,18 @@ public class InfoProducto extends Activity {
 	
     private Producto p;
     
+	/**
+	 * Clave que identifica un Producto dentro del campo extras del Intent
+	 */
+	private final String EXTRA_PRODUCTO = "Producto";
+    
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_info_producto);
 		
-		p = this.getIntent().getExtras().getParcelable("Producto");
+		p = this.getIntent().getExtras().getParcelable(EXTRA_PRODUCTO);
 
         //setContentView(R.layout.note_edit);
         //setTitle(R.string.edit_note);

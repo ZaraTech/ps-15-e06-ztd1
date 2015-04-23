@@ -40,7 +40,12 @@ import android.widget.Toast;
 
 public class InsertModificationProduct extends Activity {
 
+	/**
+	 * Clave que identifica un Producto dentro del campo extras del Intent
+	 */
 	private static final String EXTRA_PRODUCTO = "Producto";
+	
+	
 	private static final int RESULT_LOAD_IMAGE = 1;
 	private static final int RESULT_IMAGE_CAPTURE = 2;
 	private static final int RESULT_PIC_CROP = 3;

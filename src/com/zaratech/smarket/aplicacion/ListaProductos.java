@@ -63,25 +63,6 @@ public class ListaProductos extends ListActivity {
 		// Rellenar lista
 		ArrayList<Producto> productos = (ArrayList<Producto>) bd.obtenerProductos();
 		
-//
-//		// Obtener imagen
-//		Resources res = getBaseContext().getResources();
-//		int id = R.drawable.smarket; 
-//		Bitmap imagen = BitmapFactory.decodeResource(res, id);
-
-
-//		// PRUEBAS: ofertas e imagenes
-//		for (Producto p : productos) {
-//			
-//			
-//			if((int)(Math.random()*2.0) == 0){
-//				p.setOferta();
-//				p.setPrecioOferta(p.getPrecio() * 0.75);
-//			}
-//			
-//			p.setImagen(imagen);
-//		}
-		
 		AdaptadorProductos adaptador = new AdaptadorProductos(this, productos);
 
 		setListAdapter(adaptador);

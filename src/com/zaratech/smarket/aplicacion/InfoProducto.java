@@ -78,7 +78,7 @@ public class InfoProducto extends Activity {
             	i.putExtra("source", "noteEdit");
         		
         		// Añade Producto recibido
-        		i.putExtra("Producto", p);
+        		i.putExtra(EXTRA_PRODUCTO, p);
 
         		startActivity(i);
             }

@@ -10,7 +10,7 @@
 
         <!-- Listado de productos -->
 
-        <activity android:name="com.zaratech.smarket.aplicacion.ListaProductos">
+        <activity android:name="com.zaratech.smarket.aplicacion.ListaProductos" android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

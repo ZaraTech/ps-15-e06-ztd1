@@ -17,6 +17,7 @@ import android.graphics.Paint;
 
 public class InfoProducto extends Activity {
 
+	private TextView tipoText;
 	private ImageView imagen;
 	private TextView nombreText;
     private TextView descripcionText;
@@ -44,6 +45,7 @@ public class InfoProducto extends Activity {
 
         //setContentView(R.layout.note_edit);
         //setTitle(R.string.edit_note);
+		tipoText = (TextView) findViewById(R.id.tipo_text);
 		imagen = (ImageView) findViewById(R.id.image);
 	    nombreText = (TextView) findViewById(R.id.name_text);
 	    descripcionText = (TextView) findViewById(R.id.description_text);
@@ -55,11 +57,10 @@ public class InfoProducto extends Activity {
 	    comprarButt = (Button) findViewById(R.id.buy_button);
 	    
 	    // Rellenado de campos
+	    tipoText.setText(AdaptadorBD.obtenerTipo(p.getTipo()));
 	    imagen.setImageBitmap(p.getImagen());
 	    nombreText.setText (p.getNombre());
-	    String descripcion_prueba = "Este teléfono es muy bueno, el mejor del mercado en calidad/precio";
-	    //descripcionText.setText (p.getDescripcion());
-	    descripcionText.setText (descripcion_prueba);
+	    descripcionText.setText (p.getDescripcion());
 	    marcaText.setText (p.getMarca().getNombre());
 	    pantallaText.setText (String.format("%.2f %s", p.getDimensionPantalla(), getString(R.string.ud_pantalla)));
 	    sistemaOpText.setText (AdaptadorBD.obtenerSistemaOperativo(p.getSistemaOperativo()));

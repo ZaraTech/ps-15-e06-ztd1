@@ -68,35 +68,32 @@
     <!-- Inserción/modificación de productos -->
     
     <string name="titulo_activity_insert_modification_product">Edición de Producto</string>
-    <string name="description_photo">Foto del producto</string>
-    <string name="gallery">Galería</string>
-    <string name="photo">Foto</string>
-    <string name="name_product">Nombre</string>
-    <string name="type">Tipo</string>
-    <string name="type_smartphone">Smartphone</string>
-    <string name="type_tablet">Tablet</string>
-    <string name="description">Descripción</string>
-    <string name="screen">Pantalla</string>
-    <string name="inches">Pulgadas</string>
-    <string name="price">Precio</string>
-    <string name="UINCH">\"</string>
+    <string name="descripcion_foto">Foto del producto</string>
+    <string name="galeria">Galería</string>
+    <string name="foto">Foto</string>
+    <string name="nombre_producto">Nombre</string>
+    <string name="tipo_smartphone">Smartphone</string>
+    <string name="tipo_tablet">Tablet</string>
+    <string name="pantalla">Pantalla</string>
+    <string name="pulgadas">Pulgadas</string>
+    <string name="ud_pantalla">\"</string>
     
-    <string name="buy">Comprar</string>
-    <string name="systems_operative_prompt">Sistema operativo</string>
+    <string name="comprar">Comprar</string>
+    <string name="sistema_operativo_prompt">Sistema operativo</string>
 
-    <string-array name="systems_operative">
+    <string-array name="sistemas_operativos">
         <item>Android</item>
         <item>Windows Phone</item>
         <item>IOS</item>
     </string-array>
 
-    <string name="brand_prompt">Marca</string>
+    <string name="marca_prompt">Marca</string>
 
-    <string-array name="brand"></string-array>
+    <string-array name="marca"></string-array>
 
-    <string name="create_brand">Crear</string>
-    <string name="remove_brand">Eliminar</string>
-    <string name="discount">Oferta</string>
-    <string name="save">Guardar</string>
+    <string name="crear_marca">Crear</string>
+    <string name="eliminar_marca">Eliminar</string>
+    <string name="oferta">Oferta</string>
+    <string name="guardar">Guardar</string>
 
 </resources>

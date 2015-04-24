@@ -61,7 +61,7 @@ public class InfoProducto extends Activity {
 	    //descripcionText.setText (p.getDescripcion());
 	    descripcionText.setText (descripcion_prueba);
 	    marcaText.setText (p.getMarca().getNombre());
-	    pantallaText.setText (String.format("%.2f %s", p.getDimensionPantalla(), getString(R.string.UINCH)));
+	    pantallaText.setText (String.format("%.2f %s", p.getDimensionPantalla(), getString(R.string.ud_pantalla)));
 	    sistemaOpText.setText (AdaptadorBD.obtenerSistemaOperativo(p.getSistemaOperativo()));
 	    precioText.setText (String.format("%.2f %s", p.getPrecio(), getString(R.string.ud_monetaria)));
 	    

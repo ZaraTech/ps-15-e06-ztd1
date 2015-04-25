@@ -51,7 +51,7 @@ public class AdaptadorProductos extends ArrayAdapter<Producto> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
 		// Obtiene el simbolo de la unidad monetaria a usar
-		String ud_monetaria = context.getString(R.string.ud_monetaria);
+		String ud_monetaria = context.getString(R.string.udMonetaria);
 		
 		// Obtener el producto correspondiente
 		Producto producto = getItem(position);

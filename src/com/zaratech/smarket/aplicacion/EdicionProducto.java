@@ -6,6 +6,7 @@ import java.util.List;
 import com.zaratech.smarket.componentes.Marca;
 import com.zaratech.smarket.componentes.Producto;
 import com.zaratech.smarket.utiles.AdaptadorBD;
+import com.zaratech.smarket.utiles.EditTextSimboloFinal;
 import com.zaratech.smarket.R;
 
 import android.app.Activity;
@@ -19,10 +20,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.Selection;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -37,103 +35,117 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class InsertModificationProduct extends Activity {
+/**
+ * Activity que gestiona la edición e inserción de productos
+ * 
+ * @author Cristian Romám Morte
+ */
+public class EdicionProducto extends Activity {
 
-	/**
-	 * Clave que identifica un Producto dentro del campo extras del Intent
-	 */
-	private static final String EXTRA_PRODUCTO = "Producto";
+	/** Clave que identifica un Producto dentro del campo extras del Intent */
+	public static final String EXTRA_PRODUCTO = "Producto";
 
-	private static final int RESULT_LOAD_IMAGE = 1;
-	private static final int RESULT_IMAGE_CAPTURE = 2;
-	private static final int RESULT_PIC_CROP = 3;
-	private Spinner brands;
-	private int ID;
-	private AdaptadorBD bd;
+	// Id asignado a cada activity que se inicia
+	private static final int ACTIVITY_GALERIA = 1;
+	private static final int ACTIVITY_CAMARA = 2;
+	private static final int ACTIVITY_RECORTAR = 3;
+
+	// Spinner y lista de marcas
+	private Spinner spinnerMarcas;
 	private List<Marca> marcas;
 
+	// Id del producto
+	private int ID;
+
+	// Base de datos
+	private AdaptadorBD bd;
+
+	/*
+	 * Inicialización de la activity
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_insert_modification_product);
+		setContentView(R.layout.activity_edicion_producto);
 
 		/*
-		 * Inicializamos la BD
+		 * Inicialización la BD
 		 */
 		bd = new AdaptadorBD(this);
 
 		/*
 		 * Carga de imagenes
 		 */
-		Button take = (Button) findViewById(R.id.AIMPTakePhoto); // Desde camara
-		take.setOnClickListener(new OnClickListener() {
+		Button camara = (Button) findViewById(R.id.EDICION_CAMARA); // Desde
+																	// camara
+		camara.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
 				Intent takePictureIntent = new Intent(
 						MediaStore.ACTION_IMAGE_CAPTURE);
 				if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-					startActivityForResult(takePictureIntent,
-							RESULT_IMAGE_CAPTURE);
+					startActivityForResult(takePictureIntent, ACTIVITY_CAMARA);
 				}
 			}
 		});
-		Button open = (Button) findViewById(R.id.AIMPGallery); // Desde galeria
-		open.setOnClickListener(new OnClickListener() {
+		Button galeria = (Button) findViewById(R.id.EDICION_GALERIA); // Desde
+																		// galeria
+		galeria.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
 				Intent i = new Intent(
 						Intent.ACTION_PICK,
 						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-				startActivityForResult(i, RESULT_LOAD_IMAGE);
+				startActivityForResult(i, ACTIVITY_GALERIA);
 			}
 		});
 
 		/*
 		 * Descuentos
 		 */
-		CheckBox txtbox1 = (CheckBox) findViewById(R.id.AIMPDiscountBox);
-		final EditText discount = (EditText) findViewById(R.id.AIMPDiscountNum);
-		txtbox1.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		CheckBox desctuentos = (CheckBox) findViewById(R.id.EDICION_DESCUENTO);
+		final EditText descuentosEdit = (EditText) findViewById(R.id.EDICION_DESCUENTO_PRECIO);
+		desctuentos.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
-				discount.setEnabled(isChecked);
+				descuentosEdit.setEnabled(isChecked);
 			}
 		});
 
 		/*
-		 * Simbolos de editTexts
+		 * Simbolos de editTexts (UM y pulgadas)
 		 */
-		EditText pixel = (EditText) findViewById(R.id.AIMPInchesEdit);
-		pixel.addTextChangedListener(new lastSimbol(pixel,
-				getString(R.string.ud_pantalla)));
+		EditText pixel = (EditText) findViewById(R.id.EDICION_PULGADAS);
+		pixel.addTextChangedListener(new EditTextSimboloFinal(pixel,
+				getString(R.string.udPantalla)));
 
-		EditText price = (EditText) findViewById(R.id.AIMPPriceEdit);
-		price.addTextChangedListener(new lastSimbol(price,
-				getString(R.string.ud_monetaria)));
+		EditText price = (EditText) findViewById(R.id.EDICION_PRECIO);
+		price.addTextChangedListener(new EditTextSimboloFinal(price,
+				getString(R.string.udMonetaria)));
 
-		discount.addTextChangedListener(new lastSimbol(discount,
-				getString(R.string.ud_monetaria)));
+		descuentosEdit.addTextChangedListener(new EditTextSimboloFinal(
+				descuentosEdit, getString(R.string.udMonetaria)));
 
 		/*
 		 * Marcas
 		 */
-		brands = (Spinner) findViewById(R.id.AIMPBrandSpinner);
-		Button CreateBrand = (Button) findViewById(R.id.AIMPBrandCreate);
-		updateSpinner();
+		spinnerMarcas = (Spinner) findViewById(R.id.EDICION_MARCA);
+		Button crearMarca = (Button) findViewById(R.id.EDICION_CREAR_MARCA);
+		actualizaSpinner();
 
-		CreateBrand.setOnClickListener(new OnClickListener() {
+		crearMarca.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				createDialog().show();
+				mostrarDialogoCreacionMarcas().show();
 			}
 		});
-		Button RemoveBrand = (Button) findViewById(R.id.AIMPBrandDelete);
-		RemoveBrand.setOnClickListener(new OnClickListener() {
+		Button eliminarMarca = (Button) findViewById(R.id.EDICION_ELIMINAR_MARCA);
+		eliminarMarca.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				if (getBrandSelectedString() != null) {
-					bd.borrarMarca(getBrandSelected().getId());
-					updateSpinner();
+				if (getMarcaSelecionadaString() != null) {
+					bd.borrarMarca(getMarcaSelecionada().getId());
+					actualizaSpinner();
 				}
 			}
 		});
@@ -141,11 +153,11 @@ public class InsertModificationProduct extends Activity {
 		/*
 		 * Guardar
 		 */
-		Button save = (Button) findViewById(R.id.AIMPSave);
-		save.setOnClickListener(new OnClickListener() {
+		Button guardar = (Button) findViewById(R.id.EDICION_GUARDAR);
+		guardar.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				Producto p = Formulario2Producto();
+				Producto p = formularioAProducto();
 				if (p != null) {
 					if (ID == -1) { // Producto nuevo
 						bd.crearProducto(p);
@@ -158,14 +170,14 @@ public class InsertModificationProduct extends Activity {
 		});
 
 		/*
-		 * Recuperar producto
+		 * Comprueba si se ha recibido un producto y en tal caso rellena el
+		 * formulario con él
 		 */
-
 		if (getIntent().getExtras() != null
 				&& getIntent().getExtras().containsKey(EXTRA_PRODUCTO)) {
 			Producto p = this.getIntent().getExtras()
 					.getParcelable(EXTRA_PRODUCTO);
-			Producto2Formulario(p);
+			productoAFormulario(p);
 		} else {
 			ID = -1;
 		}
@@ -175,28 +187,33 @@ public class InsertModificationProduct extends Activity {
 	/*
 	 * Creacion de dialogo de adiccion de marcas
 	 */
-	private AlertDialog.Builder createDialog() {
+	private AlertDialog.Builder mostrarDialogoCreacionMarcas() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		final EditText input = new EditText(this);
-		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+
+		LinearLayout.LayoutParams layout = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.MATCH_PARENT,
 				LinearLayout.LayoutParams.MATCH_PARENT);
-		input.setLayoutParams(lp);
-		input.setInputType(InputType.TYPE_CLASS_TEXT);
-		builder.setView(input);
+		final EditText texto = new EditText(this);
+
+		texto.setLayoutParams(layout);
+		texto.setInputType(InputType.TYPE_CLASS_TEXT);
+		builder.setView(texto);
+
 		builder.setPositiveButton("Crear",
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-						String s = input.getText() == null ? null : input
+						String s = texto.getText() == null ? null : texto
 								.getText().toString();
 						if (s != null) {
-							bd.crearMarca(new Marca(s));
-							updateSpinner();
-							selectBrand(s);
+							Marca m = new Marca(s);
+							bd.crearMarca(m);
+							actualizaSpinner();
+							selecionarMarca(m);
 						}
-						input.setText("");
+						texto.setText("");
 					}
 				});
+
 		builder.setNegativeButton("Cancelar",
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
@@ -216,21 +233,21 @@ public class InsertModificationProduct extends Activity {
 		if (resultCode == RESULT_CANCELED) { // Accion cancelada
 			return;
 		}
-		if (requestCode == RESULT_LOAD_IMAGE) {// Resultado de la galeria
+		if (requestCode == ACTIVITY_GALERIA) {// Resultado de la galeria
 			Uri selectedImage = data.getData();
 			obtenerImagenRecortada(selectedImage);
 
-		} else if (requestCode == RESULT_IMAGE_CAPTURE) {// Resultado de la
-															// camara
+		} else if (requestCode == ACTIVITY_CAMARA) {// Resultado de la
+													// camara
 			Bundle extras = data.getExtras();
 			Bitmap imageBitmap = (Bitmap) extras.get("data");
 			obtenerImagenRecortada(imageBitmap);
 
-		} else if (requestCode == RESULT_PIC_CROP) {// Resultado de recortar la
-													// imagen
+		} else if (requestCode == ACTIVITY_RECORTAR) {// Resultado de recortar
+														// la imagen
 			Bundle extras = data.getExtras();
 			Bitmap selectedBitmap = extras.getParcelable("data");
-			ImageView image = (ImageView) findViewById(R.id.AIMPProductImage);
+			ImageView image = (ImageView) findViewById(R.id.EDICION_IMAGEN);
 			image.setImageBitmap(selectedBitmap);
 		}
 	}
@@ -253,114 +270,114 @@ public class InsertModificationProduct extends Activity {
 			Intent cropIntent = new Intent("com.android.camera.action.CROP");
 			cropIntent.setDataAndType(picUri, "image/*"); // Imagen que se desea
 															// modificar
-			cropIntent.putExtra("crop", "false");
 
 			// Proporcion 1:1
 			cropIntent.putExtra("aspectX", 1);
 			cropIntent.putExtra("aspectY", 1);
 			cropIntent.putExtra("return-data", true);
-			startActivityForResult(cropIntent, RESULT_PIC_CROP);
+			startActivityForResult(cropIntent, ACTIVITY_RECORTAR);
 
 		} catch (ActivityNotFoundException anfe) { // El dispositivo no tiene
 													// ninguna aplicacion
 													// para recortar la imagen
-			String errorMessage = "Su dispositivo no soporta la acción de recortar :(";
+			String errorMessage = getString(R.string.errorRecortarNoDisponible);
 			Toast toast = Toast
 					.makeText(this, errorMessage, Toast.LENGTH_SHORT);
 			toast.show();
 		}
 	}
 
-	/*
+	/**
 	 * Obtiene los datos del formulario y devuelve un producto
+	 * 
+	 * @return Producto con los datos del formulario
 	 */
-	public Producto Formulario2Producto() {
+	public Producto formularioAProducto() {
+
 		// Imagen
-		ImageView image = (ImageView) findViewById(R.id.AIMPProductImage);
+		ImageView image = (ImageView) findViewById(R.id.EDICION_IMAGEN);
 		Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
 
 		// Nombre
-		EditText nombreEdit = (EditText) findViewById(R.id.AIMPNameEdit);
+		EditText nombreEdit = (EditText) findViewById(R.id.EDICION_NOMBRE);
 		if (nombreEdit.getText() == null
 				|| nombreEdit.getText().toString().length() == 0) {
-			Toast.makeText(this, "No se ha completado el campo del nombre",
+			Toast.makeText(this, getString(R.string.errorNombreVacio),
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
 
 		// Tipo
-		RadioButton smartphoneEdit = (RadioButton) findViewById(R.id.AIMPSmartphone);
-		RadioButton tabletEdit = (RadioButton) findViewById(R.id.AIMPTablet);
+		RadioButton smartphoneEdit = (RadioButton) findViewById(R.id.EDICION_SMARTPHONE);
+		RadioButton tabletEdit = (RadioButton) findViewById(R.id.EDICION_TABLET);
 		int tipo;
 		if (smartphoneEdit.isChecked()) {
 			tipo = Producto.TIPO_SMARTPHONE;
 		} else if (tabletEdit.isChecked()) {
 			tipo = Producto.TIPO_TABLET;
 		} else {
-			Toast.makeText(this, "No se ha selecionado un tipo",
+			Toast.makeText(this, getString(R.string.errorTipoVacio),
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
 
 		// Descripcion
-		EditText descripcionEdit = (EditText) findViewById(R.id.AIMPDescriptionEdit);
+		EditText descripcionEdit = (EditText) findViewById(R.id.EDICION_DESCRIPCION);
 		if (descripcionEdit.getText() == null) {
-			Toast.makeText(this,
-					"No se ha completado el campo de la descripción",
+			Toast.makeText(this,getString(R.string.errorDescripcionVacia),
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
 
 		// Pulgadas
-		EditText pulgadasEdit = (EditText) findViewById(R.id.AIMPInchesEdit);
+		EditText pulgadasEdit = (EditText) findViewById(R.id.EDICION_PULGADAS);
 		if (pulgadasEdit.getText() == null
 				|| pulgadasEdit.getText().toString() == "") {
-			Toast.makeText(this,
-					"No se ha completado el campo de las pulgadas",
+			Toast.makeText(this,getString(R.string.errorPulgadasVacias),
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
 		float pulgadas;
 		try {
 			pulgadas = Float.parseFloat(pulgadasEdit.getText().toString()
-					.replace(getString(R.string.ud_pantalla), ""));
+					.replace(getString(R.string.udPantalla), ""));
 		} catch (Exception e) {
-			Toast.makeText(this, "El dato de las pulgadas es incorrecto",
+			Toast.makeText(this, getString(R.string.errorPulgadasErroneas),
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
 
 		// Precio
-		EditText precioEdit = (EditText) findViewById(R.id.AIMPPriceEdit);
+		EditText precioEdit = (EditText) findViewById(R.id.EDICION_PRECIO);
 		if (precioEdit.getText() == null
 				|| precioEdit.getText().toString() == "") {
-			Toast.makeText(this, "No se ha completado el campo del precio",
+			Toast.makeText(this, getString(R.string.errorPrecioVacio),
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
 		float precio;
 		try {
 			precio = Float.parseFloat(precioEdit.getText().toString()
-					.replace(getString(R.string.ud_monetaria), ""));
+					.replace(getString(R.string.udMonetaria), ""));
 		} catch (Exception e) {
-			Toast.makeText(this, "El dato del precio es incorrecto",
+			Toast.makeText(this, getString(R.string.errorPrecioVacio),
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
 
 		// SO
-		Spinner soEdit = (Spinner) findViewById(R.id.AIMPSOSpinner);
+		Spinner soEdit = (Spinner) findViewById(R.id.EDICION_SO);
 		if (soEdit.getSelectedItem() == null) {
-			Toast.makeText(this, "No se ha selecionado un sistema operativo",
+			Toast.makeText(this, getString(R.string.errorSOVacio),
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
 
 		// Marca
-		Marca marca = getBrandSelected();
+		Marca marca = getMarcaSelecionada();
 
 		// Oferta
-		CheckBox ofertaCheck = (CheckBox) findViewById(R.id.AIMPDiscountBox);
+		CheckBox ofertaCheck = (CheckBox) findViewById(R.id.EDICION_DESCUENTO);
 		boolean oferta = ofertaCheck.isChecked();
 
 		Producto producto = new Producto(nombreEdit.getText().toString(),
@@ -371,23 +388,21 @@ public class InsertModificationProduct extends Activity {
 		producto.setId(ID);
 		producto.setImagen(bitmap);
 
+		// Descuento
 		if (oferta) {
-			// Descuento
-			EditText descuentoEdit = (EditText) findViewById(R.id.AIMPDiscountNum);
+			EditText descuentoEdit = (EditText) findViewById(R.id.EDICION_DESCUENTO_PRECIO);
 			if (descuentoEdit.getText() == null
 					|| descuentoEdit.getText().toString() == "") {
-				Toast.makeText(this,
-						"No se ha completado el campo de descuento",
+				Toast.makeText(this,getString(R.string.errorDescuentoVacio),
 						Toast.LENGTH_SHORT).show();
 				return null;
 			}
 			float descuento;
 			try {
 				descuento = Float.parseFloat(descuentoEdit.getText().toString()
-						.replace(getString(R.string.ud_monetaria), ""));
+						.replace(getString(R.string.udMonetaria), ""));
 			} catch (Exception e) {
-				Toast.makeText(this,
-						"El dato del precio de descuento es incorrecto",
+				Toast.makeText(this,getString(R.string.errorDescuentoErroneo),
 						Toast.LENGTH_SHORT).show();
 				return null;
 			}
@@ -397,33 +412,37 @@ public class InsertModificationProduct extends Activity {
 		return producto;
 	}
 
-	/*
+	/**
 	 * A partir de un producto rellena el formulario
+	 * 
+	 * @param producto
+	 *            Producto a insertar en el formulario
 	 */
-	public void Producto2Formulario(Producto producto) {
+	public void productoAFormulario(Producto producto) {
+
 		// ID
 		ID = producto.getId();
 
 		// Imagen
-		ImageView image = (ImageView) findViewById(R.id.AIMPProductImage);
+		ImageView image = (ImageView) findViewById(R.id.EDICION_IMAGEN);
 		image.setImageBitmap(producto.getImagen());
 
 		// Nombre
-		EditText nombreEdit = (EditText) findViewById(R.id.AIMPNameEdit);
+		EditText nombreEdit = (EditText) findViewById(R.id.EDICION_NOMBRE);
 		nombreEdit.setText(producto.getNombre() != null ? producto.getNombre()
 				: "");
 
 		// Descripcion
-		EditText descripcionEdit = (EditText) findViewById(R.id.AIMPDescriptionEdit);
+		EditText descripcionEdit = (EditText) findViewById(R.id.EDICION_DESCRIPCION);
 		descripcionEdit.setText(producto.getDescripcion() != null ? producto
 				.getDescripcion() : "");
 
 		// Marca
-		selectBrand(producto.getMarca().getNombre());
+		selecionarMarca(producto.getMarca());
 
 		// Tipo
-		RadioButton smartphoneEdit = (RadioButton) findViewById(R.id.AIMPSmartphone);
-		RadioButton tabletEdit = (RadioButton) findViewById(R.id.AIMPTablet);
+		RadioButton smartphoneEdit = (RadioButton) findViewById(R.id.EDICION_SMARTPHONE);
+		RadioButton tabletEdit = (RadioButton) findViewById(R.id.EDICION_TABLET);
 		int tipo = producto.getTipo();
 		switch (tipo) {
 		case Producto.TIPO_SMARTPHONE:
@@ -441,42 +460,42 @@ public class InsertModificationProduct extends Activity {
 		}
 
 		// SO
-		Spinner soEdit = (Spinner) findViewById(R.id.AIMPSOSpinner);
+		Spinner soEdit = (Spinner) findViewById(R.id.EDICION_SO);
 		if (soEdit.getCount() < producto.getSistemaOperativo()
 				&& soEdit.getCount() >= 0) {
 			soEdit.setId(producto.getSistemaOperativo());
 		}
 
 		// Precio
-		EditText precioEdit = (EditText) findViewById(R.id.AIMPPriceEdit);
+		EditText precioEdit = (EditText) findViewById(R.id.EDICION_PRECIO);
 		precioEdit.setText(Double.toString(producto.getPrecio()));
 
 		// Pulgadas
-		EditText pulgadasEdit = (EditText) findViewById(R.id.AIMPInchesEdit);
+		EditText pulgadasEdit = (EditText) findViewById(R.id.EDICION_PULGADAS);
 		pulgadasEdit.setText(Double.toString(producto.getDimensionPantalla()));
 
 		// Oferta
-		CheckBox ofertaCheck = (CheckBox) findViewById(R.id.AIMPDiscountBox);
+		CheckBox ofertaCheck = (CheckBox) findViewById(R.id.EDICION_DESCUENTO);
 		ofertaCheck.setChecked(producto.isOferta());
-		EditText descuentoEdit = (EditText) findViewById(R.id.AIMPDiscountNum);
+		EditText descuentoEdit = (EditText) findViewById(R.id.EDICION_DESCUENTO_PRECIO);
 		descuentoEdit.setText(Double.toString(producto.getPrecioOferta()));
 	}
 
-	/*
+	/**
 	 * Actualiza spinner de las marcas
 	 */
-	private void updateSpinner() {
+	public void actualizaSpinner() {
 		ArrayAdapter<String> adp1 = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, getBrands());
+				android.R.layout.simple_list_item_1, getMarcas());
 		adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		brands.setAdapter(adp1);
+		spinnerMarcas.setAdapter(adp1);
 
 	}
 
 	/*
 	 * Obtiene las marcas
 	 */
-	private List<String> getBrands() {
+	private List<String> getMarcas() {
 		marcas = bd.obtenerMarcas();
 		List<String> strs = new LinkedList<String>();
 		for (Marca m : marcas) {
@@ -485,79 +504,44 @@ public class InsertModificationProduct extends Activity {
 		return strs;
 	}
 
-	/*
+	/**
 	 * Obtiene la marca selecionada
+	 * 
+	 * @return Marca selecionada
 	 */
-	private Marca getBrandSelected() {
-		return marcas.get(getBrandSelectedId());
+	public Marca getMarcaSelecionada() {
+		return marcas.get(getMarcaSelecionadaPosicion());
 	}
 
 	/*
 	 * Obtiene el string de la marca selecionada
 	 */
-	private String getBrandSelectedString() {
-		return brands.getSelectedItem() == null ? null : brands
+	private String getMarcaSelecionadaString() {
+		return spinnerMarcas.getSelectedItem() == null ? null : spinnerMarcas
 				.getSelectedItem().toString();
 	}
 
 	/*
-	 * Obtiene el id de la marca selecionada
+	 * Obtiene la posicion de la marca selecionada
 	 */
-	private int getBrandSelectedId() {
-		return brands.getSelectedItem() == null ? -1 : brands
+	private int getMarcaSelecionadaPosicion() {
+		return spinnerMarcas.getSelectedItem() == null ? -1 : spinnerMarcas
 				.getSelectedItemPosition();
 	}
 
-	/*
+	/**
 	 * Seleciona una marca
+	 * 
+	 * @param marca
+	 *            Marca a selecionar
 	 */
-	private void selectBrand(String br) {
-		for (int i = 0; i < brands.getCount(); i++) {
-			if (brands.getItemAtPosition(i).toString().equalsIgnoreCase(br)) {
-				brands.setSelection(i);
+	public void selecionarMarca(Marca marca) {
+		for (int i = 0; i < marcas.size(); i++) {
+			if (marcas.get(i).getId() == marca.getId()) {
+				spinnerMarcas.setSelection(i);
 				return;
 			}
 		}
-	}
-
-	/*
-	 * TextWatcher para poner simbolos finales en los EditTexts
-	 */
-	private class lastSimbol implements TextWatcher {
-		private String fin;
-		private EditText text;
-
-		public lastSimbol(EditText text, String fin) {
-			this.text = text;
-			this.fin = fin;
-		}
-
-		public void afterTextChanged(Editable s) {
-		}
-
-		public void beforeTextChanged(CharSequence s, int start, int count,
-				int after) {
-		}
-
-		public void onTextChanged(CharSequence s, int start, int before,
-				int count) {
-			String v = s.toString().replace(fin, "") + fin;
-			text.removeTextChangedListener(this);
-
-			// Cambia la posición en la que se esta escribiendo
-			text.setText(v);
-			int pos = 0;
-			if (start == s.length()) {
-				pos = v.length() - fin.length();
-			} else {
-				pos = start - (s.length() - v.length()) + 1;
-			}
-			Selection.setSelection(text.getText(),
-					pos < v.length() ? pos : v.length() - fin.length());
-			text.addTextChangedListener(this);
-
-		}
-
 	}
 
 }

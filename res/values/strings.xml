@@ -8,13 +8,22 @@
     
     
     <!-- General -->
-    
-    <string name="ud_monetaria">€</string>
     <string name="tipo">Tipo</string>
     <string name="descripcion">Descripción</string>
     <string name="precio">Precio</string>
     <string name="producto">Producto</string>
-
+    <string name="descripcionFoto">Foto del producto</string>
+    <string name="marca">Marca</string>
+    <string name="sistemaOperativo">Sistema operativo</string>
+    <string name="nombreProducto">Nombre</string>
+    <string name="tipoSmartphone">Smartphone</string>
+    <string name="tipoTablet">Tablet</string>
+    <string name="pantalla">Pantalla</string>
+    <string name="pulgadas">Pulgadas</string>
+    
+    <string name="udPantalla">\"</string>
+    <string name="udMonetaria">€</string>
+    
     
     
     <!-- Lista de productos -->
@@ -62,38 +71,41 @@
     <!-- Información de productos -->
     
     <string name="titulo_activity_info_producto">Información de Producto</string>
+    <string name="comprar">Comprar</string>
     
     
     
     <!-- Inserción/modificación de productos -->
     
-    <string name="titulo_activity_insert_modification_product">Edición de Producto</string>
-    <string name="descripcion_foto">Foto del producto</string>
-    <string name="galeria">Galería</string>
-    <string name="foto">Foto</string>
-    <string name="nombre_producto">Nombre</string>
-    <string name="tipo_smartphone">Smartphone</string>
-    <string name="tipo_tablet">Tablet</string>
-    <string name="pantalla">Pantalla</string>
-    <string name="pulgadas">Pulgadas</string>
-    <string name="ud_pantalla">\"</string>
+    <string name="edicionTitulo">Edición de Producto</string>
+    <string name="edicionGaleria">Galería</string>
+    <string name="edicionFoto">Foto</string>
     
-    <string name="comprar">Comprar</string>
-    <string name="sistema_operativo_prompt">Sistema operativo</string>
 
-    <string-array name="sistemas_operativos">
+    <string-array name="sistemasOperativos">
         <item>Android</item>
         <item>Windows Phone</item>
         <item>IOS</item>
     </string-array>
 
-    <string name="marca_prompt">Marca</string>
-
-    <string-array name="marca"></string-array>
+    <string-array name="edicionMarcas"></string-array>
 
     <string name="crear_marca">Crear</string>
     <string name="eliminar_marca">Eliminar</string>
     <string name="oferta">Oferta</string>
     <string name="guardar">Guardar</string>
-
+    
+    <!-- Errores -->
+   	<string name="errorPrecioVacio">No se ha completado el campo del precio</string>
+    <string name="errorPrecioErroneo">El dato del precio es incorrecto</string>
+    <string name="errorNombreVacio">No se ha completado el campo del nombre</string>
+    <string name="errorTipoVacio">No se ha selecionado un tipo</string>
+    <string name="errorDescripcionVacia">No se ha completado el campo de la descripción</string>
+    <string name="errorPulgadasVacias">No se ha completado el campo de las pulgadas</string>
+    <string name="errorPulgadasErroneas">El dato de las pulgadas es incorrecto</string>
+    <string name="errorSOVacio">No se ha selecionado un sistema operativo</string>
+    <string name="errorDescuentoVacio">No se ha completado el campo de descuento</string>
+    <string name="errorDescuentoErroneo">El dato del precio de descuento es incorrecto</string>
+    <string name="errorRecortarNoDisponible">Su dispositivo no soporta la acción de recortar :(</string>
+      
 </resources>

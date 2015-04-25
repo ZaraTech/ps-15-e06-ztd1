@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="0.0.60" package="com.zaratech.smarket">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="0.0.61" package="com.zaratech.smarket">
 
     <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="22"/>
 
@@ -26,7 +26,7 @@
 
         <!-- Edicion de productos -->
 
-        <activity android:label="@string/titulo_activity_insert_modification_product" android:name="com.zaratech.smarket.aplicacion.InsertModificationProduct">
+        <activity android:label="@string/edicionTitulo" android:name="com.zaratech.smarket.aplicacion.EdicionProducto">
         </activity>
 
         <!-- Envio de pedidos -->

@@ -152,7 +152,7 @@ public class ListaProductos extends ListActivity {
 		// AÑADIR
 		if (id == R.id.menu_opcion_add) {
 			
-			Intent i = new Intent(this, InsertModificationProduct.class);
+			Intent i = new Intent(this, EdicionProducto.class);
 			startActivityForResult(i, ACTIVITY_EDICION);
 			return true;
 			
@@ -203,7 +203,7 @@ public class ListaProductos extends ListActivity {
 		// EDITAR
 		if(item.getItemId() == EDITAR_PRODUCTO) {
 
-			Intent i = new Intent(this, InsertModificationProduct.class);
+			Intent i = new Intent(this, EdicionProducto.class);
 			
 			// Añade Producto seleccionado
 			i.putExtra(EXTRA_PRODUCTO, p);

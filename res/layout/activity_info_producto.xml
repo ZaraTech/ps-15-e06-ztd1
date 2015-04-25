@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="151dp"
             android:layout_weight="1"
-            android:contentDescription="@string/descripcion_foto"
+            android:contentDescription="@string/descripcionFoto"
             android:src="@drawable/smarket"
             android:layout_marginTop="10sp" />
 
@@ -95,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
-                android:text="@string/marca_prompt"
+                android:text="@string/marca"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -141,7 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
-                android:text="@string/sistema_operativo_prompt"
+                android:text="@string/sistemaOperativo"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView

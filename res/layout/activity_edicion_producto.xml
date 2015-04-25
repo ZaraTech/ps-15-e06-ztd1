@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.zaratech.smarket.aplicacion.InsertModificationProduct" >
+    tools:context="com.zaratech.smarket.aplicacion.EdicionProducto" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,26 +19,26 @@
             android:orientation="horizontal" >
 
             <ImageView
-                android:id="@+id/AIMPProductImage"
+                android:id="@+id/EDICION_IMAGEN"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:contentDescription="@string/descripcion_foto"
+                android:contentDescription="@string/descripcionFoto"
                 android:maxHeight="100dp"
                 android:scaleType="matrix"
                 android:src="@drawable/smarket" />
 
             <Button
-                android:id="@+id/AIMPTakePhoto"
+                android:id="@+id/EDICION_CAMARA"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/foto" />
+                android:text="@string/edicionFoto" />
 
             <Button
-                android:id="@+id/AIMPGallery"
+                android:id="@+id/EDICION_GALERIA"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/galeria" />
+                android:text="@string/edicionGaleria" />
         </LinearLayout>
 
         <LinearLayout
@@ -47,14 +47,13 @@
             android:orientation="horizontal" >
 
             <TextView
-                android:id="@+id/AIMPName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/nombre_producto"
+                android:text="@string/nombreProducto"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
-                android:id="@+id/AIMPNameEdit"
+                android:id="@+id/EDICION_NOMBRE"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -63,28 +62,26 @@
         </LinearLayout>
 
         <RadioGroup
-            android:id="@+id/AIMPRadioGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <CheckedTextView
-                android:id="@+id/AIMPType"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tipo" />
 
             <RadioButton
-                android:id="@+id/AIMPSmartphone"
+                android:id="@+id/EDICION_SMARTPHONE"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tipo_smartphone" />
+                android:text="@string/tipoSmartphone" />
 
             <RadioButton
-                android:id="@+id/AIMPTablet"
+                android:id="@+id/EDICION_TABLET"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tipo_tablet" />
+                android:text="@string/tipoTablet" />
         </RadioGroup>
 
         <LinearLayout
@@ -93,14 +90,13 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/AIMPDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/descripcion"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
-                android:id="@+id/AIMPDescriptionEdit"
+                android:id="@+id/EDICION_DESCRIPCION"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -113,14 +109,13 @@
             android:orientation="horizontal" >
 
             <TextView
-                android:id="@+id/AIMPInches"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pulgadas"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
-                android:id="@+id/AIMPInchesEdit"
+                android:id="@+id/EDICION_PULGADAS"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -133,14 +128,13 @@
             android:orientation="horizontal" >
 
             <TextView
-                android:id="@+id/AIMPPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/precio"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
-                android:id="@+id/AIMPPriceEdit"
+                android:id="@+id/EDICION_PRECIO"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -154,18 +148,17 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/AIMPSO"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/sistema_operativo_prompt"
+                android:text="@string/sistemaOperativo"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Spinner
-                android:id="@+id/AIMPSOSpinner"
+                android:id="@+id/EDICION_SO"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:entries="@array/sistemas_operativos"
-                android:prompt="@string/sistema_operativo_prompt" />
+                android:entries="@array/sistemasOperativos"
+                android:prompt="@string/sistemaOperativo" />
         </LinearLayout>
 
         <LinearLayout
@@ -174,10 +167,9 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/AIMPBrand"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/marca_prompt"
+                android:text="@string/marca"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <LinearLayout
@@ -187,21 +179,21 @@
                 android:orientation="horizontal" >
 
                 <Spinner
-                    android:id="@+id/AIMPBrandSpinner"
+                    android:id="@+id/EDICION_MARCA"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
-                    android:entries="@array/marca"
-                    android:prompt="@string/marca_prompt" />
+                    android:entries="@array/edicionMarcas"
+                    android:prompt="@string/marca" />
 
                 <Button
-                    android:id="@+id/AIMPBrandCreate"
+                    android:id="@+id/EDICION_CREAR_MARCA"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/crear_marca" />
 
                 <Button
-                    android:id="@+id/AIMPBrandDelete"
+                    android:id="@+id/EDICION_ELIMINAR_MARCA"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/eliminar_marca" />
@@ -214,13 +206,13 @@
             android:orientation="horizontal" >
 
             <CheckBox
-                android:id="@+id/AIMPDiscountBox"
+                android:id="@+id/EDICION_DESCUENTO"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/oferta" />
 
             <EditText
-                android:id="@+id/AIMPDiscountNum"
+                android:id="@+id/EDICION_DESCUENTO_PRECIO"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -230,7 +222,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/AIMPSave"
+            android:id="@+id/EDICION_GUARDAR"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/guardar" />

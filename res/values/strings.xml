@@ -2,12 +2,11 @@
 <resources>
 
     <!-- Aplicación -->
-    
+
     <string name="app_name">Smarket</string>
 
-    
-    
     <!-- General -->
+
     <string name="tipo">Tipo</string>
     <string name="descripcion">Descripción</string>
     <string name="precio">Precio</string>
@@ -20,83 +19,67 @@
     <string name="tipoTablet">Tablet</string>
     <string name="pantalla">Pantalla</string>
     <string name="pulgadas">Pulgadas</string>
-    
     <string name="udPantalla">\"</string>
     <string name="udMonetaria">€</string>
-    
-    
-    
+
     <!-- Lista de productos -->
-    
+
     <string name="no_hay_productos">No hay productos que mostrar.</string>
     <string name="img_producto">Esta es la imágen del producto.</string>
-    
-    
-	    <!-- Menú de opciones de la Lista de productos -->
-	    
-	    <string name="menu_opcion_add">Añadir Producto</string>
-	    <string name="menu_opcion_busqueda">Búsqueda</string>
-	    
-	    
-        <!-- Menú contextual de la Lista de productos -->
-        
-        <string name="menu_opcion_editar">Editar Producto</string>
-        <string name="menu_opcion_eliminar">Eliminar Producto</string>
-	    
-	  
-	    
-	<!-- Búsqueda -->
-    
+
+    <!-- Menú de opciones de la Lista de productos -->
+
+    <string name="menu_opcion_add">Añadir Producto</string>
+    <string name="menu_opcion_busqueda">Búsqueda</string>
+
+    <!-- Menú contextual de la Lista de productos -->
+
+    <string name="menu_opcion_editar">Editar Producto</string>
+    <string name="menu_opcion_eliminar">Eliminar Producto</string>
+
+    <!-- Búsqueda -->
+
     <string name="titulo_activity_busqueda">Búsqueda de Productos</string>
 
-    
-    
     <!-- Envío de pedidos -->
-    
+
     <string name="titulo_activity_envio_pedido">Envío de Pedido</string>
     <string name="pedido">Inserte un nombre para identificar su pedido:</string>
-    
     <string name="boton_enviar">Enviar pedido</string>
     <string name="boton_aceptar">Vale</string>
-    
     <string name="pedido_preparar">Preparando pedido...</string>
     <string name="pedido_enviar">Enviando pedido...</string>
     <string name="pedido_envio_exito">Enhorabuena</string>
     <string name="pedido_envio_error">Error</string>
     <string name="pedido_enviado">Pedido enviado!</string>
     <string name="pedido_no_enviado">Pedido NO enviado</string>
-    
-    
-    
+
     <!-- Información de productos -->
-    
+
     <string name="titulo_activity_info_producto">Información de Producto</string>
     <string name="comprar">Comprar</string>
-    
-    
-    
+
     <!-- Inserción/modificación de productos -->
-    
+
     <string name="edicionTitulo">Edición de Producto</string>
     <string name="edicionGaleria">Galería</string>
     <string name="edicionFoto">Foto</string>
-    
 
     <string-array name="sistemasOperativos">
         <item>Android</item>
         <item>Windows Phone</item>
         <item>IOS</item>
     </string-array>
-
     <string-array name="edicionMarcas"></string-array>
 
-    <string name="crear_marca">Crear</string>
-    <string name="eliminar_marca">Eliminar</string>
+    <string name="crearMarca">Crear</string>
+    <string name="cancelarCrearMarca">Cancelar</string>
+    <string name="eliminarMarca">Eliminar</string>
     <string name="oferta">Oferta</string>
     <string name="guardar">Guardar</string>
-    
+
     <!-- Errores -->
-   	<string name="errorPrecioVacio">No se ha completado el campo del precio</string>
+    <string name="errorPrecioVacio">No se ha completado el campo del precio</string>
     <string name="errorPrecioErroneo">El dato del precio es incorrecto</string>
     <string name="errorNombreVacio">No se ha completado el campo del nombre</string>
     <string name="errorTipoVacio">No se ha selecionado un tipo</string>
@@ -107,5 +90,5 @@
     <string name="errorDescuentoVacio">No se ha completado el campo de descuento</string>
     <string name="errorDescuentoErroneo">El dato del precio de descuento es incorrecto</string>
     <string name="errorRecortarNoDisponible">Su dispositivo no soporta la acción de recortar :(</string>
-      
+
 </resources>

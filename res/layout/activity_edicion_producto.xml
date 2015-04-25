@@ -8,6 +8,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.zaratech.smarket.aplicacion.EdicionProducto" >
 
+    <!-- Imagen del producto -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,6 +43,8 @@
                 android:text="@string/edicionGaleria" />
         </LinearLayout>
 
+        <!-- Nombre del producto -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,6 +64,8 @@
                 android:inputType="textPersonName" >
             </EditText>
         </LinearLayout>
+
+        <!-- Tipo de producto -->
 
         <RadioGroup
             android:layout_width="wrap_content"
@@ -84,6 +90,8 @@
                 android:text="@string/tipoTablet" />
         </RadioGroup>
 
+        <!-- Descripción del producto -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -103,6 +111,8 @@
                 android:inputType="textMultiLine" />
         </LinearLayout>
 
+        <!-- Pulgadas -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -121,6 +131,8 @@
                 android:ems="10"
                 android:inputType="numberDecimal" />
         </LinearLayout>
+
+        <!-- Precio -->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -142,6 +154,8 @@
             </EditText>
         </LinearLayout>
 
+        <!-- SO -->
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -160,6 +174,8 @@
                 android:entries="@array/sistemasOperativos"
                 android:prompt="@string/sistemaOperativo" />
         </LinearLayout>
+
+        <!-- Marca -->
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -190,15 +206,17 @@
                     android:id="@+id/EDICION_CREAR_MARCA"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/crear_marca" />
+                    android:text="@string/crearMarca" />
 
                 <Button
                     android:id="@+id/EDICION_ELIMINAR_MARCA"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/eliminar_marca" />
+                    android:text="@string/eliminarMarca" />
             </LinearLayout>
         </LinearLayout>
+
+        <!-- Oferta -->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -220,6 +238,8 @@
                 android:inputType="numberDecimal" >
             </EditText>
         </LinearLayout>
+
+        <!-- Boton de guardado -->
 
         <Button
             android:id="@+id/EDICION_GUARDAR"

@@ -199,7 +199,7 @@ public class EdicionProducto extends Activity {
 		texto.setInputType(InputType.TYPE_CLASS_TEXT);
 		builder.setView(texto);
 
-		builder.setPositiveButton("Crear",
+		builder.setPositiveButton(getString(R.string.crearMarca),
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						String s = texto.getText() == null ? null : texto
@@ -214,7 +214,7 @@ public class EdicionProducto extends Activity {
 					}
 				});
 
-		builder.setNegativeButton("Cancelar",
+		builder.setNegativeButton(getString(R.string.cancelarCrearMarca),
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.cancel();
@@ -324,7 +324,7 @@ public class EdicionProducto extends Activity {
 		// Descripcion
 		EditText descripcionEdit = (EditText) findViewById(R.id.EDICION_DESCRIPCION);
 		if (descripcionEdit.getText() == null) {
-			Toast.makeText(this,getString(R.string.errorDescripcionVacia),
+			Toast.makeText(this, getString(R.string.errorDescripcionVacia),
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
@@ -333,7 +333,7 @@ public class EdicionProducto extends Activity {
 		EditText pulgadasEdit = (EditText) findViewById(R.id.EDICION_PULGADAS);
 		if (pulgadasEdit.getText() == null
 				|| pulgadasEdit.getText().toString() == "") {
-			Toast.makeText(this,getString(R.string.errorPulgadasVacias),
+			Toast.makeText(this, getString(R.string.errorPulgadasVacias),
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
@@ -393,7 +393,7 @@ public class EdicionProducto extends Activity {
 			EditText descuentoEdit = (EditText) findViewById(R.id.EDICION_DESCUENTO_PRECIO);
 			if (descuentoEdit.getText() == null
 					|| descuentoEdit.getText().toString() == "") {
-				Toast.makeText(this,getString(R.string.errorDescuentoVacio),
+				Toast.makeText(this, getString(R.string.errorDescuentoVacio),
 						Toast.LENGTH_SHORT).show();
 				return null;
 			}
@@ -402,7 +402,7 @@ public class EdicionProducto extends Activity {
 				descuento = Float.parseFloat(descuentoEdit.getText().toString()
 						.replace(getString(R.string.udMonetaria), ""));
 			} catch (Exception e) {
-				Toast.makeText(this,getString(R.string.errorDescuentoErroneo),
+				Toast.makeText(this, getString(R.string.errorDescuentoErroneo),
 						Toast.LENGTH_SHORT).show();
 				return null;
 			}
@@ -461,9 +461,9 @@ public class EdicionProducto extends Activity {
 
 		// SO
 		Spinner soEdit = (Spinner) findViewById(R.id.EDICION_SO);
-		if (soEdit.getCount() < producto.getSistemaOperativo()
-				&& soEdit.getCount() >= 0) {
-			soEdit.setId(producto.getSistemaOperativo());
+		if (soEdit.getCount() > producto.getSistemaOperativo()
+				&& producto.getSistemaOperativo() >= 0) {
+			soEdit.setSelection(producto.getSistemaOperativo());
 		}
 
 		// Precio
@@ -489,7 +489,6 @@ public class EdicionProducto extends Activity {
 				android.R.layout.simple_list_item_1, getMarcas());
 		adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinnerMarcas.setAdapter(adp1);
-
 	}
 
 	/*

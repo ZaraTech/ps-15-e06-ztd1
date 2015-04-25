@@ -21,7 +21,7 @@
 
         <!-- Busqueda de productos -->
 
-        <activity android:label="@string/titulo_activity_busqueda" android:name="com.zaratech.smarket.aplicacion.Busqueda">
+        <activity android:label="@string/titulo_activity_busqueda" android:name="com.zaratech.smarket.aplicacion.BusquedaProducto">
         </activity>
 
         <!-- Edicion de productos -->

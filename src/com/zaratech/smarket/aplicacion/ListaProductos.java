@@ -159,7 +159,7 @@ public class ListaProductos extends ListActivity {
 		// BUSCAR	
 		} else if (id == R.id.menu_opcion_busqueda) {
 			
-			startActivity(new Intent(this, Busqueda.class));
+			startActivity(new Intent(this, BusquedaProducto.class));
 			return true;
 			
 		// ???	

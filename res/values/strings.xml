@@ -7,18 +7,18 @@
 
     <!-- General -->
 
-    <string name="tipo">Tipo</string>
-    <string name="descripcion">Descripción</string>
-    <string name="precio">Precio</string>
+    <string name="app_tipo">Tipo</string>
+    <string name="app_descripcion">Descripción</string>
+    <string name="app_precio">Precio</string>
     <string name="producto">Producto</string>
-    <string name="descripcionFoto">Foto del producto</string>
-    <string name="marca">Marca</string>
-    <string name="sistemaOperativo">Sistema operativo</string>
-    <string name="nombreProducto">Nombre</string>
-    <string name="tipoSmartphone">Smartphone</string>
-    <string name="tipoTablet">Tablet</string>
+    <string name="app_descripcion_foto">Foto del producto</string>
+    <string name="app_marca">Marca</string>
+    <string name="app_sistema_operativo">Sistema operativo</string>
+    <string name="app_nombre_producto">Nombre</string>
+    <string name="app_tipo_smartphone">Smartphone</string>
+    <string name="app_tipo_tablet">Tablet</string>
     <string name="pantalla">Pantalla</string>
-    <string name="pulgadas">Pulgadas</string>
+    <string name="app_pulgadas">Pulgadas</string>
     <string name="udPantalla">\"</string>
     <string name="udMonetaria">€</string>
 
@@ -62,8 +62,8 @@
     <!-- Inserción/modificación de productos -->
 
     <string name="edicionTitulo">Edición de Producto</string>
-    <string name="edicionGaleria">Galería</string>
-    <string name="edicionFoto">Foto</string>
+    <string name="edicion_galeria">Galería</string>
+    <string name="edicion_foto">Foto</string>
 
     <string-array name="sistemasOperativos">
         <item>Android</item>
@@ -72,11 +72,11 @@
     </string-array>
     <string-array name="edicionMarcas"></string-array>
 
-    <string name="crearMarca">Crear</string>
+    <string name="edicion_crear_marca">Crear</string>
     <string name="cancelarCrearMarca">Cancelar</string>
-    <string name="eliminarMarca">Eliminar</string>
-    <string name="oferta">Oferta</string>
-    <string name="guardar">Guardar</string>
+    <string name="edicion_eliminar_marca">Eliminar</string>
+    <string name="edicion_oferta">Oferta</string>
+    <string name="edicion_guardar">Guardar</string>
 
     <!-- Errores -->
     <string name="errorPrecioVacio">No se ha completado el campo del precio</string>
@@ -87,8 +87,8 @@
     <string name="errorPulgadasVacias">No se ha completado el campo de las pulgadas</string>
     <string name="errorPulgadasErroneas">El dato de las pulgadas es incorrecto</string>
     <string name="errorSOVacio">No se ha selecionado un sistema operativo</string>
-    <string name="errorDescuentoVacio">No se ha completado el campo de descuento</string>
-    <string name="errorDescuentoErroneo">El dato del precio de descuento es incorrecto</string>
+    <string name="errorDescuentoVacio">No se ha completado el campo de oferta</string>
+    <string name="errorDescuentoErroneo">El dato del precio de oferta es incorrecto</string>
     <string name="errorRecortarNoDisponible">Su dispositivo no soporta la acción de recortar :(</string>
 
 </resources>

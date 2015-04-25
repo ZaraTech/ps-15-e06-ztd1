@@ -21,26 +21,26 @@
             android:orientation="horizontal" >
 
             <ImageView
-                android:id="@+id/EDICION_IMAGEN"
+                android:id="@+id/edicion_imagen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:contentDescription="@string/descripcionFoto"
+                android:contentDescription="@string/app_descripcion_foto"
                 android:maxHeight="100dp"
                 android:scaleType="matrix"
                 android:src="@drawable/smarket" />
 
             <Button
-                android:id="@+id/EDICION_CAMARA"
+                android:id="@+id/edicion_camara"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/edicionFoto" />
+                android:text="@string/edicion_foto" />
 
             <Button
-                android:id="@+id/EDICION_GALERIA"
+                android:id="@+id/edicion_galeria"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/edicionGaleria" />
+                android:text="@string/edicion_galeria" />
         </LinearLayout>
 
         <!-- Nombre del producto -->
@@ -53,11 +53,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/nombreProducto"
+                android:text="@string/app_nombre_producto"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
-                android:id="@+id/EDICION_NOMBRE"
+                android:id="@+id/edicion_nombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -75,19 +75,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tipo" />
+                android:text="@string/app_tipo" />
 
             <RadioButton
-                android:id="@+id/EDICION_SMARTPHONE"
+                android:id="@+id/edicion_smartphone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tipoSmartphone" />
+                android:text="@string/app_tipo_smartphone" />
 
             <RadioButton
-                android:id="@+id/EDICION_TABLET"
+                android:id="@+id/edicion_tablet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tipoTablet" />
+                android:text="@string/app_tipo_tablet" />
         </RadioGroup>
 
         <!-- Descripción del producto -->
@@ -100,11 +100,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/descripcion"
+                android:text="@string/app_descripcion"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
-                android:id="@+id/EDICION_DESCRIPCION"
+                android:id="@+id/edicion_descripcion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -121,11 +121,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/pulgadas"
+                android:text="@string/app_pulgadas"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
-                android:id="@+id/EDICION_PULGADAS"
+                android:id="@+id/edicion_pulgadas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -142,11 +142,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/precio"
+                android:text="@string/app_precio"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
-                android:id="@+id/EDICION_PRECIO"
+                android:id="@+id/edicion_precio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -164,15 +164,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/sistemaOperativo"
+                android:text="@string/app_sistema_operativo"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Spinner
                 android:id="@+id/EDICION_SO"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:entries="@array/sistemasOperativos"
-                android:prompt="@string/sistemaOperativo" />
+                android:prompt="@string/app_sistema_operativo" />
         </LinearLayout>
 
         <!-- Marca -->
@@ -185,7 +184,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/marca"
+                android:text="@string/app_marca"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <LinearLayout
@@ -195,24 +194,23 @@
                 android:orientation="horizontal" >
 
                 <Spinner
-                    android:id="@+id/EDICION_MARCA"
+                    android:id="@+id/edicion_marca"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
-                    android:entries="@array/edicionMarcas"
-                    android:prompt="@string/marca" />
+                    android:prompt="@string/app_marca" />
 
                 <Button
-                    android:id="@+id/EDICION_CREAR_MARCA"
+                    android:id="@+id/edicion_crear_marca"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/crearMarca" />
+                    android:text="@string/edicion_crear_marca" />
 
                 <Button
-                    android:id="@+id/EDICION_ELIMINAR_MARCA"
+                    android:id="@+id/edicion_eliminar_marca"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/eliminarMarca" />
+                    android:text="@string/edicion_eliminar_marca" />
             </LinearLayout>
         </LinearLayout>
 
@@ -224,13 +222,13 @@
             android:orientation="horizontal" >
 
             <CheckBox
-                android:id="@+id/EDICION_DESCUENTO"
+                android:id="@+id/edicion_oferta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/oferta" />
+                android:text="@string/edicion_oferta" />
 
             <EditText
-                android:id="@+id/EDICION_DESCUENTO_PRECIO"
+                android:id="@+id/edicion_oferta_precio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -242,10 +240,10 @@
         <!-- Boton de guardado -->
 
         <Button
-            android:id="@+id/EDICION_GUARDAR"
+            android:id="@+id/edicion_guardar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/guardar" />
+            android:text="@string/edicion_guardar" />
     </LinearLayout>
 
 </ScrollView>

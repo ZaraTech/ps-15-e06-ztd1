@@ -76,7 +76,7 @@ public class EdicionProducto extends Activity {
 		/*
 		 * Carga de imagenes
 		 */
-		Button camara = (Button) findViewById(R.id.EDICION_CAMARA); // Desde
+		Button camara = (Button) findViewById(R.id.edicion_camara); // Desde
 																	// camara
 		camara.setOnClickListener(new OnClickListener() {
 
@@ -88,7 +88,7 @@ public class EdicionProducto extends Activity {
 				}
 			}
 		});
-		Button galeria = (Button) findViewById(R.id.EDICION_GALERIA); // Desde
+		Button galeria = (Button) findViewById(R.id.edicion_galeria); // Desde
 																		// galeria
 		galeria.setOnClickListener(new OnClickListener() {
 
@@ -103,8 +103,8 @@ public class EdicionProducto extends Activity {
 		/*
 		 * Descuentos
 		 */
-		CheckBox desctuentos = (CheckBox) findViewById(R.id.EDICION_DESCUENTO);
-		final EditText descuentosEdit = (EditText) findViewById(R.id.EDICION_DESCUENTO_PRECIO);
+		CheckBox desctuentos = (CheckBox) findViewById(R.id.edicion_oferta);
+		final EditText descuentosEdit = (EditText) findViewById(R.id.edicion_oferta_precio);
 		desctuentos.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			public void onCheckedChanged(CompoundButton buttonView,
@@ -116,11 +116,11 @@ public class EdicionProducto extends Activity {
 		/*
 		 * Simbolos de editTexts (UM y pulgadas)
 		 */
-		EditText pixel = (EditText) findViewById(R.id.EDICION_PULGADAS);
+		EditText pixel = (EditText) findViewById(R.id.edicion_pulgadas);
 		pixel.addTextChangedListener(new EditTextSimboloFinal(pixel,
 				getString(R.string.udPantalla)));
 
-		EditText price = (EditText) findViewById(R.id.EDICION_PRECIO);
+		EditText price = (EditText) findViewById(R.id.edicion_precio);
 		price.addTextChangedListener(new EditTextSimboloFinal(price,
 				getString(R.string.udMonetaria)));
 
@@ -128,10 +128,24 @@ public class EdicionProducto extends Activity {
 				descuentosEdit, getString(R.string.udMonetaria)));
 
 		/*
+		 * Sistema Operativo
+		 */
+		Spinner so = (Spinner) findViewById(R.id.EDICION_SO);
+		String[] arr=new String[3];
+		arr[Producto.SO_ANDROID]=AdaptadorBD.obtenerSistemaOperativo(Producto.SO_ANDROID);
+		arr[Producto.SO_IOS]=AdaptadorBD.obtenerSistemaOperativo(Producto.SO_IOS);
+		arr[Producto.SO_WINDOWSPHONE]=AdaptadorBD.obtenerSistemaOperativo(Producto.SO_WINDOWSPHONE);
+
+		ArrayAdapter<String> adp1 = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, arr);
+		adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		so.setAdapter(adp1);
+
+		/*
 		 * Marcas
 		 */
-		spinnerMarcas = (Spinner) findViewById(R.id.EDICION_MARCA);
-		Button crearMarca = (Button) findViewById(R.id.EDICION_CREAR_MARCA);
+		spinnerMarcas = (Spinner) findViewById(R.id.edicion_marca);
+		Button crearMarca = (Button) findViewById(R.id.edicion_crear_marca);
 		actualizaSpinner();
 
 		crearMarca.setOnClickListener(new OnClickListener() {
@@ -139,7 +153,7 @@ public class EdicionProducto extends Activity {
 				mostrarDialogoCreacionMarcas().show();
 			}
 		});
-		Button eliminarMarca = (Button) findViewById(R.id.EDICION_ELIMINAR_MARCA);
+		Button eliminarMarca = (Button) findViewById(R.id.edicion_eliminar_marca);
 		eliminarMarca.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
@@ -153,7 +167,7 @@ public class EdicionProducto extends Activity {
 		/*
 		 * Guardar
 		 */
-		Button guardar = (Button) findViewById(R.id.EDICION_GUARDAR);
+		Button guardar = (Button) findViewById(R.id.edicion_guardar);
 		guardar.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
@@ -199,7 +213,7 @@ public class EdicionProducto extends Activity {
 		texto.setInputType(InputType.TYPE_CLASS_TEXT);
 		builder.setView(texto);
 
-		builder.setPositiveButton(getString(R.string.crearMarca),
+		builder.setPositiveButton(getString(R.string.edicion_crear_marca),
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						String s = texto.getText() == null ? null : texto
@@ -247,7 +261,7 @@ public class EdicionProducto extends Activity {
 														// la imagen
 			Bundle extras = data.getExtras();
 			Bitmap selectedBitmap = extras.getParcelable("data");
-			ImageView image = (ImageView) findViewById(R.id.EDICION_IMAGEN);
+			ImageView image = (ImageView) findViewById(R.id.edicion_imagen);
 			image.setImageBitmap(selectedBitmap);
 		}
 	}
@@ -295,11 +309,11 @@ public class EdicionProducto extends Activity {
 	public Producto formularioAProducto() {
 
 		// Imagen
-		ImageView image = (ImageView) findViewById(R.id.EDICION_IMAGEN);
+		ImageView image = (ImageView) findViewById(R.id.edicion_imagen);
 		Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
 
 		// Nombre
-		EditText nombreEdit = (EditText) findViewById(R.id.EDICION_NOMBRE);
+		EditText nombreEdit = (EditText) findViewById(R.id.edicion_nombre);
 		if (nombreEdit.getText() == null
 				|| nombreEdit.getText().toString().length() == 0) {
 			Toast.makeText(this, getString(R.string.errorNombreVacio),
@@ -308,8 +322,8 @@ public class EdicionProducto extends Activity {
 		}
 
 		// Tipo
-		RadioButton smartphoneEdit = (RadioButton) findViewById(R.id.EDICION_SMARTPHONE);
-		RadioButton tabletEdit = (RadioButton) findViewById(R.id.EDICION_TABLET);
+		RadioButton smartphoneEdit = (RadioButton) findViewById(R.id.edicion_smartphone);
+		RadioButton tabletEdit = (RadioButton) findViewById(R.id.edicion_tablet);
 		int tipo;
 		if (smartphoneEdit.isChecked()) {
 			tipo = Producto.TIPO_SMARTPHONE;
@@ -322,7 +336,7 @@ public class EdicionProducto extends Activity {
 		}
 
 		// Descripcion
-		EditText descripcionEdit = (EditText) findViewById(R.id.EDICION_DESCRIPCION);
+		EditText descripcionEdit = (EditText) findViewById(R.id.edicion_descripcion);
 		if (descripcionEdit.getText() == null) {
 			Toast.makeText(this, getString(R.string.errorDescripcionVacia),
 					Toast.LENGTH_SHORT).show();
@@ -330,7 +344,7 @@ public class EdicionProducto extends Activity {
 		}
 
 		// Pulgadas
-		EditText pulgadasEdit = (EditText) findViewById(R.id.EDICION_PULGADAS);
+		EditText pulgadasEdit = (EditText) findViewById(R.id.edicion_pulgadas);
 		if (pulgadasEdit.getText() == null
 				|| pulgadasEdit.getText().toString() == "") {
 			Toast.makeText(this, getString(R.string.errorPulgadasVacias),
@@ -348,7 +362,7 @@ public class EdicionProducto extends Activity {
 		}
 
 		// Precio
-		EditText precioEdit = (EditText) findViewById(R.id.EDICION_PRECIO);
+		EditText precioEdit = (EditText) findViewById(R.id.edicion_precio);
 		if (precioEdit.getText() == null
 				|| precioEdit.getText().toString() == "") {
 			Toast.makeText(this, getString(R.string.errorPrecioVacio),
@@ -377,7 +391,7 @@ public class EdicionProducto extends Activity {
 		Marca marca = getMarcaSelecionada();
 
 		// Oferta
-		CheckBox ofertaCheck = (CheckBox) findViewById(R.id.EDICION_DESCUENTO);
+		CheckBox ofertaCheck = (CheckBox) findViewById(R.id.edicion_oferta);
 		boolean oferta = ofertaCheck.isChecked();
 
 		Producto producto = new Producto(nombreEdit.getText().toString(),
@@ -390,7 +404,7 @@ public class EdicionProducto extends Activity {
 
 		// Descuento
 		if (oferta) {
-			EditText descuentoEdit = (EditText) findViewById(R.id.EDICION_DESCUENTO_PRECIO);
+			EditText descuentoEdit = (EditText) findViewById(R.id.edicion_oferta_precio);
 			if (descuentoEdit.getText() == null
 					|| descuentoEdit.getText().toString() == "") {
 				Toast.makeText(this, getString(R.string.errorDescuentoVacio),
@@ -424,16 +438,16 @@ public class EdicionProducto extends Activity {
 		ID = producto.getId();
 
 		// Imagen
-		ImageView image = (ImageView) findViewById(R.id.EDICION_IMAGEN);
+		ImageView image = (ImageView) findViewById(R.id.edicion_imagen);
 		image.setImageBitmap(producto.getImagen());
 
 		// Nombre
-		EditText nombreEdit = (EditText) findViewById(R.id.EDICION_NOMBRE);
+		EditText nombreEdit = (EditText) findViewById(R.id.edicion_nombre);
 		nombreEdit.setText(producto.getNombre() != null ? producto.getNombre()
 				: "");
 
 		// Descripcion
-		EditText descripcionEdit = (EditText) findViewById(R.id.EDICION_DESCRIPCION);
+		EditText descripcionEdit = (EditText) findViewById(R.id.edicion_descripcion);
 		descripcionEdit.setText(producto.getDescripcion() != null ? producto
 				.getDescripcion() : "");
 
@@ -441,8 +455,8 @@ public class EdicionProducto extends Activity {
 		selecionarMarca(producto.getMarca());
 
 		// Tipo
-		RadioButton smartphoneEdit = (RadioButton) findViewById(R.id.EDICION_SMARTPHONE);
-		RadioButton tabletEdit = (RadioButton) findViewById(R.id.EDICION_TABLET);
+		RadioButton smartphoneEdit = (RadioButton) findViewById(R.id.edicion_smartphone);
+		RadioButton tabletEdit = (RadioButton) findViewById(R.id.edicion_tablet);
 		int tipo = producto.getTipo();
 		switch (tipo) {
 		case Producto.TIPO_SMARTPHONE:
@@ -467,17 +481,17 @@ public class EdicionProducto extends Activity {
 		}
 
 		// Precio
-		EditText precioEdit = (EditText) findViewById(R.id.EDICION_PRECIO);
+		EditText precioEdit = (EditText) findViewById(R.id.edicion_precio);
 		precioEdit.setText(Double.toString(producto.getPrecio()));
 
 		// Pulgadas
-		EditText pulgadasEdit = (EditText) findViewById(R.id.EDICION_PULGADAS);
+		EditText pulgadasEdit = (EditText) findViewById(R.id.edicion_pulgadas);
 		pulgadasEdit.setText(Double.toString(producto.getDimensionPantalla()));
 
 		// Oferta
-		CheckBox ofertaCheck = (CheckBox) findViewById(R.id.EDICION_DESCUENTO);
+		CheckBox ofertaCheck = (CheckBox) findViewById(R.id.edicion_oferta);
 		ofertaCheck.setChecked(producto.isOferta());
-		EditText descuentoEdit = (EditText) findViewById(R.id.EDICION_DESCUENTO_PRECIO);
+		EditText descuentoEdit = (EditText) findViewById(R.id.edicion_oferta_precio);
 		descuentoEdit.setText(Double.toString(producto.getPrecioOferta()));
 	}
 

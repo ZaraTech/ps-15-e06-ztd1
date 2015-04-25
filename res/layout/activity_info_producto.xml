@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="151dp"
             android:layout_weight="1"
-            android:contentDescription="@string/descripcionFoto"
+            android:contentDescription="@string/app_descripcion_foto"
             android:src="@drawable/smarket"
             android:layout_marginTop="10sp" />
 
@@ -63,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
-                android:text="@string/descripcion"
+                android:text="@string/app_descripcion"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -95,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
-                android:text="@string/marca"
+                android:text="@string/app_marca"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -141,7 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
-                android:text="@string/sistemaOperativo"
+                android:text="@string/app_sistema_operativo"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -164,7 +164,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
-                android:text="@string/precio"
+                android:text="@string/app_precio"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <!-- Precio sin oferta -->

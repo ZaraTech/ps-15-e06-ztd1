@@ -13,9 +13,8 @@ import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -44,13 +43,10 @@ public class InsertModificationProduct extends Activity {
 	 * Clave que identifica un Producto dentro del campo extras del Intent
 	 */
 	private static final String EXTRA_PRODUCTO = "Producto";
-	
-	
+
 	private static final int RESULT_LOAD_IMAGE = 1;
 	private static final int RESULT_IMAGE_CAPTURE = 2;
 	private static final int RESULT_PIC_CROP = 3;
-	private static final String UM = "€";
-	private static final String PULGADAS = "'";
 	private Spinner brands;
 	private int ID;
 	private AdaptadorBD bd;
@@ -109,12 +105,15 @@ public class InsertModificationProduct extends Activity {
 		 * Simbolos de editTexts
 		 */
 		EditText pixel = (EditText) findViewById(R.id.AIMPInchesEdit);
-		pixel.addTextChangedListener(new lastSimbol(pixel, PULGADAS));
+		pixel.addTextChangedListener(new lastSimbol(pixel,
+				getString(R.string.ud_pantalla)));
 
 		EditText price = (EditText) findViewById(R.id.AIMPPriceEdit);
-		price.addTextChangedListener(new lastSimbol(price, UM));
+		price.addTextChangedListener(new lastSimbol(price,
+				getString(R.string.ud_monetaria)));
 
-		discount.addTextChangedListener(new lastSimbol(discount, UM));
+		discount.addTextChangedListener(new lastSimbol(discount,
+				getString(R.string.ud_monetaria)));
 
 		/*
 		 * Marcas
@@ -219,17 +218,7 @@ public class InsertModificationProduct extends Activity {
 		}
 		if (requestCode == RESULT_LOAD_IMAGE) {// Resultado de la galeria
 			Uri selectedImage = data.getData();
-			String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-			Cursor cursor = getContentResolver().query(selectedImage,
-					filePathColumn, null, null, null);
-			cursor.moveToFirst();
-
-			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-			String picturePath = cursor.getString(columnIndex);
-			cursor.close();
-			Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
-			obtenerImagenRecortada(bitmap);
+			obtenerImagenRecortada(selectedImage);
 
 		} else if (requestCode == RESULT_IMAGE_CAPTURE) {// Resultado de la
 															// camara
@@ -264,7 +253,7 @@ public class InsertModificationProduct extends Activity {
 			Intent cropIntent = new Intent("com.android.camera.action.CROP");
 			cropIntent.setDataAndType(picUri, "image/*"); // Imagen que se desea
 															// modificar
-			cropIntent.putExtra("crop", "true");
+			cropIntent.putExtra("crop", "false");
 
 			// Proporcion 1:1
 			cropIntent.putExtra("aspectX", 1);
@@ -286,6 +275,10 @@ public class InsertModificationProduct extends Activity {
 	 * Obtiene los datos del formulario y devuelve un producto
 	 */
 	public Producto Formulario2Producto() {
+		// Imagen
+		ImageView image = (ImageView) findViewById(R.id.AIMPProductImage);
+		Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
+
 		// Nombre
 		EditText nombreEdit = (EditText) findViewById(R.id.AIMPNameEdit);
 		if (nombreEdit.getText() == null
@@ -330,7 +323,7 @@ public class InsertModificationProduct extends Activity {
 		float pulgadas;
 		try {
 			pulgadas = Float.parseFloat(pulgadasEdit.getText().toString()
-					.replace(PULGADAS, ""));
+					.replace(getString(R.string.ud_pantalla), ""));
 		} catch (Exception e) {
 			Toast.makeText(this, "El dato de las pulgadas es incorrecto",
 					Toast.LENGTH_SHORT).show();
@@ -348,7 +341,7 @@ public class InsertModificationProduct extends Activity {
 		float precio;
 		try {
 			precio = Float.parseFloat(precioEdit.getText().toString()
-					.replace(UM, ""));
+					.replace(getString(R.string.ud_monetaria), ""));
 		} catch (Exception e) {
 			Toast.makeText(this, "El dato del precio es incorrecto",
 					Toast.LENGTH_SHORT).show();
@@ -376,6 +369,7 @@ public class InsertModificationProduct extends Activity {
 		producto.setDimensionPantalla(pulgadas);
 		producto.setSistemaOperativo(soEdit.getSelectedItemPosition());
 		producto.setId(ID);
+		producto.setImagen(bitmap);
 
 		if (oferta) {
 			// Descuento
@@ -390,7 +384,7 @@ public class InsertModificationProduct extends Activity {
 			float descuento;
 			try {
 				descuento = Float.parseFloat(descuentoEdit.getText().toString()
-						.replace(UM, ""));
+						.replace(getString(R.string.ud_monetaria), ""));
 			} catch (Exception e) {
 				Toast.makeText(this,
 						"El dato del precio de descuento es incorrecto",
@@ -409,6 +403,10 @@ public class InsertModificationProduct extends Activity {
 	public void Producto2Formulario(Producto producto) {
 		// ID
 		ID = producto.getId();
+
+		// Imagen
+		ImageView image = (ImageView) findViewById(R.id.AIMPProductImage);
+		image.setImageBitmap(producto.getImagen());
 
 		// Nombre
 		EditText nombreEdit = (EditText) findViewById(R.id.AIMPNameEdit);
@@ -429,16 +427,16 @@ public class InsertModificationProduct extends Activity {
 		int tipo = producto.getTipo();
 		switch (tipo) {
 		case Producto.TIPO_SMARTPHONE:
-			smartphoneEdit.setSelected(true);
-			tabletEdit.setSelected(false);
+			smartphoneEdit.setChecked(true);
+			tabletEdit.setChecked(false);
 			break;
 		case Producto.TIPO_TABLET:
-			smartphoneEdit.setSelected(false);
-			tabletEdit.setSelected(true);
+			smartphoneEdit.setChecked(false);
+			tabletEdit.setChecked(true);
 			break;
 		default:
-			smartphoneEdit.setSelected(false);
-			tabletEdit.setSelected(false);
+			smartphoneEdit.setChecked(false);
+			tabletEdit.setChecked(false);
 			break;
 		}
 
@@ -451,17 +449,17 @@ public class InsertModificationProduct extends Activity {
 
 		// Precio
 		EditText precioEdit = (EditText) findViewById(R.id.AIMPPriceEdit);
-		precioEdit.setText(producto.getPrecio() + UM);
+		precioEdit.setText(Double.toString(producto.getPrecio()));
 
 		// Pulgadas
 		EditText pulgadasEdit = (EditText) findViewById(R.id.AIMPInchesEdit);
-		pulgadasEdit.setText(producto.getDimensionPantalla() + PULGADAS);
+		pulgadasEdit.setText(Double.toString(producto.getDimensionPantalla()));
 
 		// Oferta
 		CheckBox ofertaCheck = (CheckBox) findViewById(R.id.AIMPDiscountBox);
 		ofertaCheck.setChecked(producto.isOferta());
 		EditText descuentoEdit = (EditText) findViewById(R.id.AIMPDiscountNum);
-		descuentoEdit.setText(producto.getPrecioOferta() + UM);
+		descuentoEdit.setText(Double.toString(producto.getPrecioOferta()));
 	}
 
 	/*
@@ -546,9 +544,16 @@ public class InsertModificationProduct extends Activity {
 			String v = s.toString().replace(fin, "") + fin;
 			text.removeTextChangedListener(this);
 
+			// Cambia la posición en la que se esta escribiendo
 			text.setText(v);
-			Selection.setSelection(text.getText(), v.length() - 1);
-
+			int pos = 0;
+			if (start == s.length()) {
+				pos = v.length() - fin.length();
+			} else {
+				pos = start - (s.length() - v.length()) + 1;
+			}
+			Selection.setSelection(text.getText(),
+					pos < v.length() ? pos : v.length() - fin.length());
 			text.addTextChangedListener(this);
 
 		}

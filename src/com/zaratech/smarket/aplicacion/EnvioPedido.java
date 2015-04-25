@@ -54,7 +54,7 @@ public class EnvioPedido extends Activity {
 		mSistemaOperativo.setText(AdaptadorBD.obtenerSistemaOperativo(
 				pPrueba.getSistemaOperativo()));
 		mPrecioProducto.setText(String.format("%.2f %s", pPrueba.getPrecio(),
-				getString(R.string.udMonetaria)));
+				getString(R.string.app_ud_monetaria)));
 
 		if (pPrueba.isOferta()) {
 			mPrecioProducto.setPaintFlags(mPrecioProducto.getPaintFlags()
@@ -62,7 +62,7 @@ public class EnvioPedido extends Activity {
 
 			mPrecioOfertaProducto.setText(String.format("%.2f %s",
 					pPrueba.getPrecioOferta(),
-					getString(R.string.udMonetaria)));
+					getString(R.string.app_ud_monetaria)));
 		}
 
 		if(pPrueba.getImagen() != null){

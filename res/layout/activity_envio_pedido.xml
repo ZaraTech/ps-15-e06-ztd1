@@ -17,7 +17,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:contentDescription="@string/img_producto"
+            android:contentDescription="@string/app_descripcion_foto"
             android:src="@drawable/ic_launcher" />
 
         <LinearLayout

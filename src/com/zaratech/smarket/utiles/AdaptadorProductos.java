@@ -51,7 +51,7 @@ public class AdaptadorProductos extends ArrayAdapter<Producto> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
 		// Obtiene el simbolo de la unidad monetaria a usar
-		String ud_monetaria = context.getString(R.string.udMonetaria);
+		String ud_monetaria = context.getString(R.string.app_ud_monetaria);
 		
 		// Obtener el producto correspondiente
 		Producto producto = getItem(position);
@@ -66,11 +66,11 @@ public class AdaptadorProductos extends ArrayAdapter<Producto> {
 			
 			
 			// Asociar elementos xml a variables
-			ImageView imagen = (ImageView) convertView.findViewById(R.id.Imagen);
+			ImageView imagen = (ImageView) convertView.findViewById(R.id.lista_row_imagen);
 			
-			TextView nombre = (TextView) convertView.findViewById(R.id.Nombre);
-			TextView datos = (TextView) convertView.findViewById(R.id.Datos);
-			TextView precio = (TextView) convertView.findViewById(R.id.Precio);
+			TextView nombre = (TextView) convertView.findViewById(R.id.lista_row_nombre);
+			TextView datos = (TextView) convertView.findViewById(R.id.lista_row_datos);
+			TextView precio = (TextView) convertView.findViewById(R.id.lista_row_precio);
 			
 			
 			// Rellenar elementos xml con valores del producto			
@@ -93,13 +93,13 @@ public class AdaptadorProductos extends ArrayAdapter<Producto> {
 			
 			
 			// Asociar elementos xml a variables
-			ImageView imagen = (ImageView) convertView.findViewById(R.id.Imagen);
+			ImageView imagen = (ImageView) convertView.findViewById(R.id.lista_row_oferta_imagen);
 			
-			TextView nombre = (TextView) convertView.findViewById(R.id.Nombre);
-			TextView datos = (TextView) convertView.findViewById(R.id.Datos);
-			TextView precio = (TextView) convertView.findViewById(R.id.Precio);
+			TextView nombre = (TextView) convertView.findViewById(R.id.lista_row_oferta_nombre);
+			TextView datos = (TextView) convertView.findViewById(R.id.lista_row_oferta_datos);
+			TextView precio = (TextView) convertView.findViewById(R.id.lista_row_oferta_precio);
 			
-			TextView precioOferta = (TextView) convertView.findViewById(R.id.Precio_Oferta);
+			TextView precioOferta = (TextView) convertView.findViewById(R.id.lista_row_oferta_precio_oferta);
 			
 			
 			// Rellenar elementos xml con valores del producto			
@@ -113,6 +113,8 @@ public class AdaptadorProductos extends ArrayAdapter<Producto> {
 			datos.setText(tipo + " - " + producto.getMarca().getNombre());
 			
 			precio.setText(String.format("%.2f %s", producto.getPrecio(), ud_monetaria));
+			
+			// Tacha precio antiguo
 			precio.setPaintFlags(precio.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 			
 			precioOferta.setText(String.format("%.2f %s", producto.getPrecioOferta(), ud_monetaria));

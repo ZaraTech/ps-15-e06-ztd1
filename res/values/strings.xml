@@ -1,94 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Aplicación -->
+    <!-- Aplicación / General -->
 
-    <string name="app_name">Smarket</string>
-
-    <!-- General -->
+    <string name="app_titulo">Smarket</string>
 
     <string name="app_tipo">Tipo</string>
     <string name="app_descripcion">Descripción</string>
     <string name="app_precio">Precio</string>
-    <string name="producto">Producto</string>
+    <string name="app_producto">Producto</string>
     <string name="app_descripcion_foto">Foto del producto</string>
     <string name="app_marca">Marca</string>
     <string name="app_sistema_operativo">Sistema operativo</string>
     <string name="app_nombre_producto">Nombre</string>
     <string name="app_tipo_smartphone">Smartphone</string>
     <string name="app_tipo_tablet">Tablet</string>
-    <string name="pantalla">Pantalla</string>
+    <string name="app_pantalla">Pantalla</string>
     <string name="app_pulgadas">Pulgadas</string>
-    <string name="udPantalla">\"</string>
-    <string name="udMonetaria">€</string>
+    <string name="app_ud_pantalla">\"</string>
+    <string name="app_ud_monetaria">€</string>
 
+    
     <!-- Lista de productos -->
 
-    <string name="no_hay_productos">No hay productos que mostrar.</string>
-    <string name="img_producto">Esta es la imágen del producto.</string>
+    <string name="lista_no_hay_productos">No hay productos que mostrar.</string>
 
     <!-- Menú de opciones de la Lista de productos -->
 
-    <string name="menu_opcion_add">Añadir Producto</string>
-    <string name="menu_opcion_busqueda">Búsqueda</string>
+    <string name="lista_menu_add">Añadir Producto</string>
+    <string name="lista_menu_busqueda">Búsqueda</string>
 
     <!-- Menú contextual de la Lista de productos -->
 
-    <string name="menu_opcion_editar">Editar Producto</string>
-    <string name="menu_opcion_eliminar">Eliminar Producto</string>
+    <string name="lista_menu_editar">Editar Producto</string>
+    <string name="lista_menu_eliminar">Eliminar Producto</string>
 
-    <!-- Búsqueda -->
+    
+    <!-- Búsqueda de productos-->
 
-    <string name="titulo_activity_busqueda">Búsqueda de Productos</string>
+    <string name="busqueda_titulo">Búsqueda de Productos</string>
 
+    
     <!-- Envío de pedidos -->
 
-    <string name="titulo_activity_envio_pedido">Envío de Pedido</string>
+    <string name="envio_titulo">Envío de Pedido</string>
+    
     <string name="pedido">Inserte un nombre para identificar su pedido:</string>
     <string name="boton_enviar">Enviar pedido</string>
     <string name="boton_aceptar">Vale</string>
-    <string name="pedido_preparar">Preparando pedido...</string>
-    <string name="pedido_enviar">Enviando pedido...</string>
+    
+    <!-- caracter &#8230; equivalente a puntos suspensivos '...' -->
+    <string name="pedido_preparar">Preparando pedido&#8230;</string>
+    <string name="pedido_enviar">Enviando pedido&#8230;</string>
     <string name="pedido_envio_exito">Enhorabuena</string>
     <string name="pedido_envio_error">Error</string>
     <string name="pedido_enviado">Pedido enviado!</string>
     <string name="pedido_no_enviado">Pedido NO enviado</string>
 
+    
     <!-- Información de productos -->
 
-    <string name="titulo_activity_info_producto">Información de Producto</string>
-    <string name="comprar">Comprar</string>
+    <string name="info_titulo">Información de Producto</string>
+    
+    <string name="info_comprar">Comprar</string>
 
-    <!-- Inserción/modificación de productos -->
+    
+    <!-- Inserción / Edición de productos -->
+    
+    <string name="edicion_titulo">Edición de Producto</string>
 
-    <string name="edicionTitulo">Edición de Producto</string>
     <string name="edicion_galeria">Galería</string>
     <string name="edicion_foto">Foto</string>
 
-    <string-array name="sistemasOperativos">
+<!--     <string-array name="sistemasOperativos">
         <item>Android</item>
         <item>Windows Phone</item>
         <item>IOS</item>
     </string-array>
-    <string-array name="edicionMarcas"></string-array>
+    <string-array name="edicionMarcas"></string-array> -->
 
     <string name="edicion_crear_marca">Crear</string>
-    <string name="cancelarCrearMarca">Cancelar</string>
+    <string name="edicion_cancelar_crear_marca">Cancelar</string>
     <string name="edicion_eliminar_marca">Eliminar</string>
     <string name="edicion_oferta">Oferta</string>
     <string name="edicion_guardar">Guardar</string>
 
     <!-- Errores -->
-    <string name="errorPrecioVacio">No se ha completado el campo del precio</string>
-    <string name="errorPrecioErroneo">El dato del precio es incorrecto</string>
-    <string name="errorNombreVacio">No se ha completado el campo del nombre</string>
-    <string name="errorTipoVacio">No se ha selecionado un tipo</string>
-    <string name="errorDescripcionVacia">No se ha completado el campo de la descripción</string>
-    <string name="errorPulgadasVacias">No se ha completado el campo de las pulgadas</string>
-    <string name="errorPulgadasErroneas">El dato de las pulgadas es incorrecto</string>
-    <string name="errorSOVacio">No se ha selecionado un sistema operativo</string>
-    <string name="errorDescuentoVacio">No se ha completado el campo de oferta</string>
-    <string name="errorDescuentoErroneo">El dato del precio de oferta es incorrecto</string>
-    <string name="errorRecortarNoDisponible">Su dispositivo no soporta la acción de recortar :(</string>
+    <string name="edicion_error_precio_vacio">No se ha completado el campo del precio</string>
+    <string name="edicion_error_precio_erroneo">El dato del precio es incorrecto</string>
+    <string name="edicion_error_nombre_vacio">No se ha completado el campo del nombre</string>
+    <string name="edicion_error_tipo_vacio">No se ha selecionado un tipo</string>
+    <string name="edicion_error_descripcion_vacia">No se ha completado el campo de la descripción</string>
+    <string name="edicion_error_pulgadas_vacias">No se ha completado el campo de las pulgadas</string>
+    <string name="edicion_error_pulgadas_erroneas">El dato de las pulgadas es incorrecto</string>
+    <string name="edicion_error_so_vacio">No se ha selecionado un sistema operativo</string>
+    <string name="edicion_error_descuento_vacio">No se ha completado el campo de oferta</string>
+    <string name="edicion_error_descuento_erroneo">El dato del precio de oferta es incorrecto</string>
+    <string name="edicion_error_recortar_no_disponible">Su dispositivo no soporta la acción de recortar :(</string>
 
 </resources>

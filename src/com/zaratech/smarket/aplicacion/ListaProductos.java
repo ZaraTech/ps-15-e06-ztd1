@@ -150,14 +150,14 @@ public class ListaProductos extends ListActivity {
 		int id = item.getItemId();
 		
 		// AÑADIR
-		if (id == R.id.menu_opcion_add) {
+		if (id == R.id.lista_menu_add) {
 			
 			Intent i = new Intent(this, EdicionProducto.class);
 			startActivityForResult(i, ACTIVITY_EDICION);
 			return true;
 			
 		// BUSCAR	
-		} else if (id == R.id.menu_opcion_busqueda) {
+		} else if (id == R.id.lista_menu_busqueda) {
 			
 			startActivity(new Intent(this, BusquedaProducto.class));
 			return true;
@@ -177,8 +177,8 @@ public class ListaProductos extends ListActivity {
 		
 		super.onCreateContextMenu(menu, v, menuInfo);
 		
-		menu.add(0, EDITAR_PRODUCTO, 0, R.string.menu_opcion_editar );
-		menu.add(1, ELIMINAR_PRODUCTO, 1, R.string.menu_opcion_eliminar );
+		menu.add(0, EDITAR_PRODUCTO, 0, R.string.lista_menu_editar );
+		menu.add(1, ELIMINAR_PRODUCTO, 1, R.string.lista_menu_eliminar );
 		
 
 	}

@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
     
+    <!-- id fuera de estandar, necesario de todas formas -->
     <ListView
         android:id="@+id/android:list"
         android:layout_width="fill_parent"
@@ -11,9 +12,9 @@
 
     <!-- Por si no hay productos -->
     <TextView
-        android:id="@+id/Vacio"
+        android:id="@+id/lista_vacio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/no_hay_productos" />
+        android:text="@string/lista_no_hay_productos" />
 
 </LinearLayout>

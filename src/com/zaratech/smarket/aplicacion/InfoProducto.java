@@ -91,11 +91,11 @@ public class InfoProducto extends Activity {
 		descripcionText.setText(p.getDescripcion());
 		marcaText.setText(p.getMarca().getNombre());
 		pantallaText.setText(String.format("%.2f %s", p.getDimensionPantalla(),
-											getString(R.string.udPantalla)));
+											getString(R.string.app_ud_pantalla)));
 		sistemaOpText.setText(AdaptadorBD.obtenerSistemaOperativo(p
 													.getSistemaOperativo()));
 		precioText.setText(String.format("%.2f %s", p.getPrecio(),
-											getString(R.string.udMonetaria)));
+											getString(R.string.app_ud_monetaria)));
 
 		// Mostrar el precio de oferta si el producto está de oferta
 		if (p.isOferta()) {
@@ -107,7 +107,7 @@ public class InfoProducto extends Activity {
 											LayoutParams.MATCH_PARENT,
 											LayoutParams.WRAP_CONTENT, 0.8f));
 			precioOfertaText.setText(String.format("%.2f %s",
-						p.getPrecioOferta(), getString(R.string.udMonetaria)));
+						p.getPrecioOferta(), getString(R.string.app_ud_monetaria)));
 			// Mostrar el precio de oferta a la dereacha de la pantalla
 			precioOfertaText.setLayoutParams(new LinearLayout.LayoutParams(
 												LayoutParams.MATCH_PARENT, 

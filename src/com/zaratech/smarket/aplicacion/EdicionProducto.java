@@ -118,14 +118,14 @@ public class EdicionProducto extends Activity {
 		 */
 		EditText pixel = (EditText) findViewById(R.id.edicion_pulgadas);
 		pixel.addTextChangedListener(new EditTextSimboloFinal(pixel,
-				getString(R.string.udPantalla)));
+				getString(R.string.app_ud_pantalla)));
 
 		EditText price = (EditText) findViewById(R.id.edicion_precio);
 		price.addTextChangedListener(new EditTextSimboloFinal(price,
-				getString(R.string.udMonetaria)));
+				getString(R.string.app_ud_monetaria)));
 
 		descuentosEdit.addTextChangedListener(new EditTextSimboloFinal(
-				descuentosEdit, getString(R.string.udMonetaria)));
+				descuentosEdit, getString(R.string.app_ud_monetaria)));
 
 		/*
 		 * Sistema Operativo
@@ -228,7 +228,7 @@ public class EdicionProducto extends Activity {
 					}
 				});
 
-		builder.setNegativeButton(getString(R.string.cancelarCrearMarca),
+		builder.setNegativeButton(getString(R.string.edicion_cancelar_crear_marca),
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.cancel();
@@ -294,7 +294,7 @@ public class EdicionProducto extends Activity {
 		} catch (ActivityNotFoundException anfe) { // El dispositivo no tiene
 													// ninguna aplicacion
 													// para recortar la imagen
-			String errorMessage = getString(R.string.errorRecortarNoDisponible);
+			String errorMessage = getString(R.string.edicion_error_recortar_no_disponible);
 			Toast toast = Toast
 					.makeText(this, errorMessage, Toast.LENGTH_SHORT);
 			toast.show();
@@ -316,7 +316,7 @@ public class EdicionProducto extends Activity {
 		EditText nombreEdit = (EditText) findViewById(R.id.edicion_nombre);
 		if (nombreEdit.getText() == null
 				|| nombreEdit.getText().toString().length() == 0) {
-			Toast.makeText(this, getString(R.string.errorNombreVacio),
+			Toast.makeText(this, getString(R.string.edicion_error_nombre_vacio),
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
@@ -330,7 +330,7 @@ public class EdicionProducto extends Activity {
 		} else if (tabletEdit.isChecked()) {
 			tipo = Producto.TIPO_TABLET;
 		} else {
-			Toast.makeText(this, getString(R.string.errorTipoVacio),
+			Toast.makeText(this, getString(R.string.edicion_error_tipo_vacio),
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
@@ -338,7 +338,7 @@ public class EdicionProducto extends Activity {
 		// Descripcion
 		EditText descripcionEdit = (EditText) findViewById(R.id.edicion_descripcion);
 		if (descripcionEdit.getText() == null) {
-			Toast.makeText(this, getString(R.string.errorDescripcionVacia),
+			Toast.makeText(this, getString(R.string.edicion_error_descripcion_vacia),
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
@@ -347,16 +347,16 @@ public class EdicionProducto extends Activity {
 		EditText pulgadasEdit = (EditText) findViewById(R.id.edicion_pulgadas);
 		if (pulgadasEdit.getText() == null
 				|| pulgadasEdit.getText().toString() == "") {
-			Toast.makeText(this, getString(R.string.errorPulgadasVacias),
+			Toast.makeText(this, getString(R.string.edicion_error_pulgadas_vacias),
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
 		float pulgadas;
 		try {
 			pulgadas = Float.parseFloat(pulgadasEdit.getText().toString()
-					.replace(getString(R.string.udPantalla), ""));
+					.replace(getString(R.string.app_ud_pantalla), ""));
 		} catch (Exception e) {
-			Toast.makeText(this, getString(R.string.errorPulgadasErroneas),
+			Toast.makeText(this, getString(R.string.edicion_error_pulgadas_erroneas),
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
@@ -365,16 +365,16 @@ public class EdicionProducto extends Activity {
 		EditText precioEdit = (EditText) findViewById(R.id.edicion_precio);
 		if (precioEdit.getText() == null
 				|| precioEdit.getText().toString() == "") {
-			Toast.makeText(this, getString(R.string.errorPrecioVacio),
+			Toast.makeText(this, getString(R.string.edicion_error_precio_vacio),
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
 		float precio;
 		try {
 			precio = Float.parseFloat(precioEdit.getText().toString()
-					.replace(getString(R.string.udMonetaria), ""));
+					.replace(getString(R.string.app_ud_monetaria), ""));
 		} catch (Exception e) {
-			Toast.makeText(this, getString(R.string.errorPrecioVacio),
+			Toast.makeText(this, getString(R.string.edicion_error_precio_vacio),
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
@@ -382,7 +382,7 @@ public class EdicionProducto extends Activity {
 		// SO
 		Spinner soEdit = (Spinner) findViewById(R.id.EDICION_SO);
 		if (soEdit.getSelectedItem() == null) {
-			Toast.makeText(this, getString(R.string.errorSOVacio),
+			Toast.makeText(this, getString(R.string.edicion_error_so_vacio),
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
@@ -407,16 +407,16 @@ public class EdicionProducto extends Activity {
 			EditText descuentoEdit = (EditText) findViewById(R.id.edicion_oferta_precio);
 			if (descuentoEdit.getText() == null
 					|| descuentoEdit.getText().toString() == "") {
-				Toast.makeText(this, getString(R.string.errorDescuentoVacio),
+				Toast.makeText(this, getString(R.string.edicion_error_descuento_vacio),
 						Toast.LENGTH_SHORT).show();
 				return null;
 			}
 			float descuento;
 			try {
 				descuento = Float.parseFloat(descuentoEdit.getText().toString()
-						.replace(getString(R.string.udMonetaria), ""));
+						.replace(getString(R.string.app_ud_monetaria), ""));
 			} catch (Exception e) {
-				Toast.makeText(this, getString(R.string.errorDescuentoErroneo),
+				Toast.makeText(this, getString(R.string.edicion_error_descuento_erroneo),
 						Toast.LENGTH_SHORT).show();
 				return null;
 			}

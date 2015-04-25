@@ -1,4 +1,4 @@
-# SmartCatalogue
+# Smarket
 ## Como preparar workspace:
 
 1. Preparar eclipse:
@@ -23,7 +23,7 @@
 * Aparece un mensaje de error al importar el proyecto: Para solucionar el error que aparece únicamente se debe poner el cursor sobre el error y elegir la 2º solución que ofrece eclipse.
 * Errores al ejecutar:
 
-> [ERROR] Failed to execute goal com.jayway.maven.plugins.android.generation2:android-maven-plugin:3.8.2:deploy (default-cli) on project SmartCatalogue: No online devices attached. -> [Help 1]
+> [ERROR] Failed to execute goal com.jayway.maven.plugins.android.generation2:android-maven-plugin:3.8.2:deploy (default-cli) on project Smarket: No online devices attached. -> [Help 1]
 
 Este error se produce al no haber iniciado ningún dispositivo. Para solucionarlo únicamente se debe [emular un dispositivo](http://www.aprendeandroid.com/l1/emulador.htm) o [conectar un dispositivo por usb](http://www.aprendeandroid.com/l1/conectar_movil_eclipse.htm)
 

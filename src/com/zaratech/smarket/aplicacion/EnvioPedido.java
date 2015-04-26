@@ -20,14 +20,14 @@ public class EnvioPedido extends Activity {
 	/*
 	 * Variables asociadas a los campos del layout
 	 */
-	private TextView mNombreProducto;
-	private TextView mMarcaProducto;
-	private TextView mPrecioProducto;
-	private TextView mPrecioOfertaProducto;
-	private TextView mTipoProducto;
-	private TextView mSistemaOperativo;
-	private EditText mIdPedidoCliente;
-	private ImageView mImagenProducto;
+	private TextView nombreProducto;
+	private TextView marcaProducto;
+	private TextView precioProducto;
+	private TextView precioOfertaProducto;
+	private TextView tipoProducto;
+	private TextView sistemaOperativo;
+	private EditText idPedidoCliente;
+	private ImageView imagenProducto;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,38 +36,38 @@ public class EnvioPedido extends Activity {
 		setContentView(R.layout.activity_envio_pedido);
 
 		Producto producto = getIntent().getExtras().
-				getParcelable(getString(R.id.app_producto));
+				getParcelable(getString(R.id.envio_producto));
 
-		mNombreProducto = (TextView)findViewById(R.id.app_producto);
-		mMarcaProducto = (TextView)findViewById(R.id.app_marca);
-		mTipoProducto = (TextView)findViewById(R.id.app_tipo);
-		mSistemaOperativo = (TextView)findViewById(R.id.app_sistema_operativo);
-		mPrecioProducto = (TextView)findViewById(R.id.app_precio);
-		mPrecioOfertaProducto = (TextView)findViewById(R.id.app_precio_oferta);
-		mIdPedidoCliente = (EditText)findViewById(R.id.envio_pedido_cliente);
-		mImagenProducto = (ImageView) findViewById(R.id.app_imagen);
+		nombreProducto = (TextView)findViewById(R.id.envio_producto);
+		marcaProducto = (TextView)findViewById(R.id.envio_marca);
+		tipoProducto = (TextView)findViewById(R.id.envio_tipo);
+		sistemaOperativo = (TextView)findViewById(R.id.envio_sistema_operativo);
+		precioProducto = (TextView)findViewById(R.id.envio_precio);
+		precioOfertaProducto = (TextView)findViewById(R.id.envio_precio_oferta);
+		idPedidoCliente = (EditText)findViewById(R.id.envio_pedido_cliente);
+		imagenProducto = (ImageView) findViewById(R.id.envio_imagen);
 
 		Button botonEnviar = (Button) findViewById(R.id.envio_enviar);
 
-		mNombreProducto.setText(producto.getNombre());
-		mMarcaProducto.setText(producto.getMarca().getNombre());
-		mTipoProducto.setText(AdaptadorBD.obtenerTipo(producto.getTipo()));
-		mSistemaOperativo.setText(AdaptadorBD.obtenerSistemaOperativo(
+		nombreProducto.setText(producto.getNombre());
+		marcaProducto.setText(producto.getMarca().getNombre());
+		tipoProducto.setText(AdaptadorBD.obtenerTipo(producto.getTipo()));
+		sistemaOperativo.setText(AdaptadorBD.obtenerSistemaOperativo(
 				producto.getSistemaOperativo()));
-		mPrecioProducto.setText(String.format("%.2f %s", producto.getPrecio(),
+		precioProducto.setText(String.format("%.2f %s", producto.getPrecio(),
 				getString(R.string.app_ud_monetaria)));
 
 		if (producto.isOferta()) {
-			mPrecioProducto.setPaintFlags(mPrecioProducto.getPaintFlags()
+			precioProducto.setPaintFlags(precioProducto.getPaintFlags()
 					| Paint.STRIKE_THRU_TEXT_FLAG);
 
-			mPrecioOfertaProducto.setText(String.format("%.2f %s",
+			precioOfertaProducto.setText(String.format("%.2f %s",
 					producto.getPrecioOferta(),
 					getString(R.string.app_ud_monetaria)));
 		}
 
 		if(producto.getImagen() != null){
-			mImagenProducto.setImageBitmap(producto.getImagen());
+			imagenProducto.setImageBitmap(producto.getImagen());
 		}	
 
 
@@ -76,7 +76,7 @@ public class EnvioPedido extends Activity {
 			public void onClick(View view) {
 
 				// Enviar email
-				String idPedido = mIdPedidoCliente.getText().toString();
+				String idPedido = idPedidoCliente.getText().toString();
 
 				if (!idPedido.isEmpty()) {
 

@@ -35,7 +35,7 @@ public class EnviarMail extends AsyncTask<String, Object, Object> {
 	 * Datos a incluir en el correo
 	 */
 	private final String DESTINATARIO = "smarket.zaratech@gmail.com";
-	private final String ASUNTO_MSJ = "[SMARKET] Orden de pedido - ";
+	private final String ASUNTO_MSJ = "[SMARKET] - Pedido ";
 	private final String TEXTO_MSJ = "Texto de la orden de pedido...";
 
 	/*
@@ -149,7 +149,7 @@ public class EnviarMail extends AsyncTask<String, Object, Object> {
 			message.setContent(TEXTO_MSJ, "text/html");
 			message.setRecipients(MimeMessage.RecipientType.TO,
 					InternetAddress.parse(DESTINATARIO));
-			message.setSubject(ASUNTO_MSJ + " " + idPedidoCliente[0]);
+			message.setSubject(ASUNTO_MSJ + " \"" + idPedidoCliente[0] + "\"");
 
 			t.connect(NOMBRE_USUARIO, PASS);
 			publishProgress(enviarMailActivity.getString(R.string.envio_enviar));

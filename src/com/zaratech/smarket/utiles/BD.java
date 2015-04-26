@@ -66,10 +66,12 @@ public class BD {
     		int marca = (int)(Math.random()*tabla_marcas.size());
     		int tipo = (int)(Math.random()*2.0);
     		double precio = Math.random()*300+50;
+    		String descripcion = "El mejor del mercado.";
     		Producto p = new Producto("Producto " + i, tabla_marcas.get(marca), tipo, precio);
     		
     		p.setId(i);
     		p.setImagen(imagen);
+    		p.setDescripcion(descripcion);
     		
     		if((int)(Math.random()*2.0) == 0){
     			p.setOferta();

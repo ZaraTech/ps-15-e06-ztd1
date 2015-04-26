@@ -75,7 +75,7 @@ public class EnviarMail extends AsyncTask<String, Object, Object> {
 
 		// Crea el cuadro de texto que mostrara el estado durante el envio
 		estado = new ProgressDialog(enviarMailActivity);
-		estado.setMessage(enviarMailActivity.getString(R.string.pedido_preparar));
+		estado.setMessage(enviarMailActivity.getString(R.string.envio_preparar));
 		estado.setIndeterminate(false);
 		estado.setCancelable(false);
 		estado.show();
@@ -97,15 +97,18 @@ public class EnviarMail extends AsyncTask<String, Object, Object> {
 		if (resultado.compareTo(ENVIO_OK) == 0) {
 
 			constructor.setTitle(enviarMailActivity
-					.getString(R.string.pedido_envio_exito));
+					.getString(R.string.envio_exito));
+			
 			constructor.setMessage(String.format("\n%s\n",
-					enviarMailActivity.getString(R.string.pedido_enviado)));
+					enviarMailActivity.getString(R.string.envio_enviado)));
+			
 			constructor.setNeutralButton(
-					enviarMailActivity.getString(R.string.boton_aceptar),
+					enviarMailActivity.getString(R.string.envio_boton_aceptar),
 					new DialogInterface.OnClickListener() {
 
 						public void onClick(DialogInterface d, int which) {
 
+							// vuelve al listado
 							Intent i = new Intent(enviarMailActivity
 									.getBaseContext(), ListaProductos.class);
 							enviarMailActivity.startActivity(i);
@@ -115,11 +118,13 @@ public class EnviarMail extends AsyncTask<String, Object, Object> {
 		} else {
 
 			constructor.setTitle(enviarMailActivity
-					.getString(R.string.pedido_envio_error));
+					.getString(R.string.envio_error));
+			
 			constructor.setMessage(String.format("\n%s\n",
-					enviarMailActivity.getString(R.string.pedido_no_enviado)));
+					enviarMailActivity.getString(R.string.envio_no_enviado)));
+			
 			constructor.setNeutralButton(
-					enviarMailActivity.getString(R.string.boton_aceptar),
+					enviarMailActivity.getString(R.string.envio_boton_aceptar),
 					new DialogInterface.OnClickListener() {
 
 						public void onClick(DialogInterface d, int which) {
@@ -147,10 +152,8 @@ public class EnviarMail extends AsyncTask<String, Object, Object> {
 			message.setSubject(ASUNTO_MSJ + " " + idPedidoCliente[0]);
 
 			t.connect(NOMBRE_USUARIO, PASS);
-			publishProgress(enviarMailActivity.getString(R.string.pedido_enviar));
+			publishProgress(enviarMailActivity.getString(R.string.envio_enviar));
 			t.sendMessage(message, message.getAllRecipients());	
-
-			Log.i("Smarket_EnviarMail", "Correo enviado!");
 
 			return ENVIO_OK;
 

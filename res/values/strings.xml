@@ -45,17 +45,17 @@
 
     <string name="envio_titulo">Envío de Pedido</string>
     
-    <string name="pedido">Inserte un nombre para identificar su pedido:</string>
-    <string name="boton_enviar">Enviar pedido</string>
-    <string name="boton_aceptar">Vale</string>
+    <string name="envio_pedido">Inserte un nombre para identificar su pedido:</string>
+    <string name="envio_boton_enviar">Enviar pedido</string>
+    <string name="envio_boton_aceptar">Vale</string>
     
     <!-- caracter &#8230; equivalente a puntos suspensivos '...' -->
-    <string name="pedido_preparar">Preparando pedido&#8230;</string>
-    <string name="pedido_enviar">Enviando pedido&#8230;</string>
-    <string name="pedido_envio_exito">Enhorabuena</string>
-    <string name="pedido_envio_error">Error</string>
-    <string name="pedido_enviado">Pedido enviado!</string>
-    <string name="pedido_no_enviado">Pedido NO enviado</string>
+    <string name="envio_preparar">Preparando pedido&#8230;</string>
+    <string name="envio_enviar">Enviando pedido&#8230;</string>
+    <string name="envio_exito">Enhorabuena</string>
+    <string name="envio_error">Error</string>
+    <string name="envio_enviado">Pedido enviado!</string>
+    <string name="envio_no_enviado">Pedido NO enviado</string>
 
     
     <!-- Información de productos -->

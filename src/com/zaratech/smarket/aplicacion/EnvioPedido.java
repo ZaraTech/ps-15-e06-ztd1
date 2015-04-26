@@ -35,38 +35,39 @@ public class EnvioPedido extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_envio_pedido);
 
-		Producto pPrueba = getIntent().getExtras().getParcelable("Producto");
+		Producto producto = getIntent().getExtras().
+				getParcelable(getString(R.id.app_producto));
 
-		mNombreProducto = (TextView)findViewById(R.id.Nombre);
-		mMarcaProducto = (TextView)findViewById(R.id.Marca);
-		mTipoProducto = (TextView)findViewById(R.id.Tipo);
-		mSistemaOperativo = (TextView)findViewById(R.id.Sistema_operativo);
-		mPrecioProducto = (TextView)findViewById(R.id.Precio);
-		mPrecioOfertaProducto = (TextView)findViewById(R.id.Precio_oferta);
-		mIdPedidoCliente = (EditText)findViewById(R.id.PedidoCliente);
-		mImagenProducto = (ImageView) findViewById(R.id.Imagen);
+		mNombreProducto = (TextView)findViewById(R.id.app_producto);
+		mMarcaProducto = (TextView)findViewById(R.id.app_marca);
+		mTipoProducto = (TextView)findViewById(R.id.app_tipo);
+		mSistemaOperativo = (TextView)findViewById(R.id.app_sistema_operativo);
+		mPrecioProducto = (TextView)findViewById(R.id.app_precio);
+		mPrecioOfertaProducto = (TextView)findViewById(R.id.app_precio_oferta);
+		mIdPedidoCliente = (EditText)findViewById(R.id.envio_pedido_cliente);
+		mImagenProducto = (ImageView) findViewById(R.id.app_imagen);
 
-		Button botonEnviar = (Button) findViewById(R.id.Enviar);
+		Button botonEnviar = (Button) findViewById(R.id.envio_enviar);
 
-		mNombreProducto.setText(pPrueba.getNombre());
-		mMarcaProducto.setText(pPrueba.getMarca().getNombre());
-		mTipoProducto.setText(AdaptadorBD.obtenerTipo(pPrueba.getTipo()));
+		mNombreProducto.setText(producto.getNombre());
+		mMarcaProducto.setText(producto.getMarca().getNombre());
+		mTipoProducto.setText(AdaptadorBD.obtenerTipo(producto.getTipo()));
 		mSistemaOperativo.setText(AdaptadorBD.obtenerSistemaOperativo(
-				pPrueba.getSistemaOperativo()));
-		mPrecioProducto.setText(String.format("%.2f %s", pPrueba.getPrecio(),
+				producto.getSistemaOperativo()));
+		mPrecioProducto.setText(String.format("%.2f %s", producto.getPrecio(),
 				getString(R.string.app_ud_monetaria)));
 
-		if (pPrueba.isOferta()) {
+		if (producto.isOferta()) {
 			mPrecioProducto.setPaintFlags(mPrecioProducto.getPaintFlags()
 					| Paint.STRIKE_THRU_TEXT_FLAG);
 
 			mPrecioOfertaProducto.setText(String.format("%.2f %s",
-					pPrueba.getPrecioOferta(),
+					producto.getPrecioOferta(),
 					getString(R.string.app_ud_monetaria)));
 		}
 
-		if(pPrueba.getImagen() != null){
-			mImagenProducto.setImageBitmap(pPrueba.getImagen());
+		if(producto.getImagen() != null){
+			mImagenProducto.setImageBitmap(producto.getImagen());
 		}	
 
 
@@ -80,12 +81,12 @@ public class EnvioPedido extends Activity {
 				if (!idPedido.isEmpty()) {
 
 					// Ejecuta el envio en 2o plano
-					EnviarMail em = new EnviarMail(EnvioPedido.this);
-					em.execute(idPedido);
+					EnviarMail envio = new EnviarMail(EnvioPedido.this);
+					envio.execute(idPedido);
 
 
 				} else {
-					Toast.makeText(getBaseContext(), R.string.pedido_envio_error,
+					Toast.makeText(getBaseContext(), R.string.envio_error,
 							Toast.LENGTH_SHORT).show();
 				}
 			}

@@ -13,7 +13,7 @@
         android:paddingBottom="10dip" >
 
         <ImageView
-            android:id="@+id/Imagen"
+            android:id="@+id/app_imagen"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
@@ -28,7 +28,7 @@
             android:padding="10dip" >
 
             <TextView
-                android:id="@+id/Nombre"
+                android:id="@+id/app_producto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 
@@ -36,19 +36,19 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/Tipo"
+                android:id="@+id/app_tipo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp" />
 
             <TextView
-                android:id="@+id/Marca"
+                android:id="@+id/app_marca"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp" />
 
             <TextView
-                android:id="@+id/Sistema_operativo"
+                android:id="@+id/app_sistema_operativo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp" />
@@ -63,7 +63,7 @@
             android:padding="10dip" >
 
             <TextView
-                android:id="@+id/Precio"
+                android:id="@+id/app_precio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 
@@ -72,7 +72,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/Precio_oferta"
+                android:id="@+id/app_precio_oferta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
               
@@ -93,7 +93,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="15dip"
-        android:text="@string/pedido" />
+        android:text="@string/envio_pedido" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -102,7 +102,7 @@
         android:paddingBottom="10dip" >
 
         <EditText
-            android:id="@+id/PedidoCliente"
+            android:id="@+id/envio_pedido_cliente"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -111,11 +111,11 @@
         </EditText>
 
         <Button
-            android:id="@+id/Enviar"
+            android:id="@+id/envio_enviar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="sendMessage"
-            android:text="@string/boton_enviar" />
+            android:text="@string/envio_boton_enviar" />
     </LinearLayout>
 
 </LinearLayout>

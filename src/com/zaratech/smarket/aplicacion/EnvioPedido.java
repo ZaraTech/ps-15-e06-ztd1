@@ -28,6 +28,11 @@ public class EnvioPedido extends Activity {
 	private TextView sistemaOperativo;
 	private EditText idPedidoCliente;
 	private ImageView imagenProducto;
+	
+	/**
+	 * Clave que identifica un Producto dentro del campo extras del Intent
+	 */
+	private final String EXTRA_PRODUCTO = "Producto";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,7 +41,7 @@ public class EnvioPedido extends Activity {
 		setContentView(R.layout.activity_envio_pedido);
 
 		Producto producto = getIntent().getExtras().
-				getParcelable(getString(R.id.envio_producto));
+				getParcelable(EXTRA_PRODUCTO);
 
 		nombreProducto = (TextView)findViewById(R.id.envio_producto);
 		marcaProducto = (TextView)findViewById(R.id.envio_marca);

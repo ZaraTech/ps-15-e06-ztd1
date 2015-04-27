@@ -56,7 +56,7 @@ public class InfoProducto extends Activity {
 		comprarButt.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				Intent i = new Intent(InfoProducto.this, EnvioPedido.class);
-				i.putExtra("source", "noteEdit");
+
 				// Añade Producto recibido
 				i.putExtra(EXTRA_PRODUCTO, p);
 				startActivity(i);

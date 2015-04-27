@@ -23,15 +23,15 @@ import android.graphics.Paint;
 public class InfoProducto extends Activity {
 
 	// Campos del layout a rellenar
-	private TextView tipoText;
+	private TextView tipo;
 	private ImageView imagen;
-	private TextView nombreText;
-	private TextView descripcionText;
-	private TextView marcaText;
-	private TextView pantallaText;
-	private TextView sistemaOpText;
-	private TextView precioText;
-	private TextView precioOfertaText;
+	private TextView nombre;
+	private TextView descripcion;
+	private TextView marca;
+	private TextView pantalla;
+	private TextView sistemaOp;
+	private TextView precio;
+	private TextView precioOferta;
 	private Button comprarButt;
 
 	private Producto p;
@@ -73,43 +73,43 @@ public class InfoProducto extends Activity {
 		p = this.getIntent().getExtras().getParcelable(EXTRA_PRODUCTO);
 
 		// Localizar los campos del layout
-		tipoText = (TextView) findViewById(R.id.tipo_text);
-		imagen = (ImageView) findViewById(R.id.image);
-		nombreText = (TextView) findViewById(R.id.name_text);
-		descripcionText = (TextView) findViewById(R.id.description_text);
-		marcaText = (TextView) findViewById(R.id.brand_text);
-		pantallaText = (TextView) findViewById(R.id.screen_text);
-		sistemaOpText = (TextView) findViewById(R.id.operative_system_text);
-		precioText = (TextView) findViewById(R.id.price_text);
-		precioOfertaText = (TextView) findViewById(R.id.price_ofert_text);
-		comprarButt = (Button) findViewById(R.id.buy_button);
+		tipo = (TextView) findViewById(R.id.info_tipo);
+		imagen = (ImageView) findViewById(R.id.info_imagen);
+		nombre = (TextView) findViewById(R.id.info_nombre);
+		descripcion = (TextView) findViewById(R.id.info_descripcion);
+		marca = (TextView) findViewById(R.id.info_marca);
+		pantalla = (TextView) findViewById(R.id.info_pantalla);
+		sistemaOp = (TextView) findViewById(R.id.info_sistema_operativo);
+		precio = (TextView) findViewById(R.id.info_precio);
+		precioOferta = (TextView) findViewById(R.id.info_precio_oferta);
+		comprarButt = (Button) findViewById(R.id.info_boton_comprar);
 
 		// Rellenado de campos del layout
-		tipoText.setText(AdaptadorBD.obtenerTipo(p.getTipo()));
+		tipo.setText(AdaptadorBD.obtenerTipo(p.getTipo()));
 		imagen.setImageBitmap(p.getImagen());
-		nombreText.setText(p.getNombre());
-		descripcionText.setText(p.getDescripcion());
-		marcaText.setText(p.getMarca().getNombre());
-		pantallaText.setText(String.format("%.2f %s", p.getDimensionPantalla(),
-											getString(R.string.app_ud_pantalla)));
-		sistemaOpText.setText(AdaptadorBD.obtenerSistemaOperativo(p
+		nombre.setText(p.getNombre());
+		descripcion.setText(p.getDescripcion());
+		marca.setText(p.getMarca().getNombre());
+		pantalla.setText(String.format("%.2f %s", p.getDimensionPantalla(),
+										getString(R.string.app_ud_pantalla)));
+		sistemaOp.setText(AdaptadorBD.obtenerSistemaOperativo(p
 													.getSistemaOperativo()));
-		precioText.setText(String.format("%.2f %s", p.getPrecio(),
-											getString(R.string.app_ud_monetaria)));
+		precio.setText(String.format("%.2f %s", p.getPrecio(),
+										getString(R.string.app_ud_monetaria)));
 
 		// Mostrar el precio de oferta si el producto está de oferta
 		if (p.isOferta()) {
 			// Mostrar el precio anterior tachado
-			precioText.setPaintFlags(precioText.getPaintFlags()
+			precio.setPaintFlags(precio.getPaintFlags()
 										| Paint.STRIKE_THRU_TEXT_FLAG);
 			// Mostrar el precio anterior desplazado en el centro de pantalla
-			precioText.setLayoutParams(new LinearLayout.LayoutParams(
+			precio.setLayoutParams(new LinearLayout.LayoutParams(
 											LayoutParams.MATCH_PARENT,
 											LayoutParams.WRAP_CONTENT, 0.8f));
-			precioOfertaText.setText(String.format("%.2f %s",
-						p.getPrecioOferta(), getString(R.string.app_ud_monetaria)));
+			precioOferta.setText(String.format("%.2f %s",
+					p.getPrecioOferta(), getString(R.string.app_ud_monetaria)));
 			// Mostrar el precio de oferta a la dereacha de la pantalla
-			precioOfertaText.setLayoutParams(new LinearLayout.LayoutParams(
+			precioOferta.setLayoutParams(new LinearLayout.LayoutParams(
 												LayoutParams.MATCH_PARENT, 
 												LayoutParams.WRAP_CONTENT, 1f));
 		}

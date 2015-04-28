@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.zaratech</groupId>
 	<artifactId>Smarket</artifactId>
-	<version>0.0.73</version>
+	<version>0.1.0</version>
 	<packaging>apk</packaging>
 	<name>Smarket</name>
 
@@ -162,7 +162,7 @@
 						</execution>
 					</executions>
 					<configuration>
-						<offset>0</offset>
+						<offset>-74</offset>
 					</configuration>
 				</plugin>
 			</plugins>

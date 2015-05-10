@@ -92,8 +92,7 @@ public class InfoProducto extends Activity {
 		marca.setText(p.getMarca().getNombre());
 		pantalla.setText(String.format("%.2f %s", p.getDimensionPantalla(),
 										getString(R.string.app_ud_pantalla)));
-		sistemaOp.setText(AdaptadorBD.obtenerSistemaOperativo(p
-													.getSistemaOperativo()));
+		sistemaOp.setText(AdaptadorBD.obtenerSistemaOperativo(p.getSistemaOperativo()));
 		precio.setText(String.format("%.2f %s", p.getPrecio(),
 										getString(R.string.app_ud_monetaria)));
 

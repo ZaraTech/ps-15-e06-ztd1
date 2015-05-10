@@ -28,13 +28,6 @@ public interface InterfazBD {
 	public Producto obtenerProducto(int id);
 	
 	/**
-	 * Devuelve el Producto con el nombre [nombre] almacenado en la BD
-	 * @param nombre Nombre del Producto
-	 * @return Producto con nombre igual a [nombre]
-	 */
-	public Producto obtenerProducto(String nombre);
-	
-	/**
 	 * Almacena un Producto en la BD. <br/>
 	 * <b> El identificador se crea al almacenar, por lo que no hace falta
 	 * especificarlo antes. </b>
@@ -74,13 +67,6 @@ public interface InterfazBD {
 	 * @return Marca con identificador igual a [id]
 	 */
 	public Marca obtenerMarca(int id);
-	
-	/**
-	 * Devuelve la Marca con el mismo nombre [nombre] almacenado en la BD
-	 * @param nombre Nombre de la Marca
-	 * @return Marca con nombre igual a [nombre]
-	 */
-	public Marca obtenerMarca(String nombre);
 	
 	/**
 	 * Almacena la Marca en la BD. <br/>

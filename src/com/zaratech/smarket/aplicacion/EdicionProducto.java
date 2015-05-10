@@ -72,6 +72,7 @@ public class EdicionProducto extends Activity {
 		 * Inicialización la BD
 		 */
 		bd = new AdaptadorBD(this);
+		bd.open();
 
 		/*
 		 * Carga de imagenes

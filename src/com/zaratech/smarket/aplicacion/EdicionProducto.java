@@ -12,6 +12,7 @@ import com.zaratech.smarket.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,6 +21,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -132,10 +134,13 @@ public class EdicionProducto extends Activity {
 		 * Sistema Operativo
 		 */
 		Spinner so = (Spinner) findViewById(R.id.EDICION_SO);
-		String[] arr=new String[3];
-		arr[Producto.SO_ANDROID]=AdaptadorBD.obtenerSistemaOperativo(Producto.SO_ANDROID);
-		arr[Producto.SO_IOS]=AdaptadorBD.obtenerSistemaOperativo(Producto.SO_IOS);
-		arr[Producto.SO_WINDOWSPHONE]=AdaptadorBD.obtenerSistemaOperativo(Producto.SO_WINDOWSPHONE);
+		String[] arr = new String[3];
+		arr[Producto.SO_ANDROID] = AdaptadorBD
+				.obtenerSistemaOperativo(Producto.SO_ANDROID);
+		arr[Producto.SO_IOS] = AdaptadorBD
+				.obtenerSistemaOperativo(Producto.SO_IOS);
+		arr[Producto.SO_WINDOWSPHONE] = AdaptadorBD
+				.obtenerSistemaOperativo(Producto.SO_WINDOWSPHONE);
 
 		ArrayAdapter<String> adp1 = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, arr);
@@ -151,7 +156,7 @@ public class EdicionProducto extends Activity {
 
 		crearMarca.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				mostrarDialogoCreacionMarcas().show();
+				mostrarDialogoCreacionMarcas();
 			}
 		});
 		Button eliminarMarca = (Button) findViewById(R.id.edicion_eliminar_marca);
@@ -202,40 +207,53 @@ public class EdicionProducto extends Activity {
 	/*
 	 * Creacion de dialogo de adiccion de marcas
 	 */
-	private AlertDialog.Builder mostrarDialogoCreacionMarcas() {
+	private void mostrarDialogoCreacionMarcas() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
 		LinearLayout.LayoutParams layout = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.MATCH_PARENT,
 				LinearLayout.LayoutParams.MATCH_PARENT);
 		final EditText texto = new EditText(this);
-
+		
+		int maxLength = 30; //Numero de caracteres maximo
+		InputFilter[] fArray = new InputFilter[1];
+		fArray[0] = new InputFilter.LengthFilter(maxLength);
+		texto.setFilters(fArray);
+		
+		final Context context=this;
 		texto.setLayoutParams(layout);
 		texto.setInputType(InputType.TYPE_CLASS_TEXT);
 		builder.setView(texto);
 
-		builder.setPositiveButton(getString(R.string.edicion_crear_marca),
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						String s = texto.getText() == null ? null : texto
-								.getText().toString();
-						if (s != null) {
-							Marca m = new Marca(s);
-							bd.crearMarca(m);
-							actualizaSpinner();
-							selecionarMarca(m);
-						}
-						texto.setText("");
-					}
-				});
-
-		builder.setNegativeButton(getString(R.string.edicion_cancelar_crear_marca),
+		builder.setNegativeButton(
+				getString(R.string.edicion_cancelar_crear_marca),
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.cancel();
 					}
 				});
-		return builder;
+		builder.setPositiveButton(getString(R.string.edicion_crear_marca),null);
+		
+		final AlertDialog dialog = builder.show();
+		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				String s = texto.getText() == null ? "" : texto
+						.getText().toString();
+				if (s.length() > 0 && s.length() < 30) {
+					Marca m = new Marca(s);
+					bd.crearMarca(m);
+					actualizaSpinner();
+					selecionarMarca(m);
+					dialog.dismiss();
+				} else {
+					Toast.makeText(
+							context,
+							getString(R.string.edicion_error_marca_erronea),
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
 	}
 
 	/*
@@ -317,7 +335,15 @@ public class EdicionProducto extends Activity {
 		EditText nombreEdit = (EditText) findViewById(R.id.edicion_nombre);
 		if (nombreEdit.getText() == null
 				|| nombreEdit.getText().toString().length() == 0) {
-			Toast.makeText(this, getString(R.string.edicion_error_nombre_vacio),
+			Toast.makeText(this,
+					getString(R.string.edicion_error_nombre_vacio),
+					Toast.LENGTH_SHORT).show();
+			return null;
+		}
+		if (nombreEdit.getText().toString().length() < 5
+				|| nombreEdit.getText().toString().length() > 30) {
+			Toast.makeText(this,
+					getString(R.string.edicion_error_nombre_errorneo),
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
@@ -339,7 +365,14 @@ public class EdicionProducto extends Activity {
 		// Descripcion
 		EditText descripcionEdit = (EditText) findViewById(R.id.edicion_descripcion);
 		if (descripcionEdit.getText() == null) {
-			Toast.makeText(this, getString(R.string.edicion_error_descripcion_vacia),
+			Toast.makeText(this,
+					getString(R.string.edicion_error_descripcion_vacia),
+					Toast.LENGTH_SHORT).show();
+			return null;
+		}
+		if (descripcionEdit.getText().toString().length() > 1000) {
+			Toast.makeText(this,
+					getString(R.string.edicion_error_descripcion_erronea),
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
@@ -348,7 +381,8 @@ public class EdicionProducto extends Activity {
 		EditText pulgadasEdit = (EditText) findViewById(R.id.edicion_pulgadas);
 		if (pulgadasEdit.getText() == null
 				|| pulgadasEdit.getText().toString() == "") {
-			Toast.makeText(this, getString(R.string.edicion_error_pulgadas_vacias),
+			Toast.makeText(this,
+					getString(R.string.edicion_error_pulgadas_vacias),
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
@@ -357,7 +391,14 @@ public class EdicionProducto extends Activity {
 			pulgadas = Float.parseFloat(pulgadasEdit.getText().toString()
 					.replace(getString(R.string.app_ud_pantalla), ""));
 		} catch (Exception e) {
-			Toast.makeText(this, getString(R.string.edicion_error_pulgadas_erroneas),
+			Toast.makeText(this,
+					getString(R.string.edicion_error_pulgadas_vacias),
+					Toast.LENGTH_SHORT).show();
+			return null;
+		}
+		if (pulgadas<=0) {
+			Toast.makeText(this,
+					getString(R.string.edicion_error_pulgadas_erroneas),
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
@@ -366,7 +407,8 @@ public class EdicionProducto extends Activity {
 		EditText precioEdit = (EditText) findViewById(R.id.edicion_precio);
 		if (precioEdit.getText() == null
 				|| precioEdit.getText().toString() == "") {
-			Toast.makeText(this, getString(R.string.edicion_error_precio_vacio),
+			Toast.makeText(this,
+					getString(R.string.edicion_error_precio_vacio),
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
@@ -375,7 +417,14 @@ public class EdicionProducto extends Activity {
 			precio = Float.parseFloat(precioEdit.getText().toString()
 					.replace(getString(R.string.app_ud_monetaria), ""));
 		} catch (Exception e) {
-			Toast.makeText(this, getString(R.string.edicion_error_precio_vacio),
+			Toast.makeText(this,
+					getString(R.string.edicion_error_precio_vacio),
+					Toast.LENGTH_SHORT).show();
+			return null;
+		}
+		if(precio<=0){
+			Toast.makeText(this,
+					getString(R.string.edicion_error_precio_erroneo),
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
@@ -408,7 +457,8 @@ public class EdicionProducto extends Activity {
 			EditText descuentoEdit = (EditText) findViewById(R.id.edicion_oferta_precio);
 			if (descuentoEdit.getText() == null
 					|| descuentoEdit.getText().toString() == "") {
-				Toast.makeText(this, getString(R.string.edicion_error_descuento_vacio),
+				Toast.makeText(this,
+						getString(R.string.edicion_error_descuento_vacio),
 						Toast.LENGTH_SHORT).show();
 				return null;
 			}
@@ -417,7 +467,20 @@ public class EdicionProducto extends Activity {
 				descuento = Float.parseFloat(descuentoEdit.getText().toString()
 						.replace(getString(R.string.app_ud_monetaria), ""));
 			} catch (Exception e) {
-				Toast.makeText(this, getString(R.string.edicion_error_descuento_erroneo),
+				Toast.makeText(this,
+						getString(R.string.edicion_error_descuento_vacio),
+						Toast.LENGTH_SHORT).show();
+				return null;
+			}
+			if (descuento<=0) {
+				Toast.makeText(this,
+						getString(R.string.edicion_error_descuento_erroneo),
+						Toast.LENGTH_SHORT).show();
+				return null;
+			}
+			if (descuento>=precio) {
+				Toast.makeText(this,
+						getString(R.string.edicion_error_descuento_superior_precio),
 						Toast.LENGTH_SHORT).show();
 				return null;
 			}

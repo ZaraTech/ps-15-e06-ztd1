@@ -72,13 +72,6 @@
     <string name="edicion_galeria">Galería</string>
     <string name="edicion_foto">Foto</string>
 
-<!--     <string-array name="sistemasOperativos">
-        <item>Android</item>
-        <item>Windows Phone</item>
-        <item>IOS</item>
-    </string-array>
-    <string-array name="edicionMarcas"></string-array> -->
-
     <string name="edicion_crear_marca">Crear</string>
     <string name="edicion_cancelar_crear_marca">Cancelar</string>
     <string name="edicion_eliminar_marca">Eliminar</string>
@@ -86,16 +79,20 @@
     <string name="edicion_guardar">Guardar</string>
 
     <!-- Errores -->
+    <string name="edicion_error_marca_erronea">El nombre de la marca debe tener entre 1 y 30 caracteres</string>
     <string name="edicion_error_precio_vacio">No se ha completado el campo del precio</string>
-    <string name="edicion_error_precio_erroneo">El dato del precio es incorrecto</string>
+    <string name="edicion_error_precio_erroneo">El dato del precio debe ser superior a 0</string>
     <string name="edicion_error_nombre_vacio">No se ha completado el campo del nombre</string>
+    <string name="edicion_error_nombre_errorneo">El campo del nombre debe tener entre 5 y 30 caracteres</string>
     <string name="edicion_error_tipo_vacio">No se ha selecionado un tipo</string>
     <string name="edicion_error_descripcion_vacia">No se ha completado el campo de la descripción</string>
+    <string name="edicion_error_descripcion_erronea">El campo de la descripción debe tener como maximo 1000 caracteres</string>
     <string name="edicion_error_pulgadas_vacias">No se ha completado el campo de las pulgadas</string>
-    <string name="edicion_error_pulgadas_erroneas">El dato de las pulgadas es incorrecto</string>
+    <string name="edicion_error_pulgadas_erroneas">El dato de las pulgadas debe ser superior a 0</string>
     <string name="edicion_error_so_vacio">No se ha selecionado un sistema operativo</string>
     <string name="edicion_error_descuento_vacio">No se ha completado el campo de oferta</string>
-    <string name="edicion_error_descuento_erroneo">El dato del precio de oferta es incorrecto</string>
+    <string name="edicion_error_descuento_erroneo">El dato del precio de oferta debe ser superior a 0</string>
+    <string name="edicion_error_descuento_superior_precio">El precio en descuento es mayor o igual al original</string>
     <string name="edicion_error_recortar_no_disponible">Su dispositivo no soporta la acción de recortar :(</string>
 
 </resources>

@@ -4,7 +4,6 @@
     <!-- Aplicación / General -->
 
     <string name="app_titulo">Smarket</string>
-
     <string name="app_tipo">Tipo</string>
     <string name="app_descripcion">Descripción</string>
     <string name="app_precio">Precio</string>
@@ -20,7 +19,6 @@
     <string name="app_ud_pantalla">\"</string>
     <string name="app_ud_monetaria">€</string>
 
-    
     <!-- Lista de productos -->
 
     <string name="lista_no_hay_productos">No hay productos que mostrar.</string>
@@ -35,20 +33,19 @@
     <string name="lista_menu_editar">Editar Producto</string>
     <string name="lista_menu_eliminar">Eliminar Producto</string>
 
-    
-    <!-- Búsqueda de productos-->
+    <!-- Búsqueda de productos -->
 
     <string name="busqueda_titulo">Búsqueda de Productos</string>
+    <string name="busqueda_hasta">-</string>
+    <string name="busqueda_ordenar">Ordenar por</string>
 
-    
     <!-- Envío de pedidos -->
 
     <string name="envio_titulo">Envío de Pedido</string>
-    
     <string name="envio_pedido">Inserte un nombre para identificar su pedido:</string>
     <string name="envio_boton_enviar">Enviar pedido</string>
     <string name="envio_boton_aceptar">Vale</string>
-    
+
     <!-- caracter &#8230; equivalente a puntos suspensivos '...' -->
     <string name="envio_preparar">Preparando pedido&#8230;</string>
     <string name="envio_enviar">Enviando pedido&#8230;</string>
@@ -57,28 +54,25 @@
     <string name="envio_enviado">Pedido enviado!</string>
     <string name="envio_no_enviado">Pedido NO enviado</string>
 
-    
     <!-- Información de productos -->
 
     <string name="info_titulo">Información de Producto</string>
-    
     <string name="info_comprar">Comprar</string>
 
-    
     <!-- Inserción / Edición de productos -->
-    
-    <string name="edicion_titulo">Edición de Producto</string>
 
+    <string name="edicion_titulo">Edición de Producto</string>
     <string name="edicion_galeria">Galería</string>
     <string name="edicion_foto">Foto</string>
-
     <string name="edicion_crear_marca">Crear</string>
-    <string name="edicion_cancelar_crear_marca">Cancelar</string>
+    <string name="edicion_modificar_marca">Modificar</string>
+    <string name="edicion_cancelar_marca">Cancelar</string>
     <string name="edicion_eliminar_marca">Eliminar</string>
     <string name="edicion_oferta">Oferta</string>
     <string name="edicion_guardar">Guardar</string>
 
     <!-- Errores -->
+    
     <string name="edicion_error_marca_erronea">El nombre de la marca debe tener entre 1 y 30 caracteres</string>
     <string name="edicion_error_precio_vacio">No se ha completado el campo del precio</string>
     <string name="edicion_error_precio_erroneo">El dato del precio debe ser superior a 0</string>

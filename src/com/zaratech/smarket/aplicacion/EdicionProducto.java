@@ -133,7 +133,7 @@ public class EdicionProducto extends Activity {
 		/*
 		 * Sistema Operativo
 		 */
-		Spinner so = (Spinner) findViewById(R.id.EDICION_SO);
+		Spinner so = (Spinner) findViewById(R.id.edicion_SO);
 		String[] arr = new String[3];
 		arr[Producto.SO_ANDROID] = AdaptadorBD
 				.obtenerSistemaOperativo(Producto.SO_ANDROID);
@@ -159,6 +159,19 @@ public class EdicionProducto extends Activity {
 				mostrarDialogoCreacionMarcas();
 			}
 		});
+
+		Button modificarMarca = (Button) findViewById(R.id.edicion_modificar_marca);
+		modificarMarca.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View v) {
+				Marca m = getMarcaSelecionada();
+				if (m != null) {
+					mostrarDialogoModificarMarcas(m);
+				}
+			}
+
+		});
+
 		Button eliminarMarca = (Button) findViewById(R.id.edicion_eliminar_marca);
 		eliminarMarca.setOnClickListener(new OnClickListener() {
 
@@ -201,7 +214,28 @@ public class EdicionProducto extends Activity {
 		} else {
 			ID = -1;
 		}
+		/*
+		 * Recuperamos la imagen si es necesario
+		 */
+		if (savedInstanceState != null) {
+			Bitmap bitmap = savedInstanceState.getParcelable("image");
+			ImageView image = (ImageView) findViewById(R.id.edicion_imagen);
+			image.setImageBitmap(bitmap);
+		}
+	}
 
+	/*
+	 * Salvamos los datos de la instancia para poder cargarlos mas adelante
+	 * 
+	 * @see android.app.Activity#onSaveInstanceState(android.os.Bundle)
+	 */
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		ImageView image = (ImageView) findViewById(R.id.edicion_imagen);
+		BitmapDrawable drawable = (BitmapDrawable) image.getDrawable();
+		Bitmap bitmap = drawable.getBitmap();
+		outState.putParcelable("image", bitmap);
+		super.onSaveInstanceState(outState);
 	}
 
 	/*
@@ -214,46 +248,101 @@ public class EdicionProducto extends Activity {
 				LinearLayout.LayoutParams.MATCH_PARENT,
 				LinearLayout.LayoutParams.MATCH_PARENT);
 		final EditText texto = new EditText(this);
-		
-		int maxLength = 30; //Numero de caracteres maximo
+
+		int maxLength = 30; // Numero de caracteres maximo
 		InputFilter[] fArray = new InputFilter[1];
 		fArray[0] = new InputFilter.LengthFilter(maxLength);
 		texto.setFilters(fArray);
-		
-		final Context context=this;
+
+		final Context context = this;
 		texto.setLayoutParams(layout);
 		texto.setInputType(InputType.TYPE_CLASS_TEXT);
 		builder.setView(texto);
 
 		builder.setNegativeButton(
-				getString(R.string.edicion_cancelar_crear_marca),
+				getString(R.string.edicion_cancelar_marca),
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.cancel();
 					}
 				});
-		builder.setPositiveButton(getString(R.string.edicion_crear_marca),null);
-		
+		builder.setPositiveButton(getString(R.string.edicion_crear_marca), null);
+
 		final AlertDialog dialog = builder.show();
-		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-				String s = texto.getText() == null ? "" : texto
-						.getText().toString();
-				if (s.length() > 0 && s.length() < 30) {
-					Marca m = new Marca(s);
-					bd.crearMarca(m);
-					actualizaSpinner();
-					selecionarMarca(m);
-					dialog.dismiss();
-				} else {
-					Toast.makeText(
-							context,
-							getString(R.string.edicion_error_marca_erronea),
-							Toast.LENGTH_SHORT).show();
-				}
-			}
-		});
+		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(
+				new OnClickListener() {
+
+					public void onClick(View v) {
+						String s = texto.getText() == null ? "" : texto
+								.getText().toString();
+						if (s.length() > 0 && s.length() < 30) {
+							Marca m = new Marca(s);
+							bd.crearMarca(m);
+							actualizaSpinner();
+							selecionarMarca(m);
+							dialog.dismiss();
+						} else {
+							Toast.makeText(
+									context,
+									getString(R.string.edicion_error_marca_erronea),
+									Toast.LENGTH_SHORT).show();
+						}
+					}
+				});
+	}
+
+	/*
+	 * Creacion de dialogo de adiccion de marcas
+	 */
+	private void mostrarDialogoModificarMarcas(final Marca m) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+		LinearLayout.LayoutParams layout = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.MATCH_PARENT,
+				LinearLayout.LayoutParams.MATCH_PARENT);
+		final EditText texto = new EditText(this);
+		texto.setText(m.getNombre());
+		
+		int maxLength = 30; // Numero de caracteres maximo
+		InputFilter[] fArray = new InputFilter[1];
+		fArray[0] = new InputFilter.LengthFilter(maxLength);
+		texto.setFilters(fArray);
+
+		final Context context = this;
+		texto.setLayoutParams(layout);
+		texto.setInputType(InputType.TYPE_CLASS_TEXT);
+		builder.setView(texto);
+
+		builder.setNegativeButton(
+				getString(R.string.edicion_cancelar_marca),
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.cancel();
+					}
+				});
+		builder.setPositiveButton(getString(R.string.edicion_modificar_marca), null);
+
+		final AlertDialog dialog = builder.show();
+		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(
+				new OnClickListener() {
+
+					public void onClick(View v) {
+						String s = texto.getText() == null ? "" : texto
+								.getText().toString();
+						if (s.length() > 0 && s.length() < 30) {
+							m.setNombre(s);
+							bd.actualizarMarca(m);
+							actualizaSpinner();
+							selecionarMarca(m);
+							dialog.dismiss();
+						} else {
+							Toast.makeText(
+									context,
+									getString(R.string.edicion_error_marca_erronea),
+									Toast.LENGTH_SHORT).show();
+						}
+					}
+				});
 	}
 
 	/*
@@ -303,7 +392,6 @@ public class EdicionProducto extends Activity {
 			Intent cropIntent = new Intent("com.android.camera.action.CROP");
 			cropIntent.setDataAndType(picUri, "image/*"); // Imagen que se desea
 															// modificar
-
 			// Proporcion 1:1
 			cropIntent.putExtra("aspectX", 1);
 			cropIntent.putExtra("aspectY", 1);
@@ -396,7 +484,7 @@ public class EdicionProducto extends Activity {
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
-		if (pulgadas<=0) {
+		if (pulgadas <= 0) {
 			Toast.makeText(this,
 					getString(R.string.edicion_error_pulgadas_erroneas),
 					Toast.LENGTH_SHORT).show();
@@ -422,7 +510,7 @@ public class EdicionProducto extends Activity {
 					Toast.LENGTH_SHORT).show();
 			return null;
 		}
-		if(precio<=0){
+		if (precio <= 0) {
 			Toast.makeText(this,
 					getString(R.string.edicion_error_precio_erroneo),
 					Toast.LENGTH_SHORT).show();
@@ -430,7 +518,7 @@ public class EdicionProducto extends Activity {
 		}
 
 		// SO
-		Spinner soEdit = (Spinner) findViewById(R.id.EDICION_SO);
+		Spinner soEdit = (Spinner) findViewById(R.id.edicion_SO);
 		if (soEdit.getSelectedItem() == null) {
 			Toast.makeText(this, getString(R.string.edicion_error_so_vacio),
 					Toast.LENGTH_SHORT).show();
@@ -472,14 +560,15 @@ public class EdicionProducto extends Activity {
 						Toast.LENGTH_SHORT).show();
 				return null;
 			}
-			if (descuento<=0) {
+			if (descuento <= 0) {
 				Toast.makeText(this,
 						getString(R.string.edicion_error_descuento_erroneo),
 						Toast.LENGTH_SHORT).show();
 				return null;
 			}
-			if (descuento>=precio) {
-				Toast.makeText(this,
+			if (descuento >= precio) {
+				Toast.makeText(
+						this,
 						getString(R.string.edicion_error_descuento_superior_precio),
 						Toast.LENGTH_SHORT).show();
 				return null;
@@ -538,7 +627,7 @@ public class EdicionProducto extends Activity {
 		}
 
 		// SO
-		Spinner soEdit = (Spinner) findViewById(R.id.EDICION_SO);
+		Spinner soEdit = (Spinner) findViewById(R.id.edicion_SO);
 		if (soEdit.getCount() > producto.getSistemaOperativo()
 				&& producto.getSistemaOperativo() >= 0) {
 			soEdit.setSelection(producto.getSistemaOperativo());

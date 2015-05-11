@@ -10,6 +10,8 @@ import com.zaratech.smarket.R;
 import android.os.Bundle;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.GradientDrawable.Orientation;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -90,6 +92,9 @@ public class ListaProductos extends ListActivity {
 		}
 		///////////////////////////////
 		
+		int[] colors = { 0, 0xFFFFFFFF, 0 };
+		getListView().setDivider(new GradientDrawable(Orientation.RIGHT_LEFT, colors));
+		getListView().setDividerHeight(2);
 
 		// Menu contextual
 		registerForContextMenu(getListView());

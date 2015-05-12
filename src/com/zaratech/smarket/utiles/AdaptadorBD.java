@@ -669,6 +669,46 @@ public class AdaptadorBD implements InterfazBD {
 	}
 	
 	/**
+	 * Devuelve todos las Marcas que contengan [cadena] en su nombre <br/>
+	 * @param cadena Palabra que se debe encontrar en el nombre de la Marca
+	 * @return Lista de Marcas filtradas
+	 */
+	public List<Marca> buscarMarca(String cadena){
+		
+		List<Marca> marcas = new ArrayList<Marca>();
+		
+		// Previene inyecciones SQL
+		cadena = cadena.replaceAll("'", "");
+		cadena = cadena.replaceAll("0x27", "");
+		cadena = cadena.replaceAll("%", "");
+
+		// Consulta
+		Cursor resultado = bd.query(DB_TABLA_MARCAS, null, 
+				
+				KEY_NOMBRE + " LIKE '%" + cadena + "%'", 
+				
+				null, null, null, KEY_NOMBRE + " DESC");
+
+		if(resultado != null){
+
+			resultado.moveToFirst();
+
+			while(!resultado.isAfterLast()){
+
+				Marca marca = new Marca();
+
+				bd2marca(resultado, marca);
+
+				marcas.add(marca);
+
+				resultado.moveToNext();
+			}
+		}
+
+		return marcas;
+	}
+	
+	/**
 	 * Rellena los atributos de una marca a partir de los valores
 	 * obtenidos de la BD
 	 */

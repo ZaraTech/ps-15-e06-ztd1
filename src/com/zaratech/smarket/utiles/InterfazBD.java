@@ -120,4 +120,11 @@ public interface InterfazBD {
 	 */
 	public boolean borrarMarca(int id);
 	
+	/**
+	 * Devuelve todos las Marcas que contengan [cadena] en su nombre <br/>
+	 * @param cadena Palabra que se debe encontrar en el nombre de la Marca
+	 * @return Lista de Marcas filtradas
+	 */
+	public List<Marca> buscarMarca(String cadena);
+	
 }

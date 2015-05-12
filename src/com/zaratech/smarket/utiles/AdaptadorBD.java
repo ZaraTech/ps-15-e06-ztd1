@@ -223,7 +223,7 @@ public class AdaptadorBD implements InterfazBD {
 	
 	///////////////////////////////////////////////////////////////////////////
 	//    PRODUCTOS
-    ///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Devuelve todos los Productos almacenados en la BD
@@ -377,6 +377,47 @@ public class AdaptadorBD implements InterfazBD {
 	}
 	
 	/**
+	 * Devuelve todos los Productos que contengan [cadena] en su nombre <br/>
+	 * @param cadena Palabra que se debe encontrar en el nombre del Producto
+	 * @return Lista de Productos filtrados
+	 */
+	public List<Producto> buscarProducto(String cadena){
+		
+		// Previene inyecciones SQL
+		cadena = cadena.replaceAll("'", "");
+		cadena = cadena.replaceAll("0x27", "");
+		cadena = cadena.replaceAll("%", "");
+
+		// Consulta
+		Cursor resultado = bd.query(DB_TABLA_PRODUCTOS, null, 
+				
+				KEY_NOMBRE + " LIKE '%" + cadena + "%'", 
+				
+				null, null, null, KEY_NOMBRE + " DESC");
+
+		
+		List<Producto> productos = new ArrayList<Producto>();
+
+		if(resultado != null){
+
+			resultado.moveToFirst();
+
+			while(!resultado.isAfterLast()){
+
+				Producto p = new Producto();
+
+				bd2producto(resultado, p);
+
+				productos.add(p);
+
+				resultado.moveToNext();
+			}
+		}
+
+		return productos;
+	}
+	
+	/**
 	 * Rellena los atributos de un producto a partir de los valores
 	 * obtenidos de la BD
 	 */
@@ -494,7 +535,7 @@ public class AdaptadorBD implements InterfazBD {
 	
 	///////////////////////////////////////////////////////////////////////////
 	//    MARCAS
-    ///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Devuelve todas las Marcas almacenadas en la BD

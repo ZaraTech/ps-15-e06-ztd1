@@ -29,7 +29,7 @@ public interface InterfazBD {
 	
 	/**
 	 * Devuelve todos los nombres de los Productos almacenados en la BD. <br/>
-	 * Ordenados alfabeticamente por nombre
+	 * <b> Ordenados alfabeticamente por nombre </b>
 	 * @return Lista de nombres de Productos o NULL si no hay resultados
 	 */
 	public String[] obtenerNombreProductos();
@@ -65,6 +65,13 @@ public interface InterfazBD {
 	 * @return <b>false</b> si ha habido errores
 	 */
 	public boolean borrarProducto(int id);
+	
+	/**
+	 * Devuelve todos los Productos que contengan [cadena] en su nombre <br/>
+	 * @param cadena Palabra que se debe encontrar en el nombre del Producto
+	 * @return Lista de Productos filtrados
+	 */
+	public List<Producto> buscarProducto(String cadena);
 	
 	
 	// MARCAS	

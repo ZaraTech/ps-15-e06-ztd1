@@ -36,8 +36,17 @@
     <!-- Búsqueda de productos -->
 
     <string name="busqueda_titulo">Búsqueda de Productos</string>
+    <string name="busqueda_contiene">Contiene</string>
     <string name="busqueda_hasta">-</string>
     <string name="busqueda_ordenar">Ordenar por</string>
+    <string name="busqueda_filtrar">Filtrar por</string>
+    <string name="busqueda_avanzada">Busqueda avanzada</string>
+    <string name="busqueda_buscar">Buscar</string>
+    
+    <string name="ordenacion_nombre_ascendente">Alfabetico nombre ascendente</string>
+    <string name="ordenacion_nombre_descendente">Alfabetico nombre descendente</string>
+    <string name="ordenacion_precio_ascendente">Precio ascendente</string>
+    <string name="ordenacion_precio_descendente">Precio descendente</string>
 
     <!-- Envío de pedidos -->
 
@@ -72,7 +81,7 @@
     <string name="edicion_guardar">Guardar</string>
 
     <!-- Errores -->
-    
+
     <string name="edicion_error_marca_erronea">El nombre de la marca debe tener entre 1 y 30 caracteres</string>
     <string name="edicion_error_precio_vacio">No se ha completado el campo del precio</string>
     <string name="edicion_error_precio_erroneo">El dato del precio debe ser superior a 0</string>

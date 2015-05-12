@@ -64,7 +64,8 @@ public class ListaProductos extends ListActivity {
 	private void cargarListado(){
 
 		// Rellenar lista
-		ArrayList<Producto> productos = (ArrayList<Producto>) bd.obtenerProductos();
+		ArrayList<Producto> productos = (ArrayList<Producto>) bd
+				.obtenerProductos(AdaptadorBD.DB_ORDENACION_PRECIO);
 
 		AdaptadorProductos adaptador = new AdaptadorProductos(this, productos);
 

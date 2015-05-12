@@ -21,6 +21,20 @@ public interface InterfazBD {
 	public List<Producto> obtenerProductos();
 	
 	/**
+	 * Devuelve todos los Productos almacenados en la BD
+	 * @param ordenacion Tipo de ordenacion (Precio o Nombre)
+	 * @return Lista de Productos
+	 */
+	public List<Producto> obtenerProductos(int ordenacion);
+	
+	/**
+	 * Devuelve todos los nombres de los Productos almacenados en la BD. <br/>
+	 * Ordenados alfabeticamente por nombre
+	 * @return Lista de nombres de Productos o NULL si no hay resultados
+	 */
+	public String[] obtenerNombreProductos();
+	
+	/**
 	 * Devuelve el Producto con el identificador [id] almacenado en la BD
 	 * @param id Identificador del Producto
 	 * @return Producto con identificador igual a [id]
@@ -60,6 +74,13 @@ public interface InterfazBD {
 	 * @return Lista de Marcas
 	 */
 	public List<Marca> obtenerMarcas();
+	
+	/**
+	 * Devuelve todos los nombres de las Marcas almacenadas en la BD. <br/>
+	 * Ordenadas alfabeticamente por nombre
+	 * @return Lista de nombres de Marcas o NULL si no hay resultados
+	 */
+	public String[] obtenerNombreMarcas();
 	
 	/**
 	 * Devuelve la Marca con el mismo identificador [id] almacenado en la BD

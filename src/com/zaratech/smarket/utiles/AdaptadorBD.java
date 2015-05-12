@@ -322,7 +322,8 @@ public class AdaptadorBD implements InterfazBD {
 
 		List<Producto> productos = new ArrayList<Producto>();
 
-		Cursor resultado = bd.query(DB_TABLA_PRODUCTOS, null, null, null, null, null, null);
+		Cursor resultado = bd.query(DB_TABLA_PRODUCTOS, null, null, null, null,
+				null, KEY_EN_OFERTA + " DESC");
 
 		if(resultado != null){
 

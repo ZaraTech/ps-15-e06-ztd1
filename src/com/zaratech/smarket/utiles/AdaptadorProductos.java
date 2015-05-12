@@ -107,7 +107,7 @@ public class AdaptadorProductos extends ArrayAdapter<Producto> {
 			marca = "Sin Marca";
 		}
 		
-		datos.setText(tipo + " - " + marca);
+		datos.setText(tipo + "\n" + marca);
 		precio.setText(String.format("%.2f %s", producto.getPrecio(), ud_monetaria));
 
 		

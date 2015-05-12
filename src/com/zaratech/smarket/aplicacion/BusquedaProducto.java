@@ -225,11 +225,15 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 		});
 
 		/*
-		 * Buscar
+		 * Boton Buscar
 		 */
 		buscar = (Button) findViewById(R.id.busqueda_buscar);
 
-		// Separador personalizado de elementos de listado
+		
+		
+		/*
+		 *  Separador personalizado de elementos de listado
+		 */
 		int[] colors = { 0, 0xFFFFFFFF, 0 };
 		getListView().setDivider(new GradientDrawable(Orientation.RIGHT_LEFT, colors));
 		getListView().setDividerHeight(2);
@@ -251,7 +255,7 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 		spinnerMarcas.setAdapter(adp1);
 	}
 
-	/*
+	/**
 	 * Obtiene las marcas
 	 */
 	private List<String> getMarcas() {

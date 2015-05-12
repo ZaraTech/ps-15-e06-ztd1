@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.zaratech.smarket.R;
-import com.zaratech.smarket.componentes.Marca;
 import com.zaratech.smarket.componentes.Producto;
 import com.zaratech.smarket.utiles.AdaptadorBD;
 import com.zaratech.smarket.utiles.AdaptadorProductos;
@@ -259,11 +258,14 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 	 * Obtiene las marcas
 	 */
 	private List<String> getMarcas() {
-		List<Marca> marcas = bd.obtenerMarcas();
+		
+		String[] marcas = bd.obtenerNombreMarcas();
 		List<String> strs = new LinkedList<String>();
-		for (Marca m : marcas) {
-			strs.add(m.getNombre());
+		
+		for (int i = 0; i < marcas.length; i++) {
+			strs.add(marcas[i]);
 		}
+		
 		return strs;
 	}
 
@@ -285,24 +287,25 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 		String[] nombres = null;
 
 		// Rellenar Listado de Marcas para autocompletado
-		ArrayList<Marca> marcas = (ArrayList<Marca>) bd.obtenerMarcas();
+		String[] nombreMarcas = bd.obtenerNombreMarcas();
 
 		// Rellenar Listado de Producto para autocompletado
-		ArrayList<Producto> productos = (ArrayList<Producto>) bd
-				.obtenerProductos();
-		int totalProductos = productos.size();
-		int totalMarcas = marcas.size();
+		String[] nombreProductos = bd.obtenerNombreProductos();
+		
+		int totalProductos = nombreProductos.length;
+		int totalMarcas = nombreMarcas.length;
 		int totalDispositivos = 2;
+		
 		nombres = new String[totalMarcas + totalProductos + totalDispositivos];
 
 		// Añade los nombres de las marcas al array de sugerencias
 		for (int i = 0; i < totalMarcas; i++) {
-			nombres[i] = marcas.get(i).getNombre();
+			nombres[i] = nombreMarcas[i];
 		}
 
 		// Añade los nombres de los productos al array de sugerencias
 		for (int i = 0; i < totalProductos; i++) {
-			nombres[(totalMarcas) + i] = productos.get(i).getNombre();
+			nombres[(totalMarcas) + i] = nombreProductos[i];
 		}
 		nombres[totalMarcas + totalProductos] = "Tablet";
 		nombres[totalMarcas + totalProductos + 1] = "SmartPhone";
@@ -310,10 +313,7 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 	}
 
 	public void beforeTextChanged(CharSequence s, int start, int count,
-			int after) {
-		// TODO Auto-generated method stub
-
-	}
+			int after) {}
 
 	/**
 	 * Metodo que indica sugerencias de autocompletado

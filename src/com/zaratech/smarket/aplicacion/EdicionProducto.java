@@ -211,8 +211,11 @@ public class EdicionProducto extends Activity {
 			Producto p = this.getIntent().getExtras()
 					.getParcelable(EXTRA_PRODUCTO);
 			productoAFormulario(p);
+			
+			setTitle(getString(R.string.edicion_titulo_editar));
 		} else {
 			ID = -1;
+			setTitle(getString(R.string.edicion_titulo_crear));
 		}
 		/*
 		 * Recuperamos la imagen si es necesario

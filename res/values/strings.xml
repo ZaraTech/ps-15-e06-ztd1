@@ -27,7 +27,8 @@
 
     <string name="lista_menu_add">Añadir Producto</string>
     <string name="lista_menu_busqueda">Búsqueda</string>
-
+    <string name="lista_menu_test">Tests</string>
+    
     <!-- Menú contextual de la Lista de productos -->
 
     <string name="lista_menu_editar">Editar Producto</string>
@@ -70,7 +71,8 @@
 
     <!-- Inserción / Edición de productos -->
 
-    <string name="edicion_titulo">Edición de Producto</string>
+    <string name="edicion_titulo_crear">Creación de Producto</string>
+    <string name="edicion_titulo_editar">Edición de Producto</string>
     <string name="edicion_galeria">Galería</string>
     <string name="edicion_foto">Foto</string>
     <string name="edicion_crear_marca">Crear</string>

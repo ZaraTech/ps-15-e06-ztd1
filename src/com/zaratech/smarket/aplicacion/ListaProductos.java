@@ -17,8 +17,11 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
+
+import java.lang.reflect.Field;
 
 /**
  * Activity que gestiona el listado de productos principal.
@@ -59,6 +62,11 @@ public class ListaProductos extends ListActivity {
 	 * Conexion con la BD
 	 */
 	private AdaptadorBD bd;
+	
+	/**
+	 * Estado de sesion administrador
+	 */
+	private static boolean admin = false;
 
 
 	private void cargarListado(){
@@ -100,6 +108,29 @@ public class ListaProductos extends ListActivity {
 
 		// Menu contextual
 		registerForContextMenu(getListView());
+		
+		// PRUEBAS - BORRAR //////
+		admin = true;
+		//invalidateOptionsMenu();
+		///////////////////////////////
+		
+		// Hack para Barra de Acciones
+		// Simula que no hay boton de menu aunque si que lo haya
+		// Fuerza mostrar opciones de menu en Barra de Acciones
+		try {
+			
+	        ViewConfiguration config = ViewConfiguration.get(this);
+	        Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+	        
+	        if(menuKeyField != null) {
+	            menuKeyField.setAccessible(true);
+	            menuKeyField.setBoolean(config, false);
+	        }
+	        
+	    } catch (Exception ex) {
+	        // Ignorar
+	    }
+		
 	}
 
 
@@ -166,7 +197,12 @@ public class ListaProductos extends ListActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
-		getMenuInflater().inflate(R.menu.activity_lista_productos, menu);
+		if (admin) {
+			getMenuInflater().inflate(R.menu.activity_lista_productos_admin, menu);
+		} else {
+			getMenuInflater().inflate(R.menu.activity_lista_productos, menu);
+		}
+		
 		return true;
 	}
 
@@ -182,13 +218,19 @@ public class ListaProductos extends ListActivity {
 			startActivityForResult(i, ACTIVITY_EDICION);
 			return true;
 
-			// BUSCAR	
+		// BUSCAR	
 		} else if (id == R.id.lista_menu_busqueda) {
 
 			startActivity(new Intent(this, BusquedaProducto.class));
 			return true;
 
-			// ???	
+		// TESTS DE LA APP
+		} else if (id == R.id.lista_menu_test) {
+
+			startActivity(new Intent(this, BusquedaProducto.class));
+			return true;
+
+		// ???	
 		} else {
 
 			return super.onOptionsItemSelected(item);

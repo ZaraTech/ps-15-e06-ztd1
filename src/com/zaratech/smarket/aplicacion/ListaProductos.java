@@ -82,7 +82,7 @@ public class ListaProductos extends ListActivity {
 
 		setContentView(R.layout.activity_lista_productos);
 		
-		//Obtener BD
+		// Obtener BD
 		bd = new AdaptadorBD(this);
 		bd.open();
 		
@@ -92,6 +92,7 @@ public class ListaProductos extends ListActivity {
 		}
 		///////////////////////////////
 		
+		// Separador personalizado de elementos de listado
 		int[] colors = { 0, 0xFFFFFFFF, 0 };
 		getListView().setDivider(new GradientDrawable(Orientation.RIGHT_LEFT, colors));
 		getListView().setDividerHeight(2);

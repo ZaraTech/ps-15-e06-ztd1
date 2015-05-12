@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.zaratech</groupId>
 	<artifactId>Smarket</artifactId>
-	<version>0.1.6</version>
+	<version>0.1.7</version>
 	<packaging>apk</packaging>
 	<name>Smarket</name>
 
@@ -127,6 +127,26 @@
 									</pluginExecutionFilter>
 									<action>
 										<ignore />
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											versions-maven-plugin
+										</artifactId>
+										<versionRange>
+											[2.1-MOD,)
+										</versionRange>
+										<goals>
+											<goal>increment</goal>
+											<goal>commit</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>

@@ -103,7 +103,7 @@ public class AdaptadorProductos extends ArrayAdapter<Producto> {
 		nombre.setText(producto.getNombre());
 		
 		String marca = producto.getMarca().getNombre();
-		if(marca == null){
+		if(marca == null || marca.trim().equals("")){
 			marca = "Sin Marca";
 		}
 		

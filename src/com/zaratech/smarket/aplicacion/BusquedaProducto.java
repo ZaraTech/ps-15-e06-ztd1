@@ -19,6 +19,8 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.GradientDrawable.Orientation;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -65,18 +67,18 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 	private AdaptadorBD bd;
 
 	private static final int[] FILTROS = { R.id.busqueda_marca_layout,
-			R.id.busqueda_precio_layout, R.id.busqueda_pulgadas_layout,
-			R.id.busqueda_so_layout, R.id.busqueda_tipo_layout };
+		R.id.busqueda_precio_layout, R.id.busqueda_pulgadas_layout,
+		R.id.busqueda_so_layout, R.id.busqueda_tipo_layout };
 
 	private static final int[] NOMBRES_FILTROS = { R.string.app_marca,
-			R.string.app_precio, R.string.app_pulgadas,
-			R.string.app_sistema_operativo, R.string.app_tipo };
+		R.string.app_precio, R.string.app_pulgadas,
+		R.string.app_sistema_operativo, R.string.app_tipo };
 
 	private static final int[] NOMBRES_ORDENACION = {
-			R.string.ordenacion_nombre_ascendente,
-			R.string.ordenacion_nombre_descendente,
-			R.string.ordenacion_precio_ascendente,
-			R.string.ordenacion_precio_descendente };
+		R.string.ordenacion_nombre_ascendente,
+		R.string.ordenacion_nombre_descendente,
+		R.string.ordenacion_precio_ascendente,
+		R.string.ordenacion_precio_descendente };
 
 	private Button buscar;
 	private LinearLayout ordenar;
@@ -226,6 +228,11 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 		 * Buscar
 		 */
 		buscar = (Button) findViewById(R.id.busqueda_buscar);
+
+		// Separador personalizado de elementos de listado
+		int[] colors = { 0, 0xFFFFFFFF, 0 };
+		getListView().setDivider(new GradientDrawable(Orientation.RIGHT_LEFT, colors));
+		getListView().setDividerHeight(2);
 
 		/*
 		 * Listado

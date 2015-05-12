@@ -80,7 +80,7 @@ public class EdicionProducto extends Activity {
 		 * Carga de imagenes
 		 */
 		Button camara = (Button) findViewById(R.id.edicion_camara); // Desde
-																	// camara
+		// camara
 		camara.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
@@ -92,7 +92,7 @@ public class EdicionProducto extends Activity {
 			}
 		});
 		Button galeria = (Button) findViewById(R.id.edicion_galeria); // Desde
-																		// galeria
+		// galeria
 		galeria.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
@@ -258,7 +258,7 @@ public class EdicionProducto extends Activity {
 		texto.setLayoutParams(layout);
 		texto.setInputType(InputType.TYPE_CLASS_TEXT);
 		builder.setView(texto);
-
+		builder.setTitle(getString(R.string.app_marca));
 		builder.setNegativeButton(
 				getString(R.string.edicion_cancelar_marca),
 				new DialogInterface.OnClickListener() {
@@ -302,7 +302,7 @@ public class EdicionProducto extends Activity {
 				LinearLayout.LayoutParams.MATCH_PARENT);
 		final EditText texto = new EditText(this);
 		texto.setText(m.getNombre());
-		
+
 		int maxLength = 30; // Numero de caracteres maximo
 		InputFilter[] fArray = new InputFilter[1];
 		fArray[0] = new InputFilter.LengthFilter(maxLength);
@@ -312,7 +312,7 @@ public class EdicionProducto extends Activity {
 		texto.setLayoutParams(layout);
 		texto.setInputType(InputType.TYPE_CLASS_TEXT);
 		builder.setView(texto);
-
+		builder.setTitle(getString(R.string.app_marca));
 		builder.setNegativeButton(
 				getString(R.string.edicion_cancelar_marca),
 				new DialogInterface.OnClickListener() {
@@ -360,13 +360,13 @@ public class EdicionProducto extends Activity {
 			obtenerImagenRecortada(selectedImage);
 
 		} else if (requestCode == ACTIVITY_CAMARA) {// Resultado de la
-													// camara
+			// camara
 			Bundle extras = data.getExtras();
 			Bitmap imageBitmap = (Bitmap) extras.get("data");
 			obtenerImagenRecortada(imageBitmap);
 
 		} else if (requestCode == ACTIVITY_RECORTAR) {// Resultado de recortar
-														// la imagen
+			// la imagen
 			Bundle extras = data.getExtras();
 			Bitmap selectedBitmap = extras.getParcelable("data");
 			ImageView image = (ImageView) findViewById(R.id.edicion_imagen);
@@ -391,7 +391,7 @@ public class EdicionProducto extends Activity {
 		try {
 			Intent cropIntent = new Intent("com.android.camera.action.CROP");
 			cropIntent.setDataAndType(picUri, "image/*"); // Imagen que se desea
-															// modificar
+			// modificar
 			// Proporcion 1:1
 			cropIntent.putExtra("aspectX", 1);
 			cropIntent.putExtra("aspectY", 1);
@@ -399,8 +399,8 @@ public class EdicionProducto extends Activity {
 			startActivityForResult(cropIntent, ACTIVITY_RECORTAR);
 
 		} catch (ActivityNotFoundException anfe) { // El dispositivo no tiene
-													// ninguna aplicacion
-													// para recortar la imagen
+			// ninguna aplicacion
+			// para recortar la imagen
 			String errorMessage = getString(R.string.edicion_error_recortar_no_disponible);
 			Toast toast = Toast
 					.makeText(this, errorMessage, Toast.LENGTH_SHORT);

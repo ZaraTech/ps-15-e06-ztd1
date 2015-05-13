@@ -9,6 +9,7 @@
     <string name="app_precio">Precio</string>
     <string name="app_producto">Producto</string>
     <string name="app_descripcion_foto">Foto del producto</string>
+    <string name="app_descripcion_logo">Logo de Smarket</string>
     <string name="app_marca">Marca</string>
     <string name="app_sistema_operativo">Sistema operativo</string>
     <string name="app_nombre_producto">Nombre</string>
@@ -19,7 +20,7 @@
     <string name="app_ud_pantalla">\"</string>
     <string name="app_ud_monetaria">€</string>
     <string name="app_separador_descripcion">Separador horizontal</string>
-    
+
     <!-- Lista de productos -->
 
     <string name="lista_no_hay_productos">No hay productos que mostrar.</string>
@@ -28,8 +29,9 @@
 
     <string name="lista_menu_add">Añadir Producto</string>
     <string name="lista_menu_busqueda">Búsqueda</string>
+    <string name="lista_menu_iniciar_sesion">Iniciar Sesión</string>
     <string name="lista_menu_test">Tests</string>
-    
+
     <!-- Menú contextual de la Lista de productos -->
 
     <string name="lista_menu_editar">Editar Producto</string>
@@ -45,7 +47,6 @@
     <string name="busqueda_avanzada">Busqueda avanzada</string>
     <string name="busqueda_buscar">Buscar</string>
     <string name="busqueda_solo_ofertas">Solo ofertas</string>
-    
     <string name="ordenacion_nombre_ascendente">Alfabetico nombre ascendente</string>
     <string name="ordenacion_nombre_descendente">Alfabetico nombre descendente</string>
     <string name="ordenacion_precio_ascendente">Precio ascendente</string>
@@ -84,6 +85,13 @@
     <string name="edicion_oferta">Oferta</string>
     <string name="edicion_guardar">Guardar</string>
 
+    <!-- Inicio de sesión -->
+
+    <string name="sesion_titulo">Inicio de sesión</string>
+    <string name="sesion_peticion_contrasenia">Introduzca su contraseña</string>
+    <string name="sesion_iniciar_sesion">Iniciar sesión</string>
+    <string name="sesion_mensaje_fallo">Contraseña introducida no válida</string>
+
     <!-- Errores -->
 
     <string name="edicion_error_marca_erronea">El nombre de la marca debe tener entre 1 y 30 caracteres</string>
@@ -103,12 +111,13 @@
     <string name="edicion_error_recortar_no_disponible">Su dispositivo no soporta la acción de recortar :(</string>
 
     <!-- Pruebas -->
-    <string name= "pruebas_titulo">Pruebas</string>
-    <string name= "pruebas_seleccion">Selecciona una prueba en el menu</string>
-    <string name= "pruebas_insertar">Insertar producto</string>
-    <string name ="pruebas_borrar">Borrar producto</string>
-    <string name ="pruebas_editar">Editar producto</string>
-    <string name ="pruebas_volumen">Volumen</string>
-    <string name ="pruebas_deshacer_volumen">Deshacer volumen</string>
-    <string name ="pruebas_sobrecarga">Sobrecarga</string>
+    <string name="pruebas_titulo">Pruebas</string>
+    <string name="pruebas_seleccion">Selecciona una prueba en el menu</string>
+    <string name="pruebas_insertar">Insertar producto</string>
+    <string name="pruebas_borrar">Borrar producto</string>
+    <string name="pruebas_editar">Editar producto</string>
+    <string name="pruebas_volumen">Volumen</string>
+    <string name="pruebas_deshacer_volumen">Deshacer volumen</string>
+    <string name="pruebas_sobrecarga">Sobrecarga</string>
+
 </resources>

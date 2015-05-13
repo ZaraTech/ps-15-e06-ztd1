@@ -1,0 +1,53 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.zaratech.smarket.aplicacion.IniciarSesion" >
+
+    <!-- Imagen del logo de la aplicación -->
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="131dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10sp"
+        android:contentDescription="@string/app_descripcion_logo"
+        android:src="@drawable/smarket" />
+
+    <!-- Mensaje al usuario -->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="25sp"
+        android:text="@string/sesion_peticion_contrasenia"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <!-- Campo para introducir contraseña -->
+
+    <EditText
+        android:id="@+id/sesion_contrasenia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30sp"
+        android:ems="10"
+        android:inputType="textPassword">
+    </EditText>
+
+    <!-- Botón de confirmación -->
+
+    <Button
+        android:id="@+id/sesion_boton_iniciar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30sp"
+        android:text="@string/sesion_iniciar_sesion" />
+
+</LinearLayout>

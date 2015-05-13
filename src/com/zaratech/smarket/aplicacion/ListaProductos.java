@@ -246,19 +246,24 @@ public class ListaProductos extends ListActivity {
 			startActivityForResult(i, ACTIVITY_EDICION);
 			return true;
 
-			// BUSCAR
+		// BUSCAR
 		} else if (id == R.id.lista_menu_busqueda) {
 
 			startActivity(new Intent(this, BusquedaProducto.class));
 			return true;
+			
+		// INICIAR SESIÓN
+		} else if (id == R.id.lista_menu_iniciar_sesion) {
+			startActivity(new Intent(this, IniciarSesion.class));
+			return true;
 
-			// TESTS DE LA APP
+		// TESTS DE LA APP
 		} else if (id == R.id.lista_menu_test) {
 
 			startActivity(new Intent(this, LanzadorPruebas.class));
 			return true;
 
-			// ???
+		// ???
 		} else {
 
 			return super.onOptionsItemSelected(item);

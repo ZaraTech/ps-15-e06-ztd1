@@ -3,6 +3,7 @@ package com.zaratech.smarket.aplicacion;
 import java.util.ArrayList;
 
 import com.zaratech.smarket.componentes.Producto;
+import com.zaratech.smarket.pruebas.LanzadorPruebas;
 import com.zaratech.smarket.utiles.AdaptadorBD;
 import com.zaratech.smarket.utiles.AdaptadorProductos;
 import com.zaratech.smarket.R;
@@ -227,7 +228,7 @@ public class ListaProductos extends ListActivity {
 		// TESTS DE LA APP
 		} else if (id == R.id.lista_menu_test) {
 
-			startActivity(new Intent(this, BusquedaProducto.class));
+			startActivity(new Intent(this, LanzadorPruebas.class));
 			return true;
 
 		// ???	

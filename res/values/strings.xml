@@ -18,7 +18,8 @@
     <string name="app_pulgadas">Pulgadas</string>
     <string name="app_ud_pantalla">\"</string>
     <string name="app_ud_monetaria">€</string>
-
+    <string name="app_separador_descripcion">Separador horizontal</string>
+    
     <!-- Lista de productos -->
 
     <string name="lista_no_hay_productos">No hay productos que mostrar.</string>
@@ -43,6 +44,7 @@
     <string name="busqueda_filtrar">Filtrar por</string>
     <string name="busqueda_avanzada">Busqueda avanzada</string>
     <string name="busqueda_buscar">Buscar</string>
+    <string name="busqueda_solo_ofertas">Solo ofertas</string>
     
     <string name="ordenacion_nombre_ascendente">Alfabetico nombre ascendente</string>
     <string name="ordenacion_nombre_descendente">Alfabetico nombre descendente</string>

@@ -20,7 +20,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import java.lang.reflect.Field;
 
@@ -37,14 +41,14 @@ public class ListaProductos extends ListActivity {
 	private int ultimaPosicion;
 
 	/**
-	 * Constante que hace referencia a la activity InfoProducto.
-	 * Se usara para identificar de donde se vuelve (startActivityForResult)
+	 * Constante que hace referencia a la activity InfoProducto. Se usara para
+	 * identificar de donde se vuelve (startActivityForResult)
 	 */
 	private final int ACTIVITY_INFO = 0;
 
 	/**
-	 * Constante que hace referencia a la activity EdicionProducto.
-	 * Se usara para identificar de donde se vuelve (startActivityForResult)
+	 * Constante que hace referencia a la activity EdicionProducto. Se usara
+	 * para identificar de donde se vuelve (startActivityForResult)
 	 */
 	private final int ACTIVITY_EDICION = 1;
 
@@ -63,14 +67,13 @@ public class ListaProductos extends ListActivity {
 	 * Conexion con la BD
 	 */
 	private AdaptadorBD bd;
-	
+
 	/**
 	 * Estado de sesion administrador
 	 */
 	private static boolean admin = false;
 
-
-	private void cargarListado(){
+	private void cargarListado() {
 
 		// Rellenar lista
 		ArrayList<Producto> productos = (ArrayList<Producto>) bd
@@ -83,7 +86,6 @@ public class ListaProductos extends ListActivity {
 		setSelection(ultimaPosicion - 2);
 	}
 
-
 	// INICIO de la aplicacion
 
 	@Override
@@ -91,58 +93,84 @@ public class ListaProductos extends ListActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_lista_productos);
-		
+
 		// Obtener BD
 		bd = new AdaptadorBD(this);
 		bd.open();
-		
+
 		// PARA PRUEBAS - BORRAR //////
 		if (bd.obtenerMarcas().size() == 0) {
 			bd.poblarBD();
 		}
-		///////////////////////////////
-		
+		// /////////////////////////////
+
 		// Separador personalizado de elementos de listado
 		int[] colors = { 0, 0xFFFFFFFF, 0 };
-		getListView().setDivider(new GradientDrawable(Orientation.RIGHT_LEFT, colors));
+		getListView().setDivider(
+				new GradientDrawable(Orientation.RIGHT_LEFT, colors));
 		getListView().setDividerHeight(2);
 
 		// Menu contextual
 		registerForContextMenu(getListView());
-		
+
 		// PRUEBAS - BORRAR //////
 		admin = true;
-		//invalidateOptionsMenu();
-		///////////////////////////////
-		
+		// invalidateOptionsMenu();
+		// /////////////////////////////
+
 		// Hack para Barra de Acciones
 		// Simula que no hay boton de menu aunque si que lo haya
 		// Fuerza mostrar opciones de menu en Barra de Acciones
 		try {
-			
-	        ViewConfiguration config = ViewConfiguration.get(this);
-	        Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
-	        
-	        if(menuKeyField != null) {
-	            menuKeyField.setAccessible(true);
-	            menuKeyField.setBoolean(config, false);
-	        }
-	        
-	    } catch (Exception ex) {
-	        // Ignorar
-	    }
-		
+
+			ViewConfiguration config = ViewConfiguration.get(this);
+			Field menuKeyField = ViewConfiguration.class
+					.getDeclaredField("sHasPermanentMenuKey");
+
+			if (menuKeyField != null) {
+				menuKeyField.setAccessible(true);
+				menuKeyField.setBoolean(config, false);
+			}
+
+		} catch (Exception ex) {
+			// Ignorar
+		}
+
+		/*
+		 * Ordenacion
+		 */
+		Spinner ordenar = (Spinner) findViewById(R.id.listar_ordenar);
+
+		String[] ordenacion = new String[BusquedaProducto.NOMBRES_ORDENACION.length];
+		for (int i = 0; i < BusquedaProducto.NOMBRES_ORDENACION.length; i++) {
+			ordenacion[i] = getString(BusquedaProducto.NOMBRES_ORDENACION[i]);
+		}
+
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, ordenacion);
+		ordenar.setAdapter(adapter);
+
+		ordenar.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
+
+			}
+
+			public void onNothingSelected(AdapterView<?> parent) {
+
+			}
+
+		});
+
 	}
 
-
-	
 	@Override
 	protected void onStop() {
 		super.onStop();
 
 		bd.close();
 	}
-
 
 	// REANUDAR Activity
 
@@ -151,10 +179,9 @@ public class ListaProductos extends ListActivity {
 		super.onResume();
 
 		bd.open();
-		
+
 		cargarListado();
 	}
-
 
 	// CLICK en Producto del listado
 
@@ -173,16 +200,16 @@ public class ListaProductos extends ListActivity {
 		startActivityForResult(i, ACTIVITY_INFO);
 	}
 
-
 	// VUELTA de activity con RESULTADO
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+	protected void onActivityResult(int requestCode, int resultCode,
+			Intent intent) {
 
 		super.onActivityResult(requestCode, resultCode, intent);
 
 		// INFO
-		if (requestCode == ACTIVITY_INFO){
+		if (requestCode == ACTIVITY_INFO) {
 
 		}
 		// EDICION
@@ -190,8 +217,7 @@ public class ListaProductos extends ListActivity {
 
 		}
 
-	}	
-
+	}
 
 	// MENU DE OPCIONES
 
@@ -199,11 +225,12 @@ public class ListaProductos extends ListActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		if (admin) {
-			getMenuInflater().inflate(R.menu.activity_lista_productos_admin, menu);
+			getMenuInflater().inflate(R.menu.activity_lista_productos_admin,
+					menu);
 		} else {
 			getMenuInflater().inflate(R.menu.activity_lista_productos, menu);
 		}
-		
+
 		return true;
 	}
 
@@ -219,45 +246,42 @@ public class ListaProductos extends ListActivity {
 			startActivityForResult(i, ACTIVITY_EDICION);
 			return true;
 
-		// BUSCAR	
+			// BUSCAR
 		} else if (id == R.id.lista_menu_busqueda) {
 
 			startActivity(new Intent(this, BusquedaProducto.class));
 			return true;
 
-		// TESTS DE LA APP
+			// TESTS DE LA APP
 		} else if (id == R.id.lista_menu_test) {
 
 			startActivity(new Intent(this, LanzadorPruebas.class));
 			return true;
 
-		// ???	
+			// ???
 		} else {
 
 			return super.onOptionsItemSelected(item);
 		}
 	}
 
-
 	// MENU CONTEXTUAL
 
 	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
 
 		super.onCreateContextMenu(menu, v, menuInfo);
 
-		menu.add(0, EDITAR_PRODUCTO, 0, R.string.lista_menu_editar );
-		menu.add(1, ELIMINAR_PRODUCTO, 1, R.string.lista_menu_eliminar );
-
+		menu.add(0, EDITAR_PRODUCTO, 0, R.string.lista_menu_editar);
+		menu.add(1, ELIMINAR_PRODUCTO, 1, R.string.lista_menu_eliminar);
 
 	}
-
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 
 		AdapterContextMenuInfo info = null;
-
 
 		// Identifica el Producto seleccionado
 		info = (AdapterContextMenuInfo) item.getMenuInfo();
@@ -266,9 +290,8 @@ public class ListaProductos extends ListActivity {
 		// Guarda posicion
 		ultimaPosicion = info.position;
 
-
 		// EDITAR
-		if(item.getItemId() == EDITAR_PRODUCTO) {
+		if (item.getItemId() == EDITAR_PRODUCTO) {
 
 			Intent i = new Intent(this, EdicionProducto.class);
 
@@ -278,7 +301,7 @@ public class ListaProductos extends ListActivity {
 			startActivityForResult(i, ACTIVITY_EDICION);
 
 			// ELIMINAR
-		} else if(item.getItemId() == ELIMINAR_PRODUCTO) {
+		} else if (item.getItemId() == ELIMINAR_PRODUCTO) {
 
 			bd.borrarProducto(p.getId());
 

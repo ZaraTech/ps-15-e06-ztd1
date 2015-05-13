@@ -65,22 +65,23 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 	 */
 	private AdaptadorBD bd;
 
-	private static final int[] FILTROS = { R.id.busqueda_marca_layout,
-		R.id.busqueda_precio_layout, R.id.busqueda_pulgadas_layout,
-		R.id.busqueda_so_layout, R.id.busqueda_tipo_layout };
+	public static final int[] FILTROS = { R.id.busqueda_marca_layout,
+			R.id.busqueda_precio_layout, R.id.busqueda_pulgadas_layout,
+			R.id.busqueda_so_layout, R.id.busqueda_tipo_layout };
 
-	private static final int[] NOMBRES_FILTROS = { R.string.app_marca,
-		R.string.app_precio, R.string.app_pulgadas,
-		R.string.app_sistema_operativo, R.string.app_tipo };
+	public static final int[] NOMBRES_FILTROS = { R.string.app_marca,
+			R.string.app_precio, R.string.app_pulgadas,
+			R.string.app_sistema_operativo, R.string.app_tipo,
+			R.string.busqueda_solo_ofertas };
 
-	private static final int[] NOMBRES_ORDENACION = {
-		R.string.ordenacion_nombre_ascendente,
-		R.string.ordenacion_nombre_descendente,
-		R.string.ordenacion_precio_ascendente,
-		R.string.ordenacion_precio_descendente };
+	public static final int[] NOMBRES_ORDENACION = {
+			R.string.ordenacion_nombre_ascendente,
+			R.string.ordenacion_nombre_descendente,
+			R.string.ordenacion_precio_ascendente,
+			R.string.ordenacion_precio_descendente };
 
 	private Button buscar;
-	private LinearLayout ordenar;
+	private LinearLayout ordenarLayout;
 	private TextView extender;
 
 	/**
@@ -185,21 +186,30 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 				.obtenerSistemaOperativo(Producto.SO_WINDOWSPHONE);
 
 		ArrayAdapter<String> adp1 = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, arr);
-		adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				android.R.layout.simple_spinner_item, arr);
 		so.setAdapter(adp1);
 
 		/*
 		 * Marcas
 		 */
 		Spinner spinnerMarcas = (Spinner) findViewById(R.id.busqueda_marca);
-		actualizaSpinner(spinnerMarcas);
+		// Obtiene las marcas
+		String[] marcas = bd.obtenerNombreMarcas();
+		List<String> strs = new LinkedList<String>();
+
+		for (int i = 0; i < marcas.length; i++) {
+			strs.add(marcas[i]);
+		}
+		// Actualiza spinner de las marcas
+		adp1 = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, getMarcas());
+		spinnerMarcas.setAdapter(adp1);
 
 		/*
 		 * Ordenacion
 		 */
-		this.ordenar = (LinearLayout) findViewById(R.id.busqueda_ordenar_layout);
-		Spinner ordenar = (Spinner) findViewById(R.id.busqueda_ordenar);
+		this.ordenarLayout = (LinearLayout) findViewById(R.id.busqueda_ordenar_layout);
+		Spinner ordenarSpinner = (Spinner) findViewById(R.id.busqueda_ordenar);
 
 		String[] ordenacion = new String[NOMBRES_ORDENACION.length];
 		for (int i = 0; i < NOMBRES_ORDENACION.length; i++) {
@@ -208,9 +218,9 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 
 		adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, ordenacion);
-		ordenar.setAdapter(adapter);
+		ordenarSpinner.setAdapter(adapter);
 
-		ordenar.setOnItemSelectedListener(new OnItemSelectedListener() {
+		ordenarSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
@@ -228,13 +238,13 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 		 */
 		buscar = (Button) findViewById(R.id.busqueda_buscar);
 
-		
-		
 		/*
-		 *  Separador personalizado de elementos de listado
+		 * Separador personalizado de elementos de listado
 		 */
 		int[] colors = { 0, 0xFFFFFFFF, 0 };
-		getListView().setDivider(new GradientDrawable(Orientation.RIGHT_LEFT, colors));
+		GradientDrawable divider = new GradientDrawable(Orientation.RIGHT_LEFT,
+				colors);
+		getListView().setDivider(divider);
 		getListView().setDividerHeight(2);
 
 		/*
@@ -245,27 +255,17 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 	}
 
 	/**
-	 * Actualiza spinner de las marcas
-	 */
-	public void actualizaSpinner(Spinner spinnerMarcas) {
-		ArrayAdapter<String> adp1 = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, getMarcas());
-		adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinnerMarcas.setAdapter(adp1);
-	}
-
-	/**
 	 * Obtiene las marcas
 	 */
 	private List<String> getMarcas() {
-		
+
 		String[] marcas = bd.obtenerNombreMarcas();
 		List<String> strs = new LinkedList<String>();
-		
+
 		for (int i = 0; i < marcas.length; i++) {
 			strs.add(marcas[i]);
 		}
-		
+
 		return strs;
 	}
 
@@ -291,11 +291,11 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 
 		// Rellenar Listado de Producto para autocompletado
 		String[] nombreProductos = bd.obtenerNombreProductos();
-		
+
 		int totalProductos = nombreProductos.length;
 		int totalMarcas = nombreMarcas.length;
 		int totalDispositivos = 2;
-		
+
 		nombres = new String[totalMarcas + totalProductos + totalDispositivos];
 
 		// Añade los nombres de las marcas al array de sugerencias
@@ -313,7 +313,8 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 	}
 
 	public void beforeTextChanged(CharSequence s, int start, int count,
-			int after) {}
+			int after) {
+	}
 
 	/**
 	 * Metodo que indica sugerencias de autocompletado
@@ -390,7 +391,9 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 				productosBusqueda.add(p);
 
 				// Vemos si la entrada esta contenido en alguna marca
-			} else if (p.getMarca().getNombre().toLowerCase().indexOf(cadena) != -1) {
+			} else if (p.getMarca() != null
+					&& p.getMarca().getNombre() != null
+					&& p.getMarca().getNombre().toLowerCase().indexOf(cadena) != -1) {
 				p.setImagen(imagen);
 				productosBusqueda.add(p);
 
@@ -478,7 +481,7 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 
 		// Coloca en primer plano y ordena los elementos
 		v.bringToFront();
-		ordenar.bringToFront();
+		ordenarLayout.bringToFront();
 		buscar.bringToFront();
 		extender.bringToFront();
 		for (int i = 0; i < v.getChildCount(); i++) {

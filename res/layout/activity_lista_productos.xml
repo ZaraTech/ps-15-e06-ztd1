@@ -3,14 +3,35 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
-    
+
+    <!-- Ordenar -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/busqueda_ordenar"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Spinner
+            android:id="@+id/listar_ordenar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
     <!-- id fuera de estandar, necesario de todas formas -->
+
     <ListView
         android:id="@+id/android:list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
     <!-- Por si no hay productos -->
+
     <TextView
         android:id="@+id/lista_vacio"
         android:layout_width="match_parent"

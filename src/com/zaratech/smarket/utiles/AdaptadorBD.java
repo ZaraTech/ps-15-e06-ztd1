@@ -104,6 +104,15 @@ public class AdaptadorBD implements InterfazBD {
 	public static final int DB_ORDENACION_NO = -1;
 	public static final int DB_ORDENACION_PRECIO = 0;
 	public static final int DB_ORDENACION_NOMBRE = 1;
+	
+	public static final int DB_ORDENACION_ASC = 0;
+	public static final int DB_ORDENACION_DESC = 1;	
+	
+	public static final int DB_BUSQUEDA_PRECIO = 0;
+	public static final int DB_BUSQUEDA_PULGADAS = 1;
+	public static final int DB_BUSQUEDA_SO = 2;
+	public static final int DB_BUSQUEDA_TIPO = 3;
+	public static final int DB_BUSQUEDA_OFERTA = 4;
 
 
 	private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -231,15 +240,20 @@ public class AdaptadorBD implements InterfazBD {
 	 */
 	public List<Producto> obtenerProductos() {
 
-		return obtenerProductos(DB_ORDENACION_NO);
+		return obtenerProductos(DB_ORDENACION_NO, DB_ORDENACION_DESC);
 	}
 	
 	/**
 	 * Devuelve todos los Productos almacenados en la BD
-	 * @param ordenacion Tipo de ordenacion (Precio o Nombre)
+	 * @param ordenacion Tipo de ordenacion (Precio o Nombre) <br/>
+	 * <b> odenacion = [ DB_ORDENACION_PRECIO | DB_ORDENACION_NOMBRE ] </b>
+	 * @param sentido Sentido de la ordenacion <br/>
+	 * <b> sentido = [ DB_ORDENACION_ASC | DB_ORDENACION_DESC ] </b>
 	 * @return Lista de Productos
 	 */
-	public List<Producto> obtenerProductos(int ordenacion){
+	public List<Producto> obtenerProductos(int ordenacion, int sentido){
+		
+		//TODO
 		
 		// Ordenacion
 		
@@ -286,7 +300,7 @@ public class AdaptadorBD implements InterfazBD {
 	 * Ordenados alfabeticamente por nombre
 	 * @return Lista de nombres de Productos o NULL si no hay resultados
 	 */
-	public String[] obtenerNombreProductos(){
+	public String[] obtenerNombreProductos() {
 		
 		String[] columnas = new String[] {KEY_NOMBRE};
 
@@ -415,6 +429,51 @@ public class AdaptadorBD implements InterfazBD {
 		}
 
 		return productos;
+	}
+	
+	/**
+	 * Devuelve todos los Productos que se encuentren en el intervalo <br/>
+	 * @param criterio Atributo sobre el que se comprueba el intervalo <br/>
+	 * <b> criterio = [ DB_BUSQUEDA_PRECIO | DB_BUSQUEDA_PULGADAS ] </b>
+	 * @param min Valor minimo del intervalo
+	 * @param max Valor maximo del intervalo
+	 * @return Lista de Productos filtrados
+	 */
+	public List<Producto> buscarProducto(int criterio, double min, double max){
+		return null;
+		//TODO
+	}
+	
+	/**
+	 * Devuelve todos los Productos asociados a una marca <br/>
+	 * @param marca Marca que deben tener todos los productos. <br/>
+	 * <b> La marca debe obtenerse de la BD (debe tener un ID) </b>
+	 * @return Lista de Productos filtrados
+	 */
+	public List<Producto> buscarProducto(Marca marca){
+		return null;
+		//TODO
+	}
+	
+	/**
+	 * Devuelve todos los Productos asociados a un [criterio] <br/>
+	 * @param criterio Atributo sobre el que se comprueba el intervalo <br/>
+	 * <b> criterio = [ DB_BUSQUEDA_SO | DB_BUSQUEDA_TIPO ] </b>
+	 * @param id Identificador de [criterio]
+	 * @return Lista de Productos filtrados
+	 */
+	public List<Producto> buscarProducto(int criterio, int id){
+		return null;
+		//TODO
+	}
+	
+	/**
+	 * Devuelve todos los Productos en oferta <br/>
+	 * @return Lista de Productos en oferta
+	 */
+	public List<Producto> buscarProductoOferta(){
+		return null;
+		//TODO
 	}
 	
 	/**

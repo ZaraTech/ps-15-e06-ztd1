@@ -22,10 +22,13 @@ public interface InterfazBD {
 	
 	/**
 	 * Devuelve todos los Productos almacenados en la BD
-	 * @param ordenacion Tipo de ordenacion (Precio o Nombre)
+	 * @param ordenacion Tipo de ordenacion (Precio o Nombre) <br/>
+	 * <b> odenacion = [ DB_ORDENACION_PRECIO | DB_ORDENACION_NOMBRE ] </b>
+	 * @param sentido Sentido de la ordenacion <br/>
+	 * <b> sentido = [ DB_ORDENACION_ASC | DB_ORDENACION_DESC ] </b>
 	 * @return Lista de Productos
 	 */
-	public List<Producto> obtenerProductos(int ordenacion);
+	public List<Producto> obtenerProductos(int ordenacion, int sentido);
 	
 	/**
 	 * Devuelve todos los nombres de los Productos almacenados en la BD. <br/>
@@ -72,6 +75,39 @@ public interface InterfazBD {
 	 * @return Lista de Productos filtrados
 	 */
 	public List<Producto> buscarProducto(String cadena);
+	
+	/**
+	 * Devuelve todos los Productos que se encuentren en el intervalo <br/>
+	 * @param criterio Atributo sobre el que se comprueba el intervalo <br/>
+	 * <b> criterio = [ DB_BUSQUEDA_PRECIO | DB_BUSQUEDA_PULGADAS ] </b>
+	 * @param min Valor minimo del intervalo
+	 * @param max Valor maximo del intervalo
+	 * @return Lista de Productos filtrados
+	 */
+	public List<Producto> buscarProducto(int criterio, double min, double max);
+	
+	/**
+	 * Devuelve todos los Productos asociados a una marca <br/>
+	 * @param marca Marca que deben tener todos los productos. <br/>
+	 * <b> La marca debe obtenerse de la BD (debe tener un ID) </b>
+	 * @return Lista de Productos filtrados
+	 */
+	public List<Producto> buscarProducto(Marca marca);
+	
+	/**
+	 * Devuelve todos los Productos asociados a un [criterio] <br/>
+	 * @param criterio Atributo sobre el que se comprueba el intervalo <br/>
+	 * <b> criterio = [ DB_BUSQUEDA_SO | DB_BUSQUEDA_TIPO ] </b>
+	 * @param id Identificador de [criterio]
+	 * @return Lista de Productos filtrados
+	 */
+	public List<Producto> buscarProducto(int criterio, int id);
+	
+	/**
+	 * Devuelve todos los Productos en oferta <br/>
+	 * @return Lista de Productos en oferta
+	 */
+	public List<Producto> buscarProductoOferta();
 	
 	
 	// MARCAS	

@@ -78,9 +78,8 @@ public class ListaProductos extends ListActivity {
 
 		// Rellenar lista
 		List<Producto> productos = bd.obtenerProductos(
-						AdaptadorBD.DB_ORDENACION_PRECIO,
-						AdaptadorBD.DB_ORDENACION_DESC
-						);
+				AdaptadorBD.DB_ORDENACION_PRECIO,
+				AdaptadorBD.DB_ORDENACION_DESC);
 
 		AdaptadorProductos adaptador = new AdaptadorProductos(this, productos);
 
@@ -112,9 +111,6 @@ public class ListaProductos extends ListActivity {
 		getListView().setDivider(
 				new GradientDrawable(Orientation.RIGHT_LEFT, colors));
 		getListView().setDividerHeight(2);
-
-		// Menu contextual
-		registerForContextMenu(getListView());
 
 		// PRUEBAS - BORRAR //////
 		admin = true;
@@ -152,16 +148,18 @@ public class ListaProductos extends ListActivity {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, ordenacion);
 		ordenar.setAdapter(adapter);
-		
-		final Context context=this;
-		
+
+		final Context context = this;
+
 		ordenar.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
-				if(position>=0&&position<BusquedaProducto.ORDEN.length){
-					List<Producto> productos=bd.OrdenarProducto(BusquedaProducto.ORDEN[position]);
-					AdaptadorProductos adaptador = new AdaptadorProductos(context, productos);
+				if (position >= 0 && position < BusquedaProducto.ORDEN.length) {
+					List<Producto> productos = bd
+							.OrdenarProducto(BusquedaProducto.ORDEN[position]);
+					AdaptadorProductos adaptador = new AdaptadorProductos(
+							context, productos);
 					setListAdapter(adaptador);
 				}
 			}
@@ -171,6 +169,11 @@ public class ListaProductos extends ListActivity {
 			}
 
 		});
+
+		// Menu contextual solo con permisos de administrador
+		if (admin) {
+			registerForContextMenu(getListView());
+		}
 
 	}
 
@@ -255,24 +258,29 @@ public class ListaProductos extends ListActivity {
 			startActivityForResult(i, ACTIVITY_EDICION);
 			return true;
 
-		// BUSCAR
+			// BUSCAR
 		} else if (id == R.id.lista_menu_busqueda) {
 
-			startActivity(new Intent(this, BusquedaProducto.class));
+			Intent i = new Intent(this, BusquedaProducto.class);
+
+			// Añade Producto seleccionado
+			i.putExtra(BusquedaProducto.EXTRA_ADMIN, admin);
+
+			startActivity(i);
 			return true;
-			
-		// INICIAR SESIÓN
+
+			// INICIAR SESIÓN
 		} else if (id == R.id.lista_menu_iniciar_sesion) {
 			startActivity(new Intent(this, IniciarSesion.class));
 			return true;
 
-		// TESTS DE LA APP
+			// TESTS DE LA APP
 		} else if (id == R.id.lista_menu_test) {
 
 			startActivity(new Intent(this, LanzadorPruebas.class));
 			return true;
 
-		// ???
+			// ???
 		} else {
 
 			return super.onOptionsItemSelected(item);
@@ -286,7 +294,6 @@ public class ListaProductos extends ListActivity {
 			ContextMenuInfo menuInfo) {
 
 		super.onCreateContextMenu(menu, v, menuInfo);
-
 		menu.add(0, EDITAR_PRODUCTO, 0, R.string.lista_menu_editar);
 		menu.add(1, ELIMINAR_PRODUCTO, 1, R.string.lista_menu_eliminar);
 

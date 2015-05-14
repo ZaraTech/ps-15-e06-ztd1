@@ -23,10 +23,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -37,7 +41,6 @@ import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 
@@ -76,6 +79,21 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 	 */
 	private AdaptadorBD bd;
 
+	/**
+	 * Constante que hace referencia a la activity EdicionProducto. Se usara
+	 * para identificar de donde se vuelve (startActivityForResult)
+	 */
+	private final int ACTIVITY_EDICION = 1;
+
+	/**
+	 * Constantes que hacen referencias a elementos del menu contextual
+	 */
+	private final int EDITAR_PRODUCTO = 0;
+	private final int ELIMINAR_PRODUCTO = 1;
+
+	/**
+	 * Ids de los posibles filtros
+	 */
 	public static final int MARCA_FILTRO = 0;
 	public static final int PRECIO_FILTRO = 1;
 	public static final int PULGADAS_FILTRO = 2;
@@ -83,21 +101,33 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 	public static final int TIPO_FILTRO = 4;
 	public static final int OFERTAS_FILTRO = 5;
 
+	/**
+	 * Formularios de cada uno de los posibles filtros
+	 */
 	public static final int[] LAYOUT_FILTROS = { R.id.busqueda_marca_layout,
 			R.id.busqueda_precio_layout, R.id.busqueda_pulgadas_layout,
 			R.id.busqueda_so_layout, R.id.busqueda_tipo_layout };
 
+	/**
+	 * Nombre de cada uno de los filtros
+	 */
 	public static final int[] NOMBRES_FILTROS = { R.string.app_marca,
 			R.string.app_precio, R.string.app_pulgadas,
 			R.string.app_sistema_operativo, R.string.app_tipo,
 			R.string.busqueda_solo_ofertas };
 
+	/**
+	 * Nombre de cada uno de las posibles ordenaciones
+	 */
 	public static final int[] NOMBRES_ORDENACION = {
 			R.string.ordenacion_nombre_ascendente,
 			R.string.ordenacion_nombre_descendente,
 			R.string.ordenacion_precio_ascendente,
 			R.string.ordenacion_precio_descendente };
 
+	/**
+	 * Posibles ordenaciones
+	 */
 	public static final Orden[] ORDEN = {
 			new Orden(AdaptadorBD.DB_ORDENACION_NOMBRE,
 					AdaptadorBD.DB_ORDENACION_ASC),
@@ -108,11 +138,24 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 			new Orden(AdaptadorBD.DB_ORDENACION_PRECIO,
 					AdaptadorBD.DB_ORDENACION_DESC), };
 
+	/**
+	 * Elementos utilizados durante la activity
+	 */
 	private Button buscar;
 	private LinearLayout ordenarLayout;
 	private TextView extender;
 
+	// Listado de marcas
 	private List<Marca> marcas;
+
+	// Variable que denota si el usuario tiene o no permisos de administrador
+	private boolean admin = false;
+
+	/**
+	 * Clave que identifica si tienen permisos de administrador dentro del campo
+	 * extras del Intent
+	 */
+	public static final String EXTRA_ADMIN = "Admin";
 
 	/**
 	 * Método privado que carga el istado de productos de la BD
@@ -288,6 +331,19 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 		 */
 		cargarListado();
 		actualizarSugerencias();
+
+		/*
+		 * Permisos de administrador
+		 */
+		if (getIntent().getExtras() != null
+				&& getIntent().getExtras().containsKey(EXTRA_ADMIN)) {
+			admin = this.getIntent().getExtras().getBoolean(EXTRA_ADMIN);
+		}
+		// Opciones de administrador
+		if (admin) {
+			registerForContextMenu(getListView());
+		}
+
 	}
 
 	/*
@@ -482,6 +538,71 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 		super.onResume();
 
 		cargarListado();
+	}
+
+	// MENU CONTEXTUAL
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+
+		super.onCreateContextMenu(menu, v, menuInfo);
+
+		menu.add(0, EDITAR_PRODUCTO, 0, R.string.lista_menu_editar);
+		menu.add(1, ELIMINAR_PRODUCTO, 1, R.string.lista_menu_eliminar);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+
+		AdapterContextMenuInfo info = null;
+
+		// Identifica el Producto seleccionado
+		info = (AdapterContextMenuInfo) item.getMenuInfo();
+		Producto p = (Producto) getListAdapter().getItem(info.position);
+
+		// Guarda posicion
+		ultimaPosicion = info.position;
+
+		// EDITAR
+		if (item.getItemId() == EDITAR_PRODUCTO) {
+
+			Intent i = new Intent(this, EdicionProducto.class);
+
+			// Añade Producto seleccionado
+			i.putExtra(EXTRA_PRODUCTO, p);
+
+			startActivityForResult(i, ACTIVITY_EDICION);
+
+			// ELIMINAR
+		} else if (item.getItemId() == ELIMINAR_PRODUCTO) {
+
+			bd.borrarProducto(p.getId());
+
+			cargarListado();
+		}
+
+		return super.onContextItemSelected(item);
+
+	}
+
+	// VUELTA de activity con RESULTADO
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode,
+			Intent intent) {
+
+		super.onActivityResult(requestCode, resultCode, intent);
+
+		// INFO
+		if (requestCode == ACTIVITY_INFO) {
+
+		}
+		// EDICION
+		else if (requestCode == ACTIVITY_EDICION) {
+
+		}
+
 	}
 
 	/**

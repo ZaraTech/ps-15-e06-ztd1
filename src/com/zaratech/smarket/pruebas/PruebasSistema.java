@@ -109,7 +109,7 @@ public class PruebasSistema{
 				}
 				
 				for (Marca m: listaMarcas){
-					bd.borrarProducto(m.getId());
+					bd.borrarMarca(m.getId());
 				}
 				
 				return true;

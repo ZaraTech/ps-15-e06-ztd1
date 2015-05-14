@@ -44,7 +44,7 @@
     <!-- Botón de confirmación -->
 
     <Button
-        android:id="@+id/sesion_boton_iniciar"
+        android:id="@+id/sesion_boton_iniciar" style="@style/Boton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30sp"

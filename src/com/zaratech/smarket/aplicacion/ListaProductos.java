@@ -1,6 +1,6 @@
 package com.zaratech.smarket.aplicacion;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.zaratech.smarket.componentes.Producto;
 import com.zaratech.smarket.pruebas.LanzadorPruebas;
@@ -10,6 +10,7 @@ import com.zaratech.smarket.R;
 
 import android.os.Bundle;
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
@@ -76,8 +77,7 @@ public class ListaProductos extends ListActivity {
 	private void cargarListado() {
 
 		// Rellenar lista
-		ArrayList<Producto> productos = (ArrayList<Producto>) 
-				bd.obtenerProductos(
+		List<Producto> productos = bd.obtenerProductos(
 						AdaptadorBD.DB_ORDENACION_PRECIO,
 						AdaptadorBD.DB_ORDENACION_DESC
 						);
@@ -152,12 +152,18 @@ public class ListaProductos extends ListActivity {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, ordenacion);
 		ordenar.setAdapter(adapter);
-
+		
+		final Context context=this;
+		
 		ordenar.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
-
+				if(position>=0&&position<BusquedaProducto.ORDEN.length){
+					List<Producto> productos=bd.OrdenarProducto(BusquedaProducto.ORDEN[position]);
+					AdaptadorProductos adaptador = new AdaptadorProductos(context, productos);
+					setListAdapter(adaptador);
+				}
 			}
 
 			public void onNothingSelected(AdapterView<?> parent) {

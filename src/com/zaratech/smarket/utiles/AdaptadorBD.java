@@ -11,7 +11,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.zaratech.smarket.R;
+import com.zaratech.smarket.componentes.Filtro;
 import com.zaratech.smarket.componentes.Marca;
+import com.zaratech.smarket.componentes.Orden;
 import com.zaratech.smarket.componentes.Producto;
 
 import android.content.ContentValues;
@@ -23,12 +25,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 /**
  * Clase que se utiliza como adaptador para interactuar con una base de datos.
  * 
- * @author Marta 
+ * @author Marta
  * @author Juan
  */
 public class AdaptadorBD implements InterfazBD {
-
-
 
 	/**
 	 * Base de datos
@@ -48,21 +48,19 @@ public class AdaptadorBD implements InterfazBD {
 	 * Identificador de Producto / Marca
 	 */
 	public static final String KEY_ID = "id";
-	
+
 	/**
 	 * Nombre de Producto / Marca
 	 */
 	public static final String KEY_NOMBRE = "nombre";
-	
+
 	/**
-	 * Solo para Producto
-	 * Identificador del tipo
+	 * Solo para Producto Identificador del tipo
 	 */
 	public static final String KEY_TIPO = "tipo";
-	
+
 	/**
-	 * Solo para Producto
-	 * Identificador de la Marca asociada
+	 * Solo para Producto Identificador de la Marca asociada
 	 */
 	public static final String KEY_ID_MARCA = "id_marca";
 	public static final String KEY_DIMENSION = "dimension_pantalla";
@@ -73,47 +71,38 @@ public class AdaptadorBD implements InterfazBD {
 	public static final String KEY_EN_OFERTA = "en_oferta";
 	public static final String KEY_PRECIO_OFERTA = "precio_oferta";
 
-	private static final String DB_CREAR_PRODUCTOS =
-			"create table " + DB_TABLA_PRODUCTOS + " ("
-					+ KEY_ID + " integer primary key autoincrement,"
-					+ KEY_NOMBRE + " text not null,"
-					+ KEY_TIPO + " integer not null,"
-					+ KEY_ID_MARCA + " integer not null default -1,"
-					+ KEY_DIMENSION + " real not null,"
-					+ KEY_SIST_OP + " integer not null,"
-					+ KEY_PRECIO + " real not null,"
-					+ KEY_DESCRIPCION + " text not null,"
-					+ KEY_IMAGEN + " blob not null,"
-					+ KEY_EN_OFERTA + " integer not null default 0,"
-					+ KEY_PRECIO_OFERTA + " integer not null default 0.0"
-					+ ");";
+	private static final String DB_CREAR_PRODUCTOS = "create table "
+			+ DB_TABLA_PRODUCTOS + " (" + KEY_ID
+			+ " integer primary key autoincrement," + KEY_NOMBRE
+			+ " text not null," + KEY_TIPO + " integer not null,"
+			+ KEY_ID_MARCA + " integer not null default -1," + KEY_DIMENSION
+			+ " real not null," + KEY_SIST_OP + " integer not null,"
+			+ KEY_PRECIO + " real not null," + KEY_DESCRIPCION
+			+ " text not null," + KEY_IMAGEN + " blob not null,"
+			+ KEY_EN_OFERTA + " integer not null default 0,"
+			+ KEY_PRECIO_OFERTA + " integer not null default 0.0" + ");";
 
-	private static final String DB_CREAR_CATEGORIAS =   	
-			"create table " + DB_TABLA_MARCAS + " ("
-					+ KEY_ID + " integer primary key autoincrement,"
-					+ KEY_NOMBRE + " text not null"
-					+ ");" ;
-
-
+	private static final String DB_CREAR_CATEGORIAS = "create table "
+			+ DB_TABLA_MARCAS + " (" + KEY_ID
+			+ " integer primary key autoincrement," + KEY_NOMBRE
+			+ " text not null" + ");";
 
 	// Operaciones
 	private static final int DB_INSERTAR = 0;
 	private static final int DB_ACTUALIZAR = 1;
-	
-	
+
 	public static final int DB_ORDENACION_NO = -1;
 	public static final int DB_ORDENACION_PRECIO = 0;
 	public static final int DB_ORDENACION_NOMBRE = 1;
-	
+
 	public static final int DB_ORDENACION_ASC = 0;
-	public static final int DB_ORDENACION_DESC = 1;	
-	
+	public static final int DB_ORDENACION_DESC = 1;
+
 	public static final int DB_BUSQUEDA_PRECIO = 0;
 	public static final int DB_BUSQUEDA_PULGADAS = 1;
 	public static final int DB_BUSQUEDA_SO = 2;
 	public static final int DB_BUSQUEDA_TIPO = 3;
 	public static final int DB_BUSQUEDA_OFERTA = 4;
-
 
 	private static class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -125,7 +114,7 @@ public class AdaptadorBD implements InterfazBD {
 		public void onCreate(SQLiteDatabase bd) {
 
 			bd.execSQL(DB_CREAR_PRODUCTOS);
-			bd.execSQL(DB_CREAR_CATEGORIAS);          
+			bd.execSQL(DB_CREAR_CATEGORIAS);
 		}
 
 		@Override
@@ -137,9 +126,9 @@ public class AdaptadorBD implements InterfazBD {
 	}
 
 	/**
-	 * Constructor 
+	 * Constructor
 	 */
-	public AdaptadorBD(Context ctx){
+	public AdaptadorBD(Context ctx) {
 
 		this.context = ctx;
 	}
@@ -150,43 +139,44 @@ public class AdaptadorBD implements InterfazBD {
 		bd = bdHelper.getWritableDatabase();
 	}
 
-	public void close(){
+	public void close() {
 		bd.close();
 	}
 
-	public void poblarBD(){
-		/* Obtener imagen */ 
+	public void poblarBD() {
+		/* Obtener imagen */
 
 		Resources res = context.getResources();
-		int id = R.drawable.smarket; 
+		int id = R.drawable.smarket;
 		Bitmap imagen = BitmapFactory.decodeResource(res, id);
 
 		/* Rellena tabla de marcas */
 
-		for(int i=1; i<5; i++){
-			
+		for (int i = 1; i < 5; i++) {
+
 			Marca m = new Marca("Marca " + i);
 
 			crearMarca(m);
 		}
 
-		/* Rellena tabla de productos*/
-		
+		/* Rellena tabla de productos */
+
 		List<Marca> marcas = obtenerMarcas();
 
-		for(int i=1; i<22; i++){
+		for (int i = 1; i < 22; i++) {
 
-			int marca = (int)(Math.random()*(double)marcas.size());
-			int tipo = (int)(Math.random()*2.0);
-			double precio = Math.random()*650.0;
+			int marca = (int) (Math.random() * (double) marcas.size());
+			int tipo = (int) (Math.random() * 2.0);
+			double precio = Math.random() * 650.0;
 			String descripcion = "El mejor del mercado.";
-			Producto p = new Producto("Producto " + i, marcas.get(marca), tipo, precio);
+			Producto p = new Producto("Producto " + i, marcas.get(marca), tipo,
+					precio);
 
 			p.setImagen(imagen);
 			p.setDescripcion(descripcion);
 			p.setDimensionPantalla(3.7);
 
-			if((int)(Math.random()*2.0) == 0){
+			if ((int) (Math.random() * 2.0) == 0) {
 				p.setOferta();
 				p.setPrecioOferta(p.getPrecio() * 0.75);
 			}
@@ -195,10 +185,11 @@ public class AdaptadorBD implements InterfazBD {
 		}
 	}
 
-
 	/**
 	 * Devuelve el nombre del Sistema Operativo asociado
-	 * @param idSistemaOperativo Identificador del sistema operativo
+	 * 
+	 * @param idSistemaOperativo
+	 *            Identificador del sistema operativo
 	 * @return Nombre del sistema operativo asociado al identificador
 	 */
 	public static String obtenerSistemaOperativo(int idSistemaOperativo) {
@@ -216,7 +207,9 @@ public class AdaptadorBD implements InterfazBD {
 
 	/**
 	 * Devuelve el nombre del Tipo de Producto asociado
-	 * @param idTipo Identificador del tipo de Producto
+	 * 
+	 * @param idTipo
+	 *            Identificador del tipo de Producto
 	 * @return Nombre del tipo de producto asociado al identificador
 	 */
 	public static String obtenerTipo(int idTipo) {
@@ -229,58 +222,62 @@ public class AdaptadorBD implements InterfazBD {
 		}
 	}
 
-	
-	///////////////////////////////////////////////////////////////////////////
-	//    PRODUCTOS
-	///////////////////////////////////////////////////////////////////////////
+	// /////////////////////////////////////////////////////////////////////////
+	// PRODUCTOS
+	// /////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Devuelve todos los Productos almacenados en la BD
+	 * 
 	 * @return Lista de Productos
 	 */
 	public List<Producto> obtenerProductos() {
 
 		return obtenerProductos(DB_ORDENACION_NO, DB_ORDENACION_DESC);
 	}
-	
+
 	/**
 	 * Devuelve todos los Productos almacenados en la BD
-	 * @param ordenacion Tipo de ordenacion (Precio o Nombre) <br/>
-	 * <b> odenacion = [ DB_ORDENACION_PRECIO | DB_ORDENACION_NOMBRE ] </b>
-	 * @param sentido Sentido de la ordenacion <br/>
-	 * <b> sentido = [ DB_ORDENACION_ASC | DB_ORDENACION_DESC ] </b>
+	 * 
+	 * @param ordenacion
+	 *            Tipo de ordenacion (Precio o Nombre) <br/>
+	 *            <b> odenacion = [ DB_ORDENACION_PRECIO | DB_ORDENACION_NOMBRE
+	 *            ] </b>
+	 * @param sentido
+	 *            Sentido de la ordenacion <br/>
+	 *            <b> sentido = [ DB_ORDENACION_ASC | DB_ORDENACION_DESC ] </b>
 	 * @return Lista de Productos
 	 */
-	public List<Producto> obtenerProductos(int ordenacion, int sentido){
-		
-		//TODO
-		
+	public List<Producto> obtenerProductos(int ordenacion, int sentido) {
+
+		// TODO
+
 		// Ordenacion
-		
+
 		String orden = KEY_EN_OFERTA + " DESC";
-		
+
 		if (ordenacion == DB_ORDENACION_PRECIO) {
 
 			orden += ", " + KEY_PRECIO + " DESC";
-			
+
 		} else if (ordenacion == DB_ORDENACION_NOMBRE) {
 
 			orden += ", " + KEY_NOMBRE + " DESC";
-			
+
 		}
-		
+
 		// Consulta
-		
+
 		Cursor resultado = bd.query(DB_TABLA_PRODUCTOS, null, null, null, null,
 				null, orden);
-		
+
 		List<Producto> productos = new ArrayList<Producto>();
 
-		if(resultado != null){
+		if (resultado != null) {
 
 			resultado.moveToFirst();
 
-			while(!resultado.isAfterLast()){
+			while (!resultado.isAfterLast()) {
 
 				Producto p = new Producto();
 
@@ -294,35 +291,34 @@ public class AdaptadorBD implements InterfazBD {
 
 		return productos;
 	}
-	
+
 	/**
 	 * Devuelve todos los nombres de los Productos almacenados en la BD. <br/>
 	 * Ordenados alfabeticamente por nombre
+	 * 
 	 * @return Lista de nombres de Productos o NULL si no hay resultados
 	 */
 	public String[] obtenerNombreProductos() {
-		
-		String[] columnas = new String[] {KEY_NOMBRE};
 
-		Cursor resultado = bd.query(DB_TABLA_PRODUCTOS, columnas, null, null, null,
-				null, KEY_NOMBRE + " DESC");
-		
-		
+		String[] columnas = new String[] { KEY_NOMBRE };
+
+		Cursor resultado = bd.query(DB_TABLA_PRODUCTOS, columnas, null, null,
+				null, null, KEY_NOMBRE + " DESC");
 
 		String[] nombres = null;
 
-		if(resultado != null){
-			
+		if (resultado != null) {
+
 			nombres = new String[resultado.getCount()];
 
 			resultado.moveToFirst();
-			
+
 			int i = 0;
 
-			while(!resultado.isAfterLast()){
+			while (!resultado.isAfterLast()) {
 
-				nombres[i] = resultado.getString(
-						resultado.getColumnIndex(KEY_NOMBRE));
+				nombres[i] = resultado.getString(resultado
+						.getColumnIndex(KEY_NOMBRE));
 
 				i++;
 				resultado.moveToNext();
@@ -334,20 +330,23 @@ public class AdaptadorBD implements InterfazBD {
 
 	/**
 	 * Devuelve el Producto con el identificador [id] almacenado en la BD
-	 * @param id Identificador del Producto
+	 * 
+	 * @param id
+	 *            Identificador del Producto
 	 * @return Producto con identificador igual a [id]
 	 */
 	public Producto obtenerProducto(int id) {
 
 		Producto producto = new Producto();
 
-		Cursor resultado = bd.query(DB_TABLA_PRODUCTOS, null, KEY_ID + " = " + id, null, null, null, null);
+		Cursor resultado = bd.query(DB_TABLA_PRODUCTOS, null, KEY_ID + " = "
+				+ id, null, null, null, null);
 
-		if(resultado != null){
+		if (resultado != null) {
 
 			resultado.moveToFirst();
 
-			if(!resultado.isAfterLast()){
+			if (!resultado.isAfterLast()) {
 
 				bd2producto(resultado, producto);
 			}
@@ -360,7 +359,9 @@ public class AdaptadorBD implements InterfazBD {
 	 * Almacena un Producto en la BD. <br/>
 	 * <b> El identificador se crea al almacenar, por lo que no hace falta
 	 * especificarlo antes. </b>
-	 * @param producto Producto que se desea almacenar
+	 * 
+	 * @param producto
+	 *            Producto que se desea almacenar
 	 * @return <b>false</b> si ha habido errores
 	 */
 	public boolean crearProducto(Producto producto) {
@@ -371,7 +372,9 @@ public class AdaptadorBD implements InterfazBD {
 	/**
 	 * Actualiza un Producto almacenado en la BD. <br/>
 	 * <b> Se utiliza el identificador [id] como clave para actualizar. </b>
-	 * @param producto Producto que se desea actualizar
+	 * 
+	 * @param producto
+	 *            Producto que se desea actualizar
 	 * @return <b>false</b> si ha habido errores
 	 */
 	public boolean actualizarProducto(Producto producto) {
@@ -382,41 +385,79 @@ public class AdaptadorBD implements InterfazBD {
 	/**
 	 * Elimina un Producto de la BD. <br/>
 	 * <b> Se utiliza el identificador [id] como clave para eliminar. </b>
-	 * @param id Identificador del Producto
+	 * 
+	 * @param id
+	 *            Identificador del Producto
 	 * @return <b>false</b> si ha habido errores
 	 */
 	public boolean borrarProducto(int id) {
 
 		return bd.delete(DB_TABLA_PRODUCTOS, KEY_ID + "=" + id, null) > 0;
 	}
-	
+
 	/**
 	 * Devuelve todos los Productos que contengan [cadena] en su nombre <br/>
-	 * @param cadena Palabra que se debe encontrar en el nombre del Producto
+	 * 
+	 * @param cadena
+	 *            Palabra que se debe encontrar en el nombre del Producto
 	 * @return Lista de Productos filtrados
 	 */
-	public List<Producto> buscarProducto(String cadena){
-		
+	public List<Producto> buscarProducto(String cadena) {
+
 		// Previene inyecciones SQL
 		cadena = cadena.replaceAll("'", "");
 		cadena = cadena.replaceAll("0x27", "");
 		cadena = cadena.replaceAll("%", "");
 
 		// Consulta
-		Cursor resultado = bd.query(DB_TABLA_PRODUCTOS, null, 
-				
-				KEY_NOMBRE + " LIKE '%" + cadena + "%'", 
-				
-				null, null, null, KEY_NOMBRE + " DESC");
+		Cursor resultado = bd.query(DB_TABLA_PRODUCTOS, null,
 
-		
+		KEY_NOMBRE + " LIKE '%" + cadena + "%'",
+
+		null, null, null, KEY_NOMBRE + " DESC");
+
 		List<Producto> productos = new ArrayList<Producto>();
 
-		if(resultado != null){
+		if (resultado != null) {
 
 			resultado.moveToFirst();
 
-			while(!resultado.isAfterLast()){
+			while (!resultado.isAfterLast()) {
+
+				Producto p = new Producto();
+
+				bd2producto(resultado, p);
+
+				productos.add(p);
+
+				resultado.moveToNext();
+			}
+		}
+
+		return productos;
+	}
+
+	/**
+	 * Devuelve todos los Productos aplicando un filtro y un orden
+	 * 
+	 * @param filtro
+	 *            Filtro a aplicar
+	 * @param orden
+	 *            Orden a aplicar
+	 * @return Lista de Productos filtrados y ordenados
+	 */
+	public List<Producto> FiltrarYOrdenarProducto(Filtro filtro, Orden orden) {
+		// Consulta
+		Cursor resultado = bd.query(DB_TABLA_PRODUCTOS, null,
+				filtro.getBusqueda(), null, null, null, orden.getOrden());
+
+		List<Producto> productos = new ArrayList<Producto>();
+
+		if (resultado != null) {
+
+			resultado.moveToFirst();
+
+			while (!resultado.isAfterLast()) {
 
 				Producto p = new Producto();
 
@@ -432,55 +473,76 @@ public class AdaptadorBD implements InterfazBD {
 	}
 	
 	/**
-	 * Devuelve todos los Productos que se encuentren en el intervalo <br/>
-	 * @param criterio Atributo sobre el que se comprueba el intervalo <br/>
-	 * <b> criterio = [ DB_BUSQUEDA_PRECIO | DB_BUSQUEDA_PULGADAS ] </b>
-	 * @param min Valor minimo del intervalo
-	 * @param max Valor maximo del intervalo
-	 * @return Lista de Productos filtrados
+	 * Devuelve todos los Productos aplicando un filtro y un orden
+	 * 
+	 * @param filtro
+	 *            Filtro a aplicar
+	 * @return Lista de Productos filtrados y ordenados
 	 */
-	public List<Producto> buscarProducto(int criterio, double min, double max){
-		return null;
-		//TODO
+	public List<Producto> FiltrarProducto(Filtro filtro) {
+		// Consulta
+		Cursor resultado = bd.query(DB_TABLA_PRODUCTOS, null,
+				filtro.getBusqueda(), null, null, null, null);
+
+		List<Producto> productos = new ArrayList<Producto>();
+
+		if (resultado != null) {
+
+			resultado.moveToFirst();
+
+			while (!resultado.isAfterLast()) {
+
+				Producto p = new Producto();
+
+				bd2producto(resultado, p);
+
+				productos.add(p);
+
+				resultado.moveToNext();
+			}
+		}
+
+		return productos;
 	}
 	
 	/**
-	 * Devuelve todos los Productos asociados a una marca <br/>
-	 * @param marca Marca que deben tener todos los productos. <br/>
-	 * <b> La marca debe obtenerse de la BD (debe tener un ID) </b>
-	 * @return Lista de Productos filtrados
+	 * Devuelve todos los Productos aplicando un orden
+	 * 
+	 * @param orden
+	 *            Orden a aplicar
+	 * @return Lista de Productos filtrados y ordenados
 	 */
-	public List<Producto> buscarProducto(Marca marca){
-		return null;
-		//TODO
+	public List<Producto> OrdenarProducto(Orden orden) {
+		// Consulta
+		Cursor resultado = bd.query(DB_TABLA_PRODUCTOS, null,
+				null, null, null, null, orden.getOrden());
+
+		List<Producto> productos = new ArrayList<Producto>();
+
+		if (resultado != null) {
+
+			resultado.moveToFirst();
+
+			while (!resultado.isAfterLast()) {
+
+				Producto p = new Producto();
+
+				bd2producto(resultado, p);
+
+				productos.add(p);
+
+				resultado.moveToNext();
+			}
+		}
+
+		return productos;
 	}
-	
+
 	/**
-	 * Devuelve todos los Productos asociados a un [criterio] <br/>
-	 * @param criterio Atributo sobre el que se comprueba el intervalo <br/>
-	 * <b> criterio = [ DB_BUSQUEDA_SO | DB_BUSQUEDA_TIPO ] </b>
-	 * @param id Identificador de [criterio]
-	 * @return Lista de Productos filtrados
+	 * Rellena los atributos de un producto a partir de los valores obtenidos de
+	 * la BD
 	 */
-	public List<Producto> buscarProducto(int criterio, int id){
-		return null;
-		//TODO
-	}
-	
-	/**
-	 * Devuelve todos los Productos en oferta <br/>
-	 * @return Lista de Productos en oferta
-	 */
-	public List<Producto> buscarProductoOferta(){
-		return null;
-		//TODO
-	}
-	
-	/**
-	 * Rellena los atributos de un producto a partir de los valores
-	 * obtenidos de la BD
-	 */
-	private void bd2producto(Cursor res, Producto p){
+	private void bd2producto(Cursor res, Producto p) {
 
 		// ID
 		p.setId(res.getInt(res.getColumnIndex(KEY_ID)));
@@ -509,13 +571,14 @@ public class AdaptadorBD implements InterfazBD {
 
 		// IMAGEN
 		byte[] imagenArray = res.getBlob(res.getColumnIndex(KEY_IMAGEN));
-		ByteArrayInputStream imagenStream = new ByteArrayInputStream(imagenArray);
+		ByteArrayInputStream imagenStream = new ByteArrayInputStream(
+				imagenArray);
 		Bitmap imagen = BitmapFactory.decodeStream(imagenStream);
 		p.setImagen(imagen);
 
 		// EN OFERTA
 		int oferta = res.getInt(res.getColumnIndex(KEY_EN_OFERTA));
-		if(oferta == 1){
+		if (oferta == 1) {
 			p.setOferta();
 
 		} else {
@@ -529,8 +592,7 @@ public class AdaptadorBD implements InterfazBD {
 	/**
 	 * Rellena los valores de la BD a partir de los atributos de un producto
 	 */
-	private boolean producto2bd(Producto producto, int operacion){
-
+	private boolean producto2bd(Producto producto, int operacion) {
 
 		ContentValues valores = new ContentValues();
 
@@ -563,7 +625,7 @@ public class AdaptadorBD implements InterfazBD {
 		valores.put(KEY_IMAGEN, imagenArray);
 
 		// EN OFERTA
-		if(producto.isOferta()){
+		if (producto.isOferta()) {
 			valores.put(KEY_EN_OFERTA, 1);
 		} else {
 			valores.put(KEY_EN_OFERTA, 0);
@@ -572,9 +634,8 @@ public class AdaptadorBD implements InterfazBD {
 		// PRECIO EN OFERTA
 		valores.put(KEY_PRECIO_OFERTA, producto.getPrecioOferta());
 
-
 		// METER A BD
-		if(operacion == DB_INSERTAR){
+		if (operacion == DB_INSERTAR) {
 
 			// Inserta y actualiza el id del producto
 			int id = (int) bd.insert(DB_TABLA_PRODUCTOS, null, valores);
@@ -583,35 +644,36 @@ public class AdaptadorBD implements InterfazBD {
 			// Si no ha habido errores devuelve true
 			return id != -1;
 
-		} else if (operacion == DB_ACTUALIZAR && producto.getId() > 0){
-			return bd.update(DB_TABLA_PRODUCTOS, valores, KEY_ID + "=" + producto.getId(), null) > 0;
+		} else if (operacion == DB_ACTUALIZAR && producto.getId() > 0) {
+			return bd.update(DB_TABLA_PRODUCTOS, valores, KEY_ID + "="
+					+ producto.getId(), null) > 0;
 
 		} else {
 			return false;
 		}
 	}
-	
-	
-	///////////////////////////////////////////////////////////////////////////
-	//    MARCAS
-	///////////////////////////////////////////////////////////////////////////
+
+	// /////////////////////////////////////////////////////////////////////////
+	// MARCAS
+	// /////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Devuelve todas las Marcas almacenadas en la BD
+	 * 
 	 * @return Lista de Marcas
 	 */
-	public List<Marca> obtenerMarcas(){
+	public List<Marca> obtenerMarcas() {
 
 		List<Marca> marcas = new ArrayList<Marca>();
 
 		Cursor resultado = bd.query(DB_TABLA_MARCAS, null, null, null, null,
 				null, KEY_NOMBRE + " DESC");
 
-		if(resultado != null){
+		if (resultado != null) {
 
 			resultado.moveToFirst();
 
-			while(!resultado.isAfterLast()){
+			while (!resultado.isAfterLast()) {
 
 				Marca marca = new Marca();
 
@@ -625,33 +687,34 @@ public class AdaptadorBD implements InterfazBD {
 
 		return marcas;
 	}
-	
+
 	/**
 	 * Devuelve todos los nombres de las Marcas almacenadas en la BD. <br/>
 	 * Ordenadas alfabeticamente por nombre
+	 * 
 	 * @return Lista de nombres de Marcas o NULL si no hay resultados
 	 */
-	public String[] obtenerNombreMarcas(){
+	public String[] obtenerNombreMarcas() {
 
-		String[] columnas = new String[] {KEY_NOMBRE};
-		
-		Cursor resultado = bd.query(DB_TABLA_MARCAS, columnas, null, null, null,
-				null, KEY_NOMBRE + " DESC");
-		
+		String[] columnas = new String[] { KEY_NOMBRE };
+
+		Cursor resultado = bd.query(DB_TABLA_MARCAS, columnas, null, null,
+				null, null, KEY_NOMBRE + " DESC");
+
 		String[] nombres = null;
 
-		if(resultado != null){
-			
+		if (resultado != null) {
+
 			nombres = new String[resultado.getCount()];
 
 			resultado.moveToFirst();
-			
+
 			int i = 0;
 
-			while(!resultado.isAfterLast()){
+			while (!resultado.isAfterLast()) {
 
-				nombres[i] = resultado.getString(
-						resultado.getColumnIndex(KEY_NOMBRE));
+				nombres[i] = resultado.getString(resultado
+						.getColumnIndex(KEY_NOMBRE));
 
 				i++;
 				resultado.moveToNext();
@@ -663,20 +726,23 @@ public class AdaptadorBD implements InterfazBD {
 
 	/**
 	 * Devuelve la Marca con el mismo identificador [id] almacenado en la BD
-	 * @param id Identificador de la Marca
+	 * 
+	 * @param id
+	 *            Identificador de la Marca
 	 * @return Marca con identificador igual a [id]
 	 */
 	public Marca obtenerMarca(int id) {
 
 		Marca marca = new Marca();
 
-		Cursor resultado = bd.query(DB_TABLA_MARCAS, null, KEY_ID + " = " + id, null, null, null, null);
+		Cursor resultado = bd.query(DB_TABLA_MARCAS, null, KEY_ID + " = " + id,
+				null, null, null, null);
 
-		if(resultado != null){
+		if (resultado != null) {
 
 			resultado.moveToFirst();
 
-			if(!resultado.isAfterLast()){
+			if (!resultado.isAfterLast()) {
 
 				bd2marca(resultado, marca);
 			}
@@ -687,8 +753,11 @@ public class AdaptadorBD implements InterfazBD {
 
 	/**
 	 * Almacena la Marca en la BD. <br/>
-	 * <b> El id se crea al almacenar, por lo que no hace falta especificarlo antes. </b>
-	 * @param marca Marca que se desea almacenar
+	 * <b> El id se crea al almacenar, por lo que no hace falta especificarlo
+	 * antes. </b>
+	 * 
+	 * @param marca
+	 *            Marca que se desea almacenar
 	 * @return <b>false</b> si ha habido errores
 	 */
 	public boolean crearMarca(Marca marca) {
@@ -699,7 +768,9 @@ public class AdaptadorBD implements InterfazBD {
 	/**
 	 * Actualiza una Marca almacenada en la BD. <br/>
 	 * <b> Se utiliza el id como clave para actualizar. </b>
-	 * @param marca Marca que se desea actualizar
+	 * 
+	 * @param marca
+	 *            Marca que se desea actualizar
 	 * @return <b>false</b> si ha habido errores
 	 */
 	public boolean actualizarMarca(Marca marca) {
@@ -710,49 +781,54 @@ public class AdaptadorBD implements InterfazBD {
 	/**
 	 * Elimina una Marca de la BD. <br/>
 	 * <b> Se utiliza el id como clave para eliminar. </b>
-	 * @param id Identificador de la Marca
+	 * 
+	 * @param id
+	 *            Identificador de la Marca
 	 * @return <b>false</b> si ha habido errores
 	 */
 	public boolean borrarMarca(int id) {
-		
+
 		boolean borrado = bd.delete(DB_TABLA_MARCAS, KEY_ID + "=" + id, null) > 0;
-		
-		if(borrado){
+
+		if (borrado) {
 			ContentValues valores = new ContentValues();
 			valores.put(KEY_ID_MARCA, "-1");
 
-			bd.update(DB_TABLA_PRODUCTOS, valores, KEY_ID_MARCA + " = " + id, null);
+			bd.update(DB_TABLA_PRODUCTOS, valores, KEY_ID_MARCA + " = " + id,
+					null);
 		}
 
 		return borrado;
 	}
-	
+
 	/**
 	 * Devuelve todos las Marcas que contengan [cadena] en su nombre <br/>
-	 * @param cadena Palabra que se debe encontrar en el nombre de la Marca
+	 * 
+	 * @param cadena
+	 *            Palabra que se debe encontrar en el nombre de la Marca
 	 * @return Lista de Marcas filtradas
 	 */
-	public List<Marca> buscarMarca(String cadena){
-		
+	public List<Marca> buscarMarca(String cadena) {
+
 		List<Marca> marcas = new ArrayList<Marca>();
-		
+
 		// Previene inyecciones SQL
 		cadena = cadena.replaceAll("'", "");
 		cadena = cadena.replaceAll("0x27", "");
 		cadena = cadena.replaceAll("%", "");
 
 		// Consulta
-		Cursor resultado = bd.query(DB_TABLA_MARCAS, null, 
-				
-				KEY_NOMBRE + " LIKE '%" + cadena + "%'", 
-				
-				null, null, null, KEY_NOMBRE + " DESC");
+		Cursor resultado = bd.query(DB_TABLA_MARCAS, null,
 
-		if(resultado != null){
+		KEY_NOMBRE + " LIKE '%" + cadena + "%'",
+
+		null, null, null, KEY_NOMBRE + " DESC");
+
+		if (resultado != null) {
 
 			resultado.moveToFirst();
 
-			while(!resultado.isAfterLast()){
+			while (!resultado.isAfterLast()) {
 
 				Marca marca = new Marca();
 
@@ -766,12 +842,12 @@ public class AdaptadorBD implements InterfazBD {
 
 		return marcas;
 	}
-	
+
 	/**
-	 * Rellena los atributos de una marca a partir de los valores
-	 * obtenidos de la BD
+	 * Rellena los atributos de una marca a partir de los valores obtenidos de
+	 * la BD
 	 */
-	private void bd2marca(Cursor res, Marca marca){
+	private void bd2marca(Cursor res, Marca marca) {
 
 		// ID
 		marca.setId(res.getInt(res.getColumnIndex(KEY_ID)));
@@ -783,17 +859,15 @@ public class AdaptadorBD implements InterfazBD {
 	/**
 	 * Rellena los valores de la BD a partir de los atributos de una marca
 	 */
-	private boolean marca2bd(Marca marca, int operacion){
-
+	private boolean marca2bd(Marca marca, int operacion) {
 
 		ContentValues valores = new ContentValues();
 
 		// NOMBRE
 		valores.put(KEY_NOMBRE, marca.getNombre());
 
-
 		// METER A BD
-		if(operacion == DB_INSERTAR){
+		if (operacion == DB_INSERTAR) {
 
 			// Inserta y actualiza el id de la marca
 			int id = (int) bd.insert(DB_TABLA_MARCAS, null, valores);
@@ -802,8 +876,9 @@ public class AdaptadorBD implements InterfazBD {
 			// Si no ha habido errores devuelve true
 			return id != -1;
 
-		} else if (operacion == DB_ACTUALIZAR && marca.getId() > 0){
-			return bd.update(DB_TABLA_MARCAS, valores, KEY_ID + "=" + marca.getId(), null) > 0;
+		} else if (operacion == DB_ACTUALIZAR && marca.getId() > 0) {
+			return bd.update(DB_TABLA_MARCAS, valores,
+					KEY_ID + "=" + marca.getId(), null) > 0;
 
 		} else {
 			return false;

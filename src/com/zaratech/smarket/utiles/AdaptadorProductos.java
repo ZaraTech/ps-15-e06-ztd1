@@ -1,6 +1,6 @@
 package com.zaratech.smarket.utiles;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.zaratech.smarket.componentes.Producto;
 import com.zaratech.smarket.R;
@@ -33,7 +33,7 @@ public class AdaptadorProductos extends ArrayAdapter<Producto> {
 	 * Constructor del adaptador
 	 * @param bd conexion a una base de datos
 	 */
-	public AdaptadorProductos(Context context, ArrayList<Producto> productos) {
+	public AdaptadorProductos(Context context, List<Producto> productos) {
 		super(context, 0, productos);
 
 		this.context = context;

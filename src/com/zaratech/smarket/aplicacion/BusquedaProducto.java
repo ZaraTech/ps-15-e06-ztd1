@@ -5,6 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.zaratech.smarket.R;
+import com.zaratech.smarket.componentes.Filtro;
+import com.zaratech.smarket.componentes.Marca;
+import com.zaratech.smarket.componentes.Orden;
 import com.zaratech.smarket.componentes.Producto;
 import com.zaratech.smarket.utiles.AdaptadorBD;
 import com.zaratech.smarket.utiles.AdaptadorProductos;
@@ -31,11 +34,19 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ArrayAdapter;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 
+/**
+ * Activity encargada de las busquedas de productos
+ * 
+ * @author Aitor
+ * @author Cristian Romám Morte
+ */
 @SuppressLint("DefaultLocale")
 public class BusquedaProducto extends ListActivity implements TextWatcher {
 
@@ -65,7 +76,14 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 	 */
 	private AdaptadorBD bd;
 
-	public static final int[] FILTROS = { R.id.busqueda_marca_layout,
+	public static final int MARCA_FILTRO = 0;
+	public static final int PRECIO_FILTRO = 1;
+	public static final int PULGADAS_FILTRO = 2;
+	public static final int SO_FILTRO = 3;
+	public static final int TIPO_FILTRO = 4;
+	public static final int OFERTAS_FILTRO = 5;
+
+	public static final int[] LAYOUT_FILTROS = { R.id.busqueda_marca_layout,
 			R.id.busqueda_precio_layout, R.id.busqueda_pulgadas_layout,
 			R.id.busqueda_so_layout, R.id.busqueda_tipo_layout };
 
@@ -80,9 +98,21 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 			R.string.ordenacion_precio_ascendente,
 			R.string.ordenacion_precio_descendente };
 
+	public static final Orden[] ORDEN = {
+			new Orden(AdaptadorBD.DB_ORDENACION_NOMBRE,
+					AdaptadorBD.DB_ORDENACION_ASC),
+			new Orden(AdaptadorBD.DB_ORDENACION_NOMBRE,
+					AdaptadorBD.DB_ORDENACION_DESC),
+			new Orden(AdaptadorBD.DB_ORDENACION_PRECIO,
+					AdaptadorBD.DB_ORDENACION_ASC),
+			new Orden(AdaptadorBD.DB_ORDENACION_PRECIO,
+					AdaptadorBD.DB_ORDENACION_DESC), };
+
 	private Button buscar;
 	private LinearLayout ordenarLayout;
 	private TextView extender;
+
+	private List<Marca> marcas;
 
 	/**
 	 * Método privado que carga el istado de productos de la BD
@@ -142,14 +172,14 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
-				esconderTodos(FILTROS);
-				if (position >= 0 && position < FILTROS.length) {
-					mostrar((LinearLayout) findViewById(FILTROS[position]));
+				esconderTodos(LAYOUT_FILTROS);
+				if (position >= 0 && position < LAYOUT_FILTROS.length) {
+					mostrar((LinearLayout) findViewById(LAYOUT_FILTROS[position]));
 				}
 			}
 
 			public void onNothingSelected(AdapterView<?> parent) {
-				esconderTodos(FILTROS);
+				esconderTodos(LAYOUT_FILTROS);
 			}
 
 		});
@@ -194,11 +224,11 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 		 */
 		Spinner spinnerMarcas = (Spinner) findViewById(R.id.busqueda_marca);
 		// Obtiene las marcas
-		String[] marcas = bd.obtenerNombreMarcas();
+		marcas = bd.obtenerMarcas();
 		List<String> strs = new LinkedList<String>();
 
-		for (int i = 0; i < marcas.length; i++) {
-			strs.add(marcas[i]);
+		for (Marca m : marcas) {
+			strs.add(m.getNombre());
 		}
 		// Actualiza spinner de las marcas
 		adp1 = new ArrayAdapter<String>(this,
@@ -209,7 +239,7 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 		 * Ordenacion
 		 */
 		this.ordenarLayout = (LinearLayout) findViewById(R.id.busqueda_ordenar_layout);
-		Spinner ordenarSpinner = (Spinner) findViewById(R.id.busqueda_ordenar);
+		final Spinner ordenarSpinner = (Spinner) findViewById(R.id.busqueda_ordenar);
 
 		String[] ordenacion = new String[NOMBRES_ORDENACION.length];
 		for (int i = 0; i < NOMBRES_ORDENACION.length; i++) {
@@ -220,23 +250,29 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 				android.R.layout.simple_spinner_item, ordenacion);
 		ordenarSpinner.setAdapter(adapter);
 
-		ordenarSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-			public void onItemSelected(AdapterView<?> parent, View view,
-					int position, long id) {
-
-			}
-
-			public void onNothingSelected(AdapterView<?> parent) {
-
-			}
-
-		});
-
 		/*
 		 * Boton Buscar
 		 */
 		buscar = (Button) findViewById(R.id.busqueda_buscar);
+		final Context context = this;
+		buscar.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View v) {
+				Filtro filtro = getFiltro();
+				int pos = ordenarSpinner.getSelectedItemPosition();
+				Orden orden;
+				if (pos >= 0 && pos < ORDEN.length) {
+					orden = ORDEN[pos];
+				} else {
+					orden = new Orden();
+				}
+				List<Producto> productos = bd.FiltrarYOrdenarProducto(filtro,
+						orden);
+				AdaptadorProductos adaptador = new AdaptadorProductos(context,
+						productos);
+				setListAdapter(adaptador);
+			}
+		});
 
 		/*
 		 * Separador personalizado de elementos de listado
@@ -254,7 +290,93 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 		actualizarSugerencias();
 	}
 
-	/**
+	/*
+	 * Obtiene filtro a partir del formulario
+	 */
+	private Filtro getFiltro() {
+		Filtro filtro = new Filtro();
+		Spinner filtrar = (Spinner) findViewById(R.id.busqueda_filtrar);
+		EditText edit;
+		Spinner spinner;
+		int pos;
+		switch (filtrar.getSelectedItemPosition()) {
+		case MARCA_FILTRO:
+			spinner = (Spinner) findViewById(R.id.busqueda_marca);
+			pos = spinner.getSelectedItemPosition();
+			if (pos >= 0 && pos < marcas.size()) {
+				filtro.addFiltroMarca(marcas.get(pos).getId());
+			}
+			break;
+		case PRECIO_FILTRO:
+			edit = (EditText) findViewById(R.id.busqueda_precio_desde);
+			float precioDesde;
+			try {
+				precioDesde = Float.parseFloat(edit.getText().toString()
+						.replace(getString(R.string.app_ud_monetaria), ""));
+			} catch (Exception e) {
+				precioDesde = 0;
+			}
+
+			edit = (EditText) findViewById(R.id.busqueda_precio_hasta);
+			float precioHasta;
+			try {
+				precioHasta = Float.parseFloat(edit.getText().toString()
+						.replace(getString(R.string.app_ud_monetaria), ""));
+			} catch (Exception e) {
+				precioHasta = Integer.MAX_VALUE;
+			}
+			filtro.addFiltroPrecio(precioDesde, precioHasta);
+			break;
+		case PULGADAS_FILTRO:
+			edit = (EditText) findViewById(R.id.busqueda_pulgadas_desde);
+			float pulgadasDesde;
+			try {
+				pulgadasDesde = Float.parseFloat(edit.getText().toString()
+						.replace(getString(R.string.app_pulgadas), ""));
+			} catch (Exception e) {
+				pulgadasDesde = 0;
+			}
+
+			edit = (EditText) findViewById(R.id.busqueda_pulgadas_hasta);
+			float pulgadasHasta;
+			try {
+				pulgadasHasta = Float.parseFloat(edit.getText().toString()
+						.replace(getString(R.string.app_pulgadas), ""));
+			} catch (Exception e) {
+				pulgadasHasta = Integer.MAX_VALUE;
+			}
+			filtro.addFiltroPulgadas(pulgadasDesde, pulgadasHasta);
+			break;
+		case SO_FILTRO:
+			spinner = (Spinner) findViewById(R.id.busqueda_SO);
+			pos = spinner.getSelectedItemPosition();
+			if (pos >= 0 && pos < 4) {
+				filtro.addFiltroSO(pos);
+			}
+			break;
+		case TIPO_FILTRO:
+			RadioButton smartphoneEdit = (RadioButton) findViewById(R.id.edicion_smartphone);
+			RadioButton tabletEdit = (RadioButton) findViewById(R.id.edicion_tablet);
+			int tipo;
+			if (smartphoneEdit.isChecked()) {
+				tipo = Producto.TIPO_SMARTPHONE;
+			} else if (tabletEdit.isChecked()) {
+				tipo = Producto.TIPO_TABLET;
+			} else {
+				return filtro;
+			}
+			filtro.addFiltroTipo(tipo);
+			break;
+		case OFERTAS_FILTRO:
+			filtro.addFiltroOferta(true);
+			break;
+		default:
+			break;
+		}
+		return filtro;
+	}
+
+	/*
 	 * Obtiene las marcas
 	 */
 	private List<String> getMarcas() {
@@ -269,6 +391,9 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 		return strs;
 	}
 
+	/*
+	 * Actualiza el AutoCompleteTextView
+	 */
 	private void actualizarSugerencias() {
 		// rellenamos array de autocompletado
 		String[] nombres = rellenarArraySugerencias();

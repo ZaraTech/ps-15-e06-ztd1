@@ -30,13 +30,13 @@
                 android:src="@drawable/smarket" />
 
             <Button
-                android:id="@+id/edicion_camara"
+                android:id="@+id/edicion_camara" style="@style/Boton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/edicion_foto" />
 
             <Button
-                android:id="@+id/edicion_galeria"
+                android:id="@+id/edicion_galeria" style="@style/Boton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/edicion_galeria" />
@@ -201,21 +201,21 @@
             android:orientation="horizontal" >
 
             <Button
-                android:id="@+id/edicion_crear_marca"
+                android:id="@+id/edicion_crear_marca" style="@style/Boton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/edicion_crear_marca" />
 
             <Button
-                android:id="@+id/edicion_modificar_marca"
+                android:id="@+id/edicion_modificar_marca" style="@style/Boton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/edicion_modificar_marca" />
 
             <Button
-                android:id="@+id/edicion_eliminar_marca"
+                android:id="@+id/edicion_eliminar_marca" style="@style/Boton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -247,7 +247,7 @@
         <!-- Boton de guardado -->
 
         <Button
-            android:id="@+id/edicion_guardar"
+            android:id="@+id/edicion_guardar" style="@style/Boton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/edicion_guardar" />

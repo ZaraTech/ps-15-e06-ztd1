@@ -187,7 +187,7 @@
         <!-- Botón de compra -->
 
         <Button
-            android:id="@+id/info_boton_comprar"
+            android:id="@+id/info_boton_comprar" style="@style/Boton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/info_comprar"

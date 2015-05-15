@@ -2,6 +2,7 @@ package com.zaratech.smarket.aplicacion;
 
 import java.util.List;
 
+import com.zaratech.smarket.componentes.Orden;
 import com.zaratech.smarket.componentes.Producto;
 import com.zaratech.smarket.pruebas.LanzadorPruebas;
 import com.zaratech.smarket.utiles.AdaptadorBD;
@@ -10,7 +11,6 @@ import com.zaratech.smarket.R;
 
 import android.os.Bundle;
 import android.app.ListActivity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
@@ -40,6 +40,13 @@ public class ListaProductos extends ListActivity {
 	 * Guarda la ultima posicion en la que se quedo el listado
 	 */
 	private int ultimaPosicion;
+	
+	/**
+	 * Guarda el ultimo orden seleccionado
+	 */
+	private Orden ultimoOrden = new Orden(
+			AdaptadorBD.DB_ORDENACION_NOMBRE,
+			AdaptadorBD.DB_ORDENACION_ASC);
 
 	/**
 	 * Constante que hace referencia a la activity InfoProducto. Se usara para
@@ -76,10 +83,8 @@ public class ListaProductos extends ListActivity {
 
 	private void cargarListado() {
 
-		// Rellenar lista
-		List<Producto> productos = bd.obtenerProductos(
-				AdaptadorBD.DB_ORDENACION_PRECIO,
-				AdaptadorBD.DB_ORDENACION_DESC);
+		// Rellenar lista		
+		List<Producto> productos = bd.OrdenarProducto(ultimoOrden);
 
 		AdaptadorProductos adaptador = new AdaptadorProductos(this, productos);
 
@@ -99,6 +104,9 @@ public class ListaProductos extends ListActivity {
 		// Obtener BD
 		bd = new AdaptadorBD(this);
 		bd.open();
+		
+		// SINCRONIZACION REMOTA
+		bd.activarSincronizacionRemota();
 
 		// PARA PRUEBAS - BORRAR //////
 		if (bd.obtenerMarcas().size() == 0) {
@@ -149,18 +157,14 @@ public class ListaProductos extends ListActivity {
 				android.R.layout.simple_spinner_item, ordenacion);
 		ordenar.setAdapter(adapter);
 
-		final Context context = this;
-
 		ordenar.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
 				if (position >= 0 && position < BusquedaProducto.ORDEN.length) {
-					List<Producto> productos = bd
-							.OrdenarProducto(BusquedaProducto.ORDEN[position]);
-					AdaptadorProductos adaptador = new AdaptadorProductos(
-							context, productos);
-					setListAdapter(adaptador);
+
+					ultimoOrden = BusquedaProducto.ORDEN[position];
+					cargarListado();
 				}
 			}
 

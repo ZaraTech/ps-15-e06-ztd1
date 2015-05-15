@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.zaratech.smarket.R;
+import com.zaratech.smarket.componentes.Conexion;
 import com.zaratech.smarket.componentes.Filtro;
 import com.zaratech.smarket.componentes.Marca;
 import com.zaratech.smarket.componentes.Orden;
@@ -37,10 +38,21 @@ public class AdaptadorBD implements InterfazBD {
 	private DatabaseHelper bdHelper;
 	private SQLiteDatabase bd;
 	private final Context context;
+	
+	/******** Sincronizacion Remota ***************/
+	
+	private static SincronizadorRemoto sincronizador = null;
+	
+	public void activarSincronizacionRemota(){
+		//TODO meter datos de conexion
+		sincronizador = new SincronizadorRemoto(this, new Conexion());
+	}
+	
+	/***********************************************/
 
 	private static final String DB_NOMBRE = "datos_smarket";
-	private static final String DB_TABLA_PRODUCTOS = "productos";
-	private static final String DB_TABLA_MARCAS = "marcas";
+	public static final String DB_TABLA_PRODUCTOS = "productos";
+	public static final String DB_TABLA_MARCAS = "marcas";
 
 	private static final int DB_VERSION = 1;
 
@@ -71,7 +83,7 @@ public class AdaptadorBD implements InterfazBD {
 	public static final String KEY_EN_OFERTA = "en_oferta";
 	public static final String KEY_PRECIO_OFERTA = "precio_oferta";
 
-	private static final String DB_CREAR_PRODUCTOS = "create table "
+	public static final String DB_CREAR_PRODUCTOS = "create table "
 			+ DB_TABLA_PRODUCTOS + " (" + KEY_ID
 			+ " integer primary key autoincrement," + KEY_NOMBRE
 			+ " text not null," + KEY_TIPO + " integer not null,"
@@ -82,7 +94,7 @@ public class AdaptadorBD implements InterfazBD {
 			+ KEY_EN_OFERTA + " integer not null default 0,"
 			+ KEY_PRECIO_OFERTA + " integer not null default 0.0" + ");";
 
-	private static final String DB_CREAR_CATEGORIAS = "create table "
+	public static final String DB_CREAR_MARCAS = "create table "
 			+ DB_TABLA_MARCAS + " (" + KEY_ID
 			+ " integer primary key autoincrement," + KEY_NOMBRE
 			+ " text not null" + ");";
@@ -114,7 +126,7 @@ public class AdaptadorBD implements InterfazBD {
 		public void onCreate(SQLiteDatabase bd) {
 
 			bd.execSQL(DB_CREAR_PRODUCTOS);
-			bd.execSQL(DB_CREAR_CATEGORIAS);
+			bd.execSQL(DB_CREAR_MARCAS);
 		}
 
 		@Override

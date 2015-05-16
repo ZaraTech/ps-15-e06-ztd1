@@ -20,7 +20,9 @@ public class EditorConfiguracion {
 	private static String PUERTO_BD_KEY = "puertoBD";
 	private static String NOMBRE_BD_KEY = "nombreBD";
 	private static String USUARIO_BD_KEY = "usuarioBD";
-	private static String CONTRASENIA_BD_KEY = "passwordBD";
+	private static String PASSWORD_BD_KEY = "passwordBD";
+	private static String SINCRONIZACION_BD_KEY = "sincronizacion";
+	private static String SINCRONIZACION_BD_INTERVALO_KEY = "intervaloBD";
 	private static String USO_BD_LOCAL_KEY = "BDlocal";
 	private static String CORREO_CAJA_KEY = "correoCaja";
 	
@@ -28,6 +30,8 @@ public class EditorConfiguracion {
 	
 	// Contraseña por defecto de la aplicación
 	private static String PASSWORD_DEFECTO = "admin";
+	// Intervalo de sincronización automática por defecto (en segundos)
+	private static int INTERVALO_DEFECTO = 60;
 	
 	/**
 	 * Constructor que prepara el objeto para interactuar con el fichero de 
@@ -159,7 +163,7 @@ public class EditorConfiguracion {
 	 * 							a la base de datos remota
 	 */
 	public String obtenerPasswordBD() {
-	    String password = configuracion.getString(CONTRASENIA_BD_KEY, null);
+	    String password = configuracion.getString(PASSWORD_BD_KEY, null);
 	    return password;
 	}
 	
@@ -171,7 +175,7 @@ public class EditorConfiguracion {
 	 * 								la base de datos remota
 	 */
 	public void modificarPasswordBD(String nuevoPassword) {
-		editor.putString(CONTRASENIA_BD_KEY, nuevoPassword);
+		editor.putString(PASSWORD_BD_KEY, nuevoPassword);
 	    editor.commit();
 	}
 	
@@ -195,6 +199,54 @@ public class EditorConfiguracion {
 	 */
 	public void modificarUsoBDLocal(boolean usoLocal) {
 		editor.putBoolean(USO_BD_LOCAL_KEY, usoLocal);
+	    editor.commit();
+	}
+	
+	/**
+	 * Devuelve cierto si y solo si la base de datos se sincroniza manualmente.
+	 * Devuelve falso si la base de datos se sincroniza automáticamente
+	 * 
+	 * @return				Cierto si y solo si la base de datos se sincroniza
+	 * 						manualmente
+	 */
+	public boolean sincBDManual() {
+		boolean sincBDManual = configuracion.getBoolean
+												(SINCRONIZACION_BD_KEY, true);
+	    return sincBDManual;
+	}
+	
+	/**
+	 * Alterna entre la sincronización manual y automática de la base de datos
+	 * 
+	 * @param usoLocal			Cierto si y solo si la nueva sincronización es
+	 * 							manual. Falso en caso contrario
+	 */
+	public void modificarSincBDManual(boolean sincManual) {
+		editor.putBoolean(SINCRONIZACION_BD_KEY, sincManual);
+	    editor.commit();
+	}
+	
+	/**
+	 * Devuelve el intervalo de sincronización automática (en segundos) en el
+	 * que se actualiza la base de datos
+	 * 
+	 * @return		El intervalo de sincronización automática (en segundos)
+	 */
+	public int obtenerIntervaloSinc() {
+		int intervalo = configuracion.getInt
+						(SINCRONIZACION_BD_INTERVALO_KEY, INTERVALO_DEFECTO);
+		return intervalo;
+	}
+	
+	/**
+	 * Modifica el intervalo de sincronización automática en el que se actualiza
+	 * la base de datos
+	 * 
+	 * @param nuevoIntervalo		El nuevo intervalo de sincronización 
+	 * 								(en segundos)
+	 */
+	public void modificarIntervaloSinc(int nuevoIntervalo) {
+		editor.putInt(SINCRONIZACION_BD_INTERVALO_KEY, nuevoIntervalo);
 	    editor.commit();
 	}
 	

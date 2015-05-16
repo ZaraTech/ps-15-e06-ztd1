@@ -19,7 +19,8 @@
     <string name="app_pulgadas">Pulgadas</string>
     <string name="app_ud_pantalla">\"</string>
     <string name="app_ud_monetaria">€</string>
-    <string name="app_ud_monetaria_texto">euros</string> 
+    <string name="app_ud_monetaria_texto">euros</string>
+    <string name="app_ud_segundos_texto"> segundos</string>
     <string name="app_separador_descripcion">Separador horizontal</string>
 
     <!-- Lista de productos -->
@@ -113,6 +114,11 @@
     <string name="configuracion_password_BD">Contraseña</string>
     <string name="configuracion_direccion_BD">Dirección</string>
     <string name="configuracion_puerto_BD">Puerto</string>
+    <string name="configuracion_BD_sincronizacion">Sincronización de la base de datos</string>
+    <string name="configuracion_BD_sinc_manual">Manual</string>
+    <string name="configuracion_BD_sinc_automatica">Automatica</string>
+	<string name="configuracion_BD_sinc_intervalo">Intervalo</string>
+	<string name="configuracion_BD_sinc_segundos">Segundos</string>
     <string name="configuracion_caja_registradora">Caja registradora</string>
     <string name="configuracion_correo">Correo</string>
     <string name="configuracion_guardar">Guardar configuración</string>
@@ -122,7 +128,7 @@
     <string name="configuracion_mensaje_password_modificar">Contraseña modificada</string>
     <string name="configuracion_mensaje_password_fallo">Las dos contraseñas no coinciden, \n\t\t\t\trepita la contraseña</string>
     <string name="configuracion_mensaje_guardar">Configuración guardada</string>
-
+    
     <!-- Errores -->
 
     <string name="edicion_error_marca_erronea">El nombre de la marca debe tener entre 1 y 30 caracteres</string>

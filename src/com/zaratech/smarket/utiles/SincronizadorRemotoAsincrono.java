@@ -377,7 +377,7 @@ public class SincronizadorRemotoAsincrono extends
 				segundos--;
 			}
 
-			if (bdLocal.isBdCreada()) {
+			if (bdLocal.isBdCreada() && bdLocal.isBdAbierta()) {
 				pull();
 			}
 
@@ -399,7 +399,7 @@ public class SincronizadorRemotoAsincrono extends
 
 		} else if (operacion == OP_PULL) {
 
-			if (bdLocal.isBdCreada()) {
+			if (bdLocal.isBdCreada() && bdLocal.isBdAbierta()) {
 				return pull();
 			} else {
 				return false;

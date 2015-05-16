@@ -7,6 +7,7 @@ import com.zaratech.smarket.componentes.Producto;
 import com.zaratech.smarket.pruebas.LanzadorPruebas;
 import com.zaratech.smarket.utiles.AdaptadorBD;
 import com.zaratech.smarket.utiles.AdaptadorProductos;
+import com.zaratech.smarket.utiles.EditorConfiguracion;
 import com.zaratech.smarket.R;
 
 import android.os.Bundle;
@@ -40,7 +41,7 @@ public class ListaProductos extends ListActivity {
 	 * Guarda la ultima posicion en la que se quedo el listado
 	 */
 	private int ultimaPosicion;
-	
+
 	/**
 	 * Guarda el ultimo orden seleccionado
 	 */
@@ -59,7 +60,7 @@ public class ListaProductos extends ListActivity {
 	 * para identificar de donde se vuelve (startActivityForResult)
 	 */
 	private final int ACTIVITY_EDICION = 1;
-	
+
 	/**
 	 * Constante que hace referencia a la activity IniciarSesion. Se usara
 	 * para identificar de donde se vuelve (startActivityForResult)
@@ -109,6 +110,19 @@ public class ListaProductos extends ListActivity {
 
 		// Obtener BD
 		bd = new AdaptadorBD(this);
+		bd.open();
+
+		// SINCRONIZACION REMOTA
+		EditorConfiguracion configuracion = new EditorConfiguracion(this);
+		if(!configuracion.usoBDLocal()){
+			bd.setSincronizacionRemota();
+
+			//if(configuracion.usoBdPeriodico()){
+			bd.setSincronizacionRemotaPeriodica();
+			//}
+
+		}
+
 
 		// Separador personalizado de elementos de listado
 		int[] colors = { 0, 0xFFFFFFFF, 0 };
@@ -165,19 +179,17 @@ public class ListaProductos extends ListActivity {
 			}
 
 		});
-
-		// Menu contextual solo con permisos de administrador
-		if (admin) {
-			registerForContextMenu(getListView());
-		}
-
 	}
-	
+
 	@Override
 	protected void onDestroy() {
-		
+
+		if(bd.isSincronizacionRemotaPeriodica()){
+			bd.unSetSincronizacionRemotaPeriodica();
+		}
+
 		bd.close();
-		
+
 		super.onDestroy();
 	}
 
@@ -186,20 +198,6 @@ public class ListaProductos extends ListActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-
-		bd.open();
-		
-		// SINCRONIZACION REMOTA
-		bd.setSincronizacionRemota();
-		bd.setSincronizacionRemotaPeriodica();
-
-		// PARA PRUEBAS - BORRAR //////
-		/* if (bd.obtenerMarcas().size() == 0) {
-			bd.poblarBD();
-		}*/
-		// /////////////////////////////
-
-		//cargarListado();
 	}
 
 	// CLICK en Producto del listado
@@ -240,6 +238,7 @@ public class ListaProductos extends ListActivity {
 			if (resultCode == IniciarSesion.INICIAR_SESION_OK) {
 				admin = true;
 				invalidateOptionsMenu();
+				registerForContextMenu(getListView());
 			}
 		}
 
@@ -288,7 +287,7 @@ public class ListaProductos extends ListActivity {
 			Intent i = new Intent(this, IniciarSesion.class);
 			startActivityForResult(i, ACTIVITY_INICIAR_SESION);
 			return true;
-			
+
 			// CONFIGURACIÓN
 		} else if (id == R.id.lista_menu_configuracion) {
 			startActivity(new Intent(this, EditarConfiguracion.class));
@@ -305,13 +304,14 @@ public class ListaProductos extends ListActivity {
 
 			bd.pullRemoto();
 			return true;
-			
+
 			// CERRAR SESIÓN
 		} else if (id == R.id.lista_menu_cerrar_sesion) {
 			admin = false;
 			invalidateOptionsMenu();
+			unregisterForContextMenu(getListView());
 			return true;
-			
+
 			// ???
 		} else {
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="0.1.32" package="com.zaratech.smarket">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="0.1.34" package="com.zaratech.smarket">
 
     <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="22"/>
 
@@ -44,7 +44,7 @@
         <activity android:label="@string/sesion_titulo" android:name="com.zaratech.smarket.aplicacion.IniciarSesion">
         </activity>
         
-        <!-- Editar configuración -->
+        <!-- Editar configuracion -->
 
         <activity android:label="@string/configuracion_titulo" android:name="com.zaratech.smarket.aplicacion.EditarConfiguracion">
         </activity>

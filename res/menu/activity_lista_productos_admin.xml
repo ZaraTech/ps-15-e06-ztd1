@@ -3,7 +3,7 @@
     <!-- Búsqueda de productos -->
     <item
         android:id="@+id/lista_menu_busqueda"
-        android:icon="@android:drawable/ic_menu_search"
+        android:icon="@drawable/ic_action_search"
         android:orderInCategory="1"
         android:showAsAction="always"
         android:title="@string/lista_menu_busqueda"/>
@@ -11,32 +11,33 @@
     <!-- Añadir/Editar productos -->
     <item
         android:id="@+id/lista_menu_add"
-        android:icon="@android:drawable/ic_menu_add"
+        android:icon="@drawable/ic_action_new"
         android:orderInCategory="2"
         android:showAsAction="always"
         android:title="@string/lista_menu_add"/>
 
-	<!-- Editar configuración -->
-    <item
-        android:id="@+id/lista_menu_configuracion"
-        android:orderInCategory="3"
-        android:showAsAction="never"
-        android:title="@string/lista_menu_configuracion"/>
-    
-    <!-- Tests de la App -->
-    <item
-        android:id="@+id/lista_menu_test"
-        android:orderInCategory="4"
-        android:showAsAction="never"
-        android:title="@string/lista_menu_test"/>
-    
     <!-- Actualizacion de productos -->
     <item
         android:id="@+id/lista_menu_actualizar"
-        android:orderInCategory="5"
+        android:icon="@drawable/ic_action_refresh"
+        android:orderInCategory="3"
         android:showAsAction="never"
         android:title="@string/lista_menu_actualizar"/>
-    
+
+    <!-- Editar configuración -->
+    <item
+        android:id="@+id/lista_menu_configuracion"
+        android:orderInCategory="4"
+        android:showAsAction="never"
+        android:title="@string/lista_menu_configuracion"/>
+
+    <!-- Tests de la App -->
+    <item
+        android:id="@+id/lista_menu_test"
+        android:orderInCategory="5"
+        android:showAsAction="never"
+        android:title="@string/lista_menu_test"/>
+
     <!-- Actualizacion de productos -->
     <item
         android:id="@+id/lista_menu_cerrar_sesion"

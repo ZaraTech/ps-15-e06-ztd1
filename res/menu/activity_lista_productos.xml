@@ -3,10 +3,18 @@
     <!-- Búsqueda de productos -->
     <item
         android:id="@+id/lista_menu_busqueda"
-        android:icon="@android:drawable/ic_menu_search"
+        android:icon="@drawable/ic_action_search"
         android:orderInCategory="1"
-        android:showAsAction="ifRoom"
+        android:showAsAction="always"
         android:title="@string/lista_menu_busqueda"/>
+    
+    <!-- Actualizacion de productos -->
+    <item
+        android:id="@+id/lista_menu_actualizar"
+        android:icon="@drawable/ic_action_refresh"
+        android:orderInCategory="2"
+        android:showAsAction="always"
+        android:title="@string/lista_menu_actualizar"/>
     
     <!-- Iniciar sesión -->
     <item
@@ -15,10 +23,5 @@
         android:showAsAction="never"
         android:title="@string/lista_menu_iniciar_sesion"/>
     
-    <!-- Actualizacion de productos -->
-    <item
-        android:id="@+id/lista_menu_actualizar"
-        android:orderInCategory="5"
-        android:showAsAction="never"
-        android:title="@string/lista_menu_actualizar"/>
+    
 </menu>

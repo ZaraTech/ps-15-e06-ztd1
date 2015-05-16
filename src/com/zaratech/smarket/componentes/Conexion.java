@@ -2,7 +2,7 @@ package com.zaratech.smarket.componentes;
 
 public class Conexion {
 	
-	private String ip = "smarket-zt.ddns.net";
+	private String direccion = "smarket-zt.ddns.net";
 	private String puerto = "3306";
 	private String usuario = "smarket";
 	private String pass = "SmarketZT1506";
@@ -12,10 +12,10 @@ public class Conexion {
 		
 	}
 
-	public Conexion(String ip, String puerto, String usuario, String pass,
+	public Conexion(String direccion, String puerto, String usuario, String pass,
 			String bd) {
 		
-		this.ip = ip;
+		this.direccion = direccion;
 		this.puerto = puerto;
 		this.usuario = usuario;
 		this.pass = pass;
@@ -23,17 +23,17 @@ public class Conexion {
 	}
 	
 	public String generarConexionMySQL(){
-		return "jdbc:mysql://" + ip + ":" + puerto + "/" + bd;
+		return "jdbc:mysql://" + direccion + ":" + puerto + "/" + bd;
 	}
 
 
-	public String getIp() {
-		return ip;
+	public String getDireccion() {
+		return direccion;
 	}
 
 
-	public void setIp(String ip) {
-		this.ip = ip;
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
 	}
 
 

@@ -45,6 +45,7 @@ public class AdaptadorBD implements InterfazBD {
 
 	private static SincronizadorRemoto sincronizador = null;
 	private static boolean bdCreada = false;
+	private static boolean bdAbierta = false;
 	private static boolean sincronizacionPeriodica = false;
 
 
@@ -55,8 +56,17 @@ public class AdaptadorBD implements InterfazBD {
 			+ ");";
 
 	public void setSincronizacionRemota(){
-		//TODO meter datos de conexion
-		sincronizador = new SincronizadorRemoto(this, new Conexion());
+		
+		EditorConfiguracion configuracion = new EditorConfiguracion(context);
+		Conexion conexion = new Conexion();
+		
+		conexion.setUsuario(configuracion.obtenerUsuarioBD());
+		conexion.setPass(configuracion.obtenerContraseniaBD());
+		conexion.setDireccion(configuracion.obtenerUsuarioBD());
+		conexion.setPuerto(String.valueOf(configuracion.obtenerPuertoBD()));
+		//conexion.setBd(configuracion.obtenerBD());
+
+		sincronizador = new SincronizadorRemoto(this, conexion);
 	}
 
 	public boolean isSincronizacionRemota(){
@@ -65,6 +75,10 @@ public class AdaptadorBD implements InterfazBD {
 
 	public void setSincronizacionRemotaPeriodica(){
 		sincronizacionPeriodica = true;
+	}
+	
+	public void unSetSincronizacionRemotaPeriodica(){
+		sincronizacionPeriodica = false;
 	}
 	
 	public boolean isSincronizacionRemotaPeriodica(){
@@ -80,6 +94,10 @@ public class AdaptadorBD implements InterfazBD {
 		return bdCreada;
 	}
 	
+	public boolean isBdAbierta(){
+		return bdAbierta;
+	}
+	
 	public void initSincronizacionRemotaPeriodica() {
 
 		if (isSincronizacionRemota() && isSincronizacionRemotaPeriodica()) {
@@ -88,13 +106,13 @@ public class AdaptadorBD implements InterfazBD {
 	}
 
 	public void pullRemoto(){
-		if(isSincronizacionRemota()){
+		if(isSincronizacionRemota() && isBdAbierta()){
 			sincronizador.pull();
 		}
 	}
 
 	public void recargarListado(){
-		if(isSincronizacionRemota()){
+		if(isSincronizacionRemota() && isBdAbierta()){
 			((ListaProductos) context).cargarListado();
 		}
 	}
@@ -220,10 +238,12 @@ public class AdaptadorBD implements InterfazBD {
 
 		bdHelper = new DatabaseHelper(context);
 		bd = bdHelper.getWritableDatabase();
+		bdAbierta = true;
 	}
 
 	public void close() {
 		bd.close();
+		bdAbierta = false;
 	}
 
 	public void crearLogs(){
@@ -381,26 +401,32 @@ public class AdaptadorBD implements InterfazBD {
 	 *            Tipo de ordenacion (Precio o Nombre) <br/>
 	 *            <b> odenacion = [ DB_ORDENACION_PRECIO | DB_ORDENACION_NOMBRE
 	 *            ] </b>
-	 * @param sentido
+	 * @param direccion
 	 *            Sentido de la ordenacion <br/>
-	 *            <b> sentido = [ DB_ORDENACION_ASC | DB_ORDENACION_DESC ] </b>
+	 *            <b> direccion = [ DB_ORDENACION_ASC | DB_ORDENACION_DESC ] </b>
 	 * @return Lista de Productos
 	 */
-	public List<Producto> obtenerProductos(int ordenacion, int sentido) {
-
-		// TODO
+	public List<Producto> obtenerProductos(int ordenacion, int direccion) {
+		
+		String sentido = "";
+		
+		if(direccion == DB_ORDENACION_ASC){
+			sentido = " ASC";
+		} else {
+			sentido = " DESC";
+		}
 
 		// Ordenacion
 
-		String orden = KEY_EN_OFERTA + " DESC";
+		String orden = KEY_EN_OFERTA + sentido;
 
 		if (ordenacion == DB_ORDENACION_PRECIO) {
 
-			orden += ", " + KEY_PRECIO + " DESC";
+			orden += ", " + KEY_PRECIO + sentido;
 
 		} else if (ordenacion == DB_ORDENACION_NOMBRE) {
 
-			orden += ", " + KEY_NOMBRE + " DESC";
+			orden += ", " + KEY_NOMBRE + sentido;
 
 		}
 

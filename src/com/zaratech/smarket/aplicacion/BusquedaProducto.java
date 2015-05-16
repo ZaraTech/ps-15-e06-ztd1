@@ -720,7 +720,7 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 			v.setVisibility(View.GONE);
 			
 			// cambia la imagen del boton de extender
-			extender.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, android.R.drawable.arrow_down_float);
+			extender.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_action_expand);
 			
 			for (int i = 0; i < v.getChildCount(); i++) {
 				v.getChildAt(i).setEnabled(false);
@@ -740,7 +740,7 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 		extender.bringToFront();
 		
 		// cambia la imagen del boton de extender
-		extender.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, android.R.drawable.arrow_up_float);
+		extender.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_action_collapse);
 		
 		for (int i = 0; i < v.getChildCount(); i++) {
 			v.getChildAt(i).setEnabled(true);

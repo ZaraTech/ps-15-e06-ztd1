@@ -211,10 +211,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="5sp"
-            android:paddingBottom="5sp"
             android:gravity="center"
             android:background="#DDDDDD" 
-            android:drawableBottom="@android:drawable/arrow_down_float"
+            android:drawableBottom="@drawable/ic_action_expand"
             android:clickable="true"
             android:onClick="toggle_contents"
             android:text="@string/busqueda_avanzada" />

@@ -1,7 +1,5 @@
 package com.zaratech.smarket.utiles;
 
-import java.text.DecimalFormatSymbols;
-
 import android.text.Editable;
 import android.text.Selection;
 import android.text.TextWatcher;
@@ -30,8 +28,7 @@ public class EditTextSimboloFinal implements TextWatcher {
 	private float minimo;
 
 	// Caracter de coma flotante
-	private static final char DECIMAL = DecimalFormatSymbols.getInstance()
-			.getDecimalSeparator();
+	private static final char DECIMAL = '.';
 
 	/**
 	 * 

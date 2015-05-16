@@ -411,12 +411,12 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 			}
 			break;
 		case TIPO_FILTRO:
-			RadioButton smartphoneEdit = (RadioButton) findViewById(R.id.edicion_smartphone);
-			RadioButton tabletEdit = (RadioButton) findViewById(R.id.edicion_tablet);
+			RadioButton smartphoneRadio = (RadioButton) findViewById(R.id.busqueda_smartphone);
+			RadioButton tabletRadio = (RadioButton) findViewById(R.id.busqueda_tablet);
 			int tipo;
-			if (smartphoneEdit.isChecked()) {
+			if (smartphoneRadio.isChecked()) {
 				tipo = Producto.TIPO_SMARTPHONE;
-			} else if (tabletEdit.isChecked()) {
+			} else if (tabletRadio.isChecked()) {
 				tipo = Producto.TIPO_TABLET;
 			} else {
 				return filtro;

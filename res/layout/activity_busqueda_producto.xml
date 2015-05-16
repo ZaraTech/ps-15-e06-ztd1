@@ -24,6 +24,7 @@
             <requestFocus />
         </AutoCompleteTextView>
     </LinearLayout>
+    
     <!-- Busqueda avanzada -->
 
     <LinearLayout
@@ -217,5 +218,14 @@
         android:id="@+id/android:list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
+    
+    <!-- Por si no hay productos -->
+
+    <TextView
+        android:id="@android:id/empty"
+        android:paddingTop="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="@string/lista_no_hay_productos" />
 
 </LinearLayout>

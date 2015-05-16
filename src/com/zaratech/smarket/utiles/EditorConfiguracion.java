@@ -2,7 +2,6 @@ package com.zaratech.smarket.utiles;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 
 /**
  * Clase que se utiliza para editar la configuración general de la aplicación
@@ -10,8 +9,6 @@ import android.os.Bundle;
  * @author Miguel Trasobares Baselga
  */
 public class EditorConfiguracion {
-
-	private static boolean usuarioEsAdministrador = false;
 	private static SharedPreferences configuracion;
 	private static SharedPreferences.Editor editor;
 	
@@ -22,6 +19,7 @@ public class EditorConfiguracion {
 	private static String USUARIO_BD_KEY = "usuarioBD";
 	private static String CONTRASENIA_BD_KEY = "contraseniaBD";
 	private static String USO_BD_LOCAL_KEY = "BDlocal";
+	private static String CORREO_CAJA_KEY = "correoCaja";
 	private static int MODO_USO_PRIVADO = 0;
 	
 	/**
@@ -31,17 +29,6 @@ public class EditorConfiguracion {
 	public EditorConfiguracion(Context context) {
 		configuracion = context.getSharedPreferences(FICHERO_PREFS, MODO_USO_PRIVADO);
 		editor = configuracion.edit();
-	}
-	public void onCreate(Bundle savedInstanceState) {}
-	
-	/**
-	 * Devuelve cierto si y solo si el usuario es en el momento
-	 * de la llamada administrador de la aplicación
-	 * 
-	 * @return		True si y solo si el usuario es administrador
-	 */
-	public boolean esUsuarioAdministrador() {
-		return usuarioEsAdministrador;
 	}
 	
 	/**
@@ -90,7 +77,7 @@ public class EditorConfiguracion {
 	 * @param nuevaDireccion	La nueva direccion IP de la base de datos remota
 	 */
 	public void modificarDireccionBD(String nuevaDireccion) {
-		editor.putString(PUERTO_BD_KEY, nuevaDireccion);
+		editor.putString(DIRECCION_BD_KEY, nuevaDireccion);
 	    editor.commit();
 	}
 	
@@ -180,6 +167,26 @@ public class EditorConfiguracion {
 	 */
 	public void modificarUsoBDLocal(boolean usoLocal) {
 		editor.putBoolean(USO_BD_LOCAL_KEY, usoLocal);
+	    editor.commit();
+	}
+	
+	/**
+	 * Devuelve la dirección de correo de la caja registradora
+	 * 
+	 * @return			La dirección de correo de la caja registradora
+	 */
+	public String obtenerCorreoCaja() {
+		String correoCaja = configuracion.getString(CORREO_CAJA_KEY, null);
+	    return correoCaja;
+	}
+	
+	/**
+	 * Modifica la dirección de correo de la caja registradora
+	 * 
+	 * @return			La nueva dirección de correo de la caja registradora
+	 */
+	public void modificarCorreoCaja(String correoCaja) {
+		editor.putString(CORREO_CAJA_KEY, correoCaja);
 	    editor.commit();
 	}
 }

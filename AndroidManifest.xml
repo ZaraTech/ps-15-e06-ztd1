@@ -44,6 +44,11 @@
         <activity android:label="@string/sesion_titulo" android:name="com.zaratech.smarket.aplicacion.IniciarSesion">
         </activity>
         
+        <!-- Editar configuración -->
+
+        <activity android:label="@string/configuracion_titulo" android:name="com.zaratech.smarket.aplicacion.EditarConfiguracion">
+        </activity>
+        
         <!-- Tests -->
 
         <activity android:label="@string/pruebas_titulo" android:name="com.zaratech.smarket.pruebas.LanzadorPruebas">

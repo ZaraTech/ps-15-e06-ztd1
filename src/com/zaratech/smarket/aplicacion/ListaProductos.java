@@ -280,6 +280,11 @@ public class ListaProductos extends ListActivity {
 		} else if (id == R.id.lista_menu_iniciar_sesion) {
 			startActivity(new Intent(this, IniciarSesion.class));
 			return true;
+			
+			// CONFIGURACIÓN
+		} else if (id == R.id.lista_menu_configuracion) {
+			startActivity(new Intent(this, EditarConfiguracion.class));
+			return true;
 
 			// TESTS DE LA APP
 		} else if (id == R.id.lista_menu_test) {
@@ -292,7 +297,6 @@ public class ListaProductos extends ListActivity {
 
 			bd.pullRemoto();
 			return true;
-
 			// ???
 		} else {
 

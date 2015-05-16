@@ -15,40 +15,43 @@ public class EditorConfiguracion {
 	
 	// Claves de las preferencias a guardar
 	private static String FICHERO_PREFS = "preferencias";
-	private static String CONTRASENIA_KEY = "contrasenia";
+	private static String PASSWORD_KEY = "password";
 	private static String DIRECCION_BD_KEY = "direccionBD";
 	private static String PUERTO_BD_KEY = "puertoBD";
+	private static String NOMBRE_BD_KEY = "nombreBD";
 	private static String USUARIO_BD_KEY = "usuarioBD";
-	private static String CONTRASENIA_BD_KEY = "contraseniaBD";
+	private static String CONTRASENIA_BD_KEY = "passwordBD";
 	private static String USO_BD_LOCAL_KEY = "BDlocal";
 	private static String CORREO_CAJA_KEY = "correoCaja";
 	
 	private static int MODO_USO_PRIVADO = 0;
 	
 	// Contraseña por defecto de la aplicación
-	private static String CONTRASENIA_DEFECTO = "admin";
+	private static String PASSWORD_DEFECTO = "admin";
 	
 	/**
 	 * Constructor que prepara el objeto para interactuar con el fichero de 
 	 * configuración
 	 */
 	public EditorConfiguracion(Context context) {
-		configuracion = context.getSharedPreferences(FICHERO_PREFS, MODO_USO_PRIVADO);
+		configuracion = context.getSharedPreferences(FICHERO_PREFS, 
+															MODO_USO_PRIVADO);
 		editor = configuracion.edit();
 	}
 	
 	/**
-	 * Comprueba si la contrasenia introducida es igual a la almacenada de
+	 * Comprueba si la password introducida es igual a la almacenada de
 	 * forma persistente en el dispositivo
 	 * 
-	 * @param contraseniaIntroducida	Contraseña a comprobar introducida 
-	 * 									por el usuario
+	 * @param passwordIntroducida	Contraseña a comprobar introducida 
+	 * 								por el usuario
 	 * @return		Cierto si ambas contraseñas son idénticas o si no hay
 	 * 				ninguna almacenada en el dispositivo
 	 */
-	public boolean comprobarContrasenia(String contraseniaIntroducida) {
-	    String contraseniaAlmacenada = configuracion.getString(CONTRASENIA_KEY, CONTRASENIA_DEFECTO);
-	    if (contraseniaAlmacenada.equals(contraseniaIntroducida)) {
+	public boolean comprobarPassword(String passwordIntroducida) {
+	    String passwordAlmacenada = configuracion.getString(PASSWORD_KEY, 
+	    													PASSWORD_DEFECTO);
+	    if (passwordAlmacenada.equals(passwordIntroducida)) {
 	    	return true;
 	    } else {
 	    	return false;
@@ -56,13 +59,13 @@ public class EditorConfiguracion {
 	}
 	
 	/**
-	 * Modifica la contrasenia del usuario administrador
+	 * Modifica la password del usuario administrador
 	 * 
-	 * @param nuevaContrasenia		La nueva contraseña del usuario 
+	 * @param nuevoPassword		La nueva contraseña del usuario 
 	 * 								administrador
 	 */
-	public void modificarContrasenia(String nuevaContrasenia) {
-	    editor.putString(CONTRASENIA_KEY, nuevaContrasenia);
+	public void modificarPassword(String nuevoPassword) {
+	    editor.putString(PASSWORD_KEY, nuevoPassword);
 	    editor.commit();
 	}
 	
@@ -77,7 +80,7 @@ public class EditorConfiguracion {
 	}
 	
 	/**
-	 * Modifica la direccion IP de la base de datos remota
+	 * Modifica la dirección de la base de datos remota
 	 * 
 	 * @param nuevaDireccion	La nueva direccion IP de la base de datos remota
 	 */
@@ -104,6 +107,26 @@ public class EditorConfiguracion {
 	 */
 	public void modificarPuertoBD(int nuevoPuerto) {
 		editor.putInt(PUERTO_BD_KEY, nuevoPuerto);
+	    editor.commit();
+	}
+	
+	/**
+	 * Devuelve el nombre de la base de datos remota
+	 * 
+	 * @return		El nombre de la base de datos remota
+	 */
+	public String obtenerNombreBD() {
+	    String nombre = configuracion.getString(NOMBRE_BD_KEY, null);
+	    return nombre;
+	}
+	
+	/**
+	 * Modifica el nombre de la base de datos remota
+	 * 
+	 * @param nuevoNombre			El nuevo nombre de la base de datos remota
+	 */
+	public void modificarNombreBD(String nuevoNombre) {
+		editor.putString(NOMBRE_BD_KEY, nuevoNombre);
 	    editor.commit();
 	}
 	
@@ -135,20 +158,20 @@ public class EditorConfiguracion {
 	 * @return					La contraseña con la que accede el usuario 
 	 * 							a la base de datos remota
 	 */
-	public String obtenerContraseniaBD() {
-	    String contrasenia = configuracion.getString(CONTRASENIA_BD_KEY, null);
-	    return contrasenia;
+	public String obtenerPasswordBD() {
+	    String password = configuracion.getString(CONTRASENIA_BD_KEY, null);
+	    return password;
 	}
 	
 	/**
 	 * Modifica la contraseña con la que accede el usuario a la base de 
 	 * datos remota
 	 * 
-	 * @param nuevaContrasenia		Nueva contraseña del usuario que accede a
+	 * @param nuevoPassword		Nueva contraseña del usuario que accede a
 	 * 								la base de datos remota
 	 */
-	public void modificarContraseniaBD(String nuevaContrasenia) {
-		editor.putString(CONTRASENIA_BD_KEY, nuevaContrasenia);
+	public void modificarPasswordBD(String nuevoPassword) {
+		editor.putString(CONTRASENIA_BD_KEY, nuevoPassword);
 	    editor.commit();
 	}
 	

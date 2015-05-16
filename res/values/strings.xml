@@ -91,25 +91,34 @@
     <!-- Inicio de sesión -->
 
     <string name="sesion_titulo">Inicio de sesión</string>
-    <string name="sesion_peticion_contrasenia">Introduzca su contraseña</string>
+    <string name="sesion_peticion_password">Introduzca su contraseña</string>
     <string name="sesion_iniciar_sesion">Iniciar sesión</string>
+    <string name="sesion_mensaje_iniciar">Sesión iniciada</string>
     <string name="sesion_mensaje_fallo">Contraseña introducida no válida</string>
 
        <!-- Configuración -->
     
     <string name="configuracion_titulo">Configuración</string>
-    <string name="configuracion_cambiar_contrasenia">Cambiar contraseña</string>
+    <string name="configuracion_cambiar_password">Cambiar contraseña</string>
+    <string name="configuracion_cancelar_password">Cancelar</string>
     <string name="configuracion_tipo_BD">Base de datos</string>
     <string name="configuracion_BD_tipo_local">Local</string>
     <string name="configuracion_BD_tipo_remota">Remota</string>
     <string name="configuracion_BD_remota">Base de datos remota</string>
+    <string name="configuracion_nombre_BD">Nombre</string>
     <string name="configuracion_usuario_BD">Usuario</string>
-    <string name="configuracion_contrasenia_BD">Contraseña</string>
+    <string name="configuracion_password_BD">Contraseña</string>
     <string name="configuracion_direccion_BD">Dirección</string>
     <string name="configuracion_puerto_BD">Puerto</string>
     <string name="configuracion_caja_registradora">Caja registradora</string>
     <string name="configuracion_correo">Correo</string>
     <string name="configuracion_guardar">Guardar configuración</string>
+    <string name="configuracion_introduzca_password">Introduzca nueva contraseña</string>
+    <string name="configuracion_repita_password">Repita nueva contraseña</string>
+    <string name="configuracion_confirmar">Confirmar</string>
+    <string name="configuracion_mensaje_password_modificar">Contraseña modificada</string>
+    <string name="configuracion_mensaje_password_fallo">Las dos contraseñas no coinciden, \n\t\t\t\trepita la contraseña</string>
+    <string name="configuracion_mensaje_guardar">Configuración guardada</string>
 
     <!-- Errores -->
 

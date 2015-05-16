@@ -61,7 +61,7 @@ public class AdaptadorBD implements InterfazBD {
 		Conexion conexion = new Conexion();
 
 		conexion.setUsuario(configuracion.obtenerUsuarioBD());
-		conexion.setPass(configuracion.obtenerContraseniaBD());
+		conexion.setPass(configuracion.obtenerPasswordBD());
 		conexion.setDireccion(configuracion.obtenerUsuarioBD());
 		conexion.setPuerto(String.valueOf(configuracion.obtenerPuertoBD()));
 		//conexion.setBd(configuracion.obtenerBD());

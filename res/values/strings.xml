@@ -19,6 +19,7 @@
     <string name="app_pulgadas">Pulgadas</string>
     <string name="app_ud_pantalla">\"</string>
     <string name="app_ud_monetaria">€</string>
+    <string name="app_ud_monetaria_texto">euros</string> 
     <string name="app_separador_descripcion">Separador horizontal</string>
 
     <!-- Lista de productos -->
@@ -66,9 +67,10 @@
     <string name="envio_preparar">Preparando pedido&#8230;</string>
     <string name="envio_enviar">Enviando pedido&#8230;</string>
     <string name="envio_exito">Enhorabuena</string>
-    <string name="envio_error">Error</string>
+    <string name="envio_error">Error, inserte un nombre para su pedido.</string>
     <string name="envio_enviado">Pedido enviado!</string>
     <string name="envio_no_enviado">Pedido NO enviado</string>
+    <string name="envio_pedido_realizado">Pedido realizado con identificador: </string>
 
     <!-- Información de productos -->
 

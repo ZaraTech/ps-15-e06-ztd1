@@ -247,7 +247,7 @@
         <!-- Botón de confirmación -->
 
         <Button
-            android:id="@+id/configuracion_boton_guardar"
+            android:id="@+id/configuracion_boton_guardar" style="@style/Boton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30sp"

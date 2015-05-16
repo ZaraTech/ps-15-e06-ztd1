@@ -10,6 +10,7 @@ import javax.mail.internet.MimeMessage;
 
 import com.zaratech.smarket.R;
 import com.zaratech.smarket.aplicacion.ListaProductos;
+import com.zaratech.smarket.componentes.Producto;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -30,13 +31,18 @@ public class EnviarMail extends AsyncTask<String, Object, Object> {
 	 * Activity que realiza la peticion de envio.
 	 */
 	private Activity enviarMailActivity;
+	
+	/**
+	 * Clave que identifica un Producto dentro del campo extras del Intent
+	 */
+	private final String EXTRA_PRODUCTO = "Producto";
 
 	/*
 	 * Datos a incluir en el correo
 	 */
-	private final String DESTINATARIO = "smarket.zaratech@gmail.com";
+	private String destinatario = "";
 	private final String ASUNTO_MSJ = "[SMARKET] - Pedido ";
-	private final String TEXTO_MSJ = "Texto de la orden de pedido...";
+	private String texto_msj = "";
 
 	/*
 	 * Datos de la cuenta con la que se enviara el correo
@@ -67,6 +73,9 @@ public class EnviarMail extends AsyncTask<String, Object, Object> {
 		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.port", "587");
+		
+		EditorConfiguracion configuracion = new EditorConfiguracion(enviarMailActivity);
+		destinatario = configuracion.obtenerCorreoCaja();
 
 	}
 
@@ -144,11 +153,23 @@ public class EnviarMail extends AsyncTask<String, Object, Object> {
 			Session sesion = Session.getInstance(props);
 			Transport t = sesion.getTransport("smtp");
 			Message message = new MimeMessage(sesion);
+			
+			Producto producto = enviarMailActivity.getIntent().getExtras().
+					getParcelable(EXTRA_PRODUCTO);
+			
+			texto_msj = enviarMailActivity.getString(R.string.envio_pedido_realizado) 
+					+ idPedidoCliente[0] +"<br/><br/>"
+					+ "<strong>" + producto.getNombre() + "</strong>" + "<br/>"
+					+ producto.getMarca().getNombre() + "<br/>"
+					+ AdaptadorBD.obtenerTipo(producto.getTipo()) + "<br/>"
+					+ AdaptadorBD.obtenerSistemaOperativo(producto.getSistemaOperativo()) + "<br/>"
+					+ String.format("%.2f", producto.getPrecio()) + "<br/>"
+					+ enviarMailActivity.getString(R.string.app_ud_monetaria_texto);
 
 			message.setFrom(new InternetAddress(DIRECCION_ORIGEN));
-			message.setContent(TEXTO_MSJ, "text/html");
+			message.setContent(texto_msj, "text/html");
 			message.setRecipients(MimeMessage.RecipientType.TO,
-					InternetAddress.parse(DESTINATARIO));
+					InternetAddress.parse(destinatario));
 			message.setSubject(ASUNTO_MSJ + " \"" + idPedidoCliente[0] + "\"");
 
 			t.connect(NOMBRE_USUARIO, PASS);

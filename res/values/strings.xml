@@ -71,6 +71,7 @@
     <string name="envio_enviado">Pedido enviado!</string>
     <string name="envio_no_enviado">Pedido NO enviado</string>
     <string name="envio_pedido_realizado">Pedido realizado con identificador: </string>
+    <string name="envio_pedido_recoger">Pase por el mostrador</string>
 
     <!-- Información de productos -->
 

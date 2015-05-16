@@ -108,8 +108,9 @@ public class EnviarMail extends AsyncTask<String, Object, Object> {
 			constructor.setTitle(enviarMailActivity
 					.getString(R.string.envio_exito));
 			
-			constructor.setMessage(String.format("\n%s\n",
-					enviarMailActivity.getString(R.string.envio_enviado)));
+			constructor.setMessage(String.format("\n%s\n%s\n",
+					enviarMailActivity.getString(R.string.envio_enviado),
+					enviarMailActivity.getString(R.string.envio_pedido_recoger)));
 			
 			constructor.setNeutralButton(
 					enviarMailActivity.getString(R.string.envio_boton_aceptar),
@@ -157,13 +158,13 @@ public class EnviarMail extends AsyncTask<String, Object, Object> {
 			Producto producto = enviarMailActivity.getIntent().getExtras().
 					getParcelable(EXTRA_PRODUCTO);
 			
-			texto_msj = enviarMailActivity.getString(R.string.envio_pedido_realizado) 
+			texto_msj = enviarMailActivity.getString(R.string.envio_pedido_realizado) + " "
 					+ idPedidoCliente[0] +"<br/><br/>"
 					+ "<strong>" + producto.getNombre() + "</strong>" + "<br/>"
 					+ producto.getMarca().getNombre() + "<br/>"
 					+ AdaptadorBD.obtenerTipo(producto.getTipo()) + "<br/>"
 					+ AdaptadorBD.obtenerSistemaOperativo(producto.getSistemaOperativo()) + "<br/>"
-					+ String.format("%.2f", producto.getPrecio()) + "<br/>"
+					+ String.format("%.2f", producto.getPrecio())
 					+ enviarMailActivity.getString(R.string.app_ud_monetaria_texto);
 
 			message.setFrom(new InternetAddress(DIRECCION_ORIGEN));

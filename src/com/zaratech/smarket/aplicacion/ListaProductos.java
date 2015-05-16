@@ -59,6 +59,12 @@ public class ListaProductos extends ListActivity {
 	 * para identificar de donde se vuelve (startActivityForResult)
 	 */
 	private final int ACTIVITY_EDICION = 1;
+	
+	/**
+	 * Constante que hace referencia a la activity IniciarSesion. Se usara
+	 * para identificar de donde se vuelve (startActivityForResult)
+	 */
+	private final int ACTIVITY_INICIAR_SESION = 2;
 
 	/**
 	 * Constantes que hacen referencias a elementos del menu contextual
@@ -109,12 +115,6 @@ public class ListaProductos extends ListActivity {
 		getListView().setDivider(
 				new GradientDrawable(Orientation.RIGHT_LEFT, colors));
 		getListView().setDividerHeight(2);
-
-		
-		// PRUEBAS - BORRAR //////
-		admin = true;
-		// invalidateOptionsMenu();
-		// /////////////////////////////
 
 
 		// Hack para Barra de Acciones
@@ -235,6 +235,13 @@ public class ListaProductos extends ListActivity {
 		else if (requestCode == ACTIVITY_EDICION) {
 
 		}
+		// INICIAR SESIÓN
+		else if (requestCode == ACTIVITY_INICIAR_SESION) {
+			if (resultCode == IniciarSesion.INICIAR_SESION_OK) {
+				admin = true;
+				invalidateOptionsMenu();
+			}
+		}
 
 	}
 
@@ -278,7 +285,8 @@ public class ListaProductos extends ListActivity {
 
 			// INICIAR SESIÓN
 		} else if (id == R.id.lista_menu_iniciar_sesion) {
-			startActivity(new Intent(this, IniciarSesion.class));
+			Intent i = new Intent(this, IniciarSesion.class);
+			startActivityForResult(i, ACTIVITY_INICIAR_SESION);
 			return true;
 			
 			// CONFIGURACIÓN
@@ -297,6 +305,13 @@ public class ListaProductos extends ListActivity {
 
 			bd.pullRemoto();
 			return true;
+			
+			// CERRAR SESIÓN
+		} else if (id == R.id.lista_menu_cerrar_sesion) {
+			admin = false;
+			invalidateOptionsMenu();
+			return true;
+			
 			// ???
 		} else {
 

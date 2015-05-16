@@ -15,13 +15,6 @@
         android:orderInCategory="2"
         android:showAsAction="always"
         android:title="@string/lista_menu_add"/>
-    
-    <!-- Iniciar sesión -->
-    <item
-        android:id="@+id/lista_menu_iniciar_sesion"
-        android:orderInCategory="3"
-        android:showAsAction="never"
-        android:title="@string/lista_menu_iniciar_sesion"/>
 
 	<!-- Editar configuración -->
     <item
@@ -43,5 +36,12 @@
         android:orderInCategory="5"
         android:showAsAction="never"
         android:title="@string/lista_menu_actualizar"/>
+    
+    <!-- Actualizacion de productos -->
+    <item
+        android:id="@+id/lista_menu_cerrar_sesion"
+        android:orderInCategory="6"
+        android:showAsAction="never"
+        android:title="@string/lista_menu_cerrar_sesion"/>
 
 </menu>

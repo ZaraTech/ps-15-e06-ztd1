@@ -9,9 +9,11 @@ import android.content.SharedPreferences;
  * @author Miguel Trasobares Baselga
  */
 public class EditorConfiguracion {
+	// Objetos para acceder y modificar las preferencias
 	private static SharedPreferences configuracion;
 	private static SharedPreferences.Editor editor;
 	
+	// Claves de las preferencias a guardar
 	private static String FICHERO_PREFS = "preferencias";
 	private static String CONTRASENIA_KEY = "contrasenia";
 	private static String DIRECCION_BD_KEY = "direccionBD";
@@ -20,7 +22,11 @@ public class EditorConfiguracion {
 	private static String CONTRASENIA_BD_KEY = "contraseniaBD";
 	private static String USO_BD_LOCAL_KEY = "BDlocal";
 	private static String CORREO_CAJA_KEY = "correoCaja";
+	
 	private static int MODO_USO_PRIVADO = 0;
+	
+	// Contraseña por defecto de la aplicación
+	private static String CONTRASENIA_DEFECTO = "admin";
 	
 	/**
 	 * Constructor que prepara el objeto para interactuar con el fichero de 
@@ -41,9 +47,8 @@ public class EditorConfiguracion {
 	 * 				ninguna almacenada en el dispositivo
 	 */
 	public boolean comprobarContrasenia(String contraseniaIntroducida) {
-	    String contraseniaAlmacenada = configuracion.getString(CONTRASENIA_KEY, null);
-	    if (contraseniaAlmacenada == null 
-	       || contraseniaAlmacenada.equals(contraseniaIntroducida)) {
+	    String contraseniaAlmacenada = configuracion.getString(CONTRASENIA_KEY, CONTRASENIA_DEFECTO);
+	    if (contraseniaAlmacenada.equals(contraseniaIntroducida)) {
 	    	return true;
 	    } else {
 	    	return false;

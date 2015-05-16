@@ -18,6 +18,10 @@ import android.widget.Toast;
  * @author Miguel Trasobares Baselga
  */
 public class IniciarSesion extends Activity {
+	
+	// Constates resultado de la actividad
+	public static int INICIAR_SESION_NO_OK = 0;
+	public static int INICIAR_SESION_OK = 1;
 
 	// Campos del layout a rellenar
 	private EditText contraseniaEdit;
@@ -49,8 +53,8 @@ public class IniciarSesion extends Activity {
 				EditorConfiguracion configuracion = new EditorConfiguracion(IniciarSesion.this.getApplicationContext());
 				
 				if (configuracion.comprobarContrasenia(contraseniaIntroducida)) {
-					Log.d("PASSWORD","Contrasenia correcta");
-					startActivity(i);
+					setResult(INICIAR_SESION_OK);
+					finish();
 				} else {
 					mensajeFallo.show();
 				}

@@ -33,7 +33,8 @@
     <string name="lista_menu_configuracion">Configuración</string>
     <string name="lista_menu_test">Tests</string>
     <string name="lista_menu_actualizar">Actualizar</string>
-
+    <string name="lista_menu_cerrar_sesion">Cerrar Sesión</string>
+    
     <!-- Menú contextual de la Lista de productos -->
 
     <string name="lista_menu_editar">Editar Producto</string>

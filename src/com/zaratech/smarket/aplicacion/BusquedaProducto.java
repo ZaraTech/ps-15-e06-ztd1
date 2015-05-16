@@ -664,6 +664,8 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 	 */
 	public static void deslizarAbajo(Context ctx, View v) {
 		Animation a = AnimationUtils.loadAnimation(ctx, R.anim.deslizar_abajo);
+		a.setFillAfter(true);
+		
 		if (a != null) {
 			a.reset();
 			if (v != null) {
@@ -683,6 +685,8 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 	 */
 	public static void deslizarArriba(Context ctx, View v) {
 		Animation a = AnimationUtils.loadAnimation(ctx, R.anim.deslizar_arriba);
+		a.setFillAfter(false);
+		
 		if (a != null) {
 			a.reset();
 			if (v != null) {
@@ -714,6 +718,10 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 		if (v.isShown()) {
 			deslizarArriba(this, v);
 			v.setVisibility(View.GONE);
+			
+			// cambia la imagen del boton de extender
+			extender.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, android.R.drawable.arrow_down_float);
+			
 			for (int i = 0; i < v.getChildCount(); i++) {
 				v.getChildAt(i).setEnabled(false);
 			}
@@ -730,6 +738,10 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 		ordenarLayout.bringToFront();
 		buscar.bringToFront();
 		extender.bringToFront();
+		
+		// cambia la imagen del boton de extender
+		extender.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, android.R.drawable.arrow_up_float);
+		
 		for (int i = 0; i < v.getChildCount(); i++) {
 			v.getChildAt(i).setEnabled(true);
 		}

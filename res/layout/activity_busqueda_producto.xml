@@ -7,18 +7,13 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/busqueda_contiene"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:orientation="horizontal" >    
 
         <AutoCompleteTextView
             android:id="@+id/busqueda_miautocompletado"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+             android:hint="@string/busqueda_escribir"
             android:completionThreshold="1" >
 
             <requestFocus />
@@ -198,22 +193,41 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/busqueda_buscar" style="@style/Boton"
+                android:id="@+id/busqueda_buscar"
+                style="@style/Boton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingLeft="30sp"
+                android:paddingRight="30sp"
                 android:text="@string/busqueda_buscar" />
+            
         </LinearLayout>
+
+        <!-- Extender busqueda avanzada/ -->
 
         <TextView
             android:id="@+id/busqueda_extender_avanzada"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="true"
+            android:paddingTop="5sp"
+            android:paddingBottom="5sp"
             android:gravity="center"
+            android:background="#DDDDDD" 
+            android:drawableBottom="@android:drawable/arrow_down_float"
+            android:clickable="true"
             android:onClick="toggle_contents"
             android:text="@string/busqueda_avanzada" />
+        
     </LinearLayout>
 
+    <!-- Línea de separación -->
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+    
     <ListView
         android:id="@+id/android:list"
         android:layout_width="fill_parent"

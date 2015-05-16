@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.zaratech.smarket.R;
+import com.zaratech.smarket.aplicacion.ListaProductos;
 import com.zaratech.smarket.componentes.Conexion;
 import com.zaratech.smarket.componentes.Filtro;
 import com.zaratech.smarket.componentes.Marca;
@@ -38,17 +39,68 @@ public class AdaptadorBD implements InterfazBD {
 	private DatabaseHelper bdHelper;
 	private SQLiteDatabase bd;
 	private final Context context;
-	
+
+	////////////////////////////////////////////////
 	/******** Sincronizacion Remota ***************/
-	
+
 	private static SincronizadorRemoto sincronizador = null;
-	
-	public void activarSincronizacionRemota(){
+	private static boolean bdCreada = false;
+	private static boolean sincronizacionPeriodica = false;
+
+
+	public static final String DB_TABLA_LOGS = "logs";
+	public static final String DB_CREAR_LOGS = "create table if not exists "+ DB_TABLA_LOGS
+			+ " ("
+			+ "id integer primary key"
+			+ ");";
+
+	public void setSincronizacionRemota(){
 		//TODO meter datos de conexion
 		sincronizador = new SincronizadorRemoto(this, new Conexion());
 	}
+
+	public boolean isSincronizacionRemota(){
+		return sincronizador != null;
+	}
+
+	public void setSincronizacionRemotaPeriodica(){
+		sincronizacionPeriodica = true;
+	}
 	
+	public boolean isSincronizacionRemotaPeriodica(){
+		return sincronizacionPeriodica;
+	}
+	
+	public void setBdCreada(){
+		bdCreada = true;
+		pullRemoto();
+	}
+
+	public boolean isBdCreada(){
+		return bdCreada;
+	}
+	
+	public void initSincronizacionRemotaPeriodica() {
+
+		if (isSincronizacionRemota() && isSincronizacionRemotaPeriodica()) {
+			sincronizador.temporizador(30);
+		}
+	}
+
+	public void pullRemoto(){
+		if(isSincronizacionRemota()){
+			sincronizador.pull();
+		}
+	}
+
+	public void recargarListado(){
+		if(isSincronizacionRemota()){
+			((ListaProductos) context).cargarListado();
+		}
+	}
+
 	/***********************************************/
+	/////////////////////////////////////////////////
 
 	private static final String DB_NOMBRE = "datos_smarket";
 	public static final String DB_TABLA_PRODUCTOS = "productos";
@@ -83,20 +135,39 @@ public class AdaptadorBD implements InterfazBD {
 	public static final String KEY_EN_OFERTA = "en_oferta";
 	public static final String KEY_PRECIO_OFERTA = "precio_oferta";
 
-	public static final String DB_CREAR_PRODUCTOS = "create table "
-			+ DB_TABLA_PRODUCTOS + " (" + KEY_ID
-			+ " integer primary key autoincrement," + KEY_NOMBRE
-			+ " text not null," + KEY_TIPO + " integer not null,"
-			+ KEY_ID_MARCA + " integer not null default -1," + KEY_DIMENSION
-			+ " real not null," + KEY_SIST_OP + " integer not null,"
-			+ KEY_PRECIO + " real not null," + KEY_DESCRIPCION
-			+ " text not null," + KEY_IMAGEN + " blob not null,"
-			+ KEY_EN_OFERTA + " integer not null default 0,"
-			+ KEY_PRECIO_OFERTA + " integer not null default 0.0" + ");";
+	public static final String DB_CREAR_PRODUCTOS = "create table if not exists "
+			+ DB_TABLA_PRODUCTOS
+			+ " ("
+			+ KEY_ID
+			+ " integer primary key autoincrement,"
+			+ KEY_NOMBRE
+			+ " text not null,"
+			+ KEY_TIPO
+			+ " integer not null,"
+			+ KEY_ID_MARCA
+			+ " integer not null default -1,"
+			+ KEY_DIMENSION
+			+ " real not null,"
+			+ KEY_SIST_OP
+			+ " integer not null,"
+			+ KEY_PRECIO
+			+ " real not null,"
+			+ KEY_DESCRIPCION
+			+ " text not null,"
+			+ KEY_IMAGEN
+			+ " blob not null,"
+			+ KEY_EN_OFERTA
+			+ " integer not null default 0,"
+			+ KEY_PRECIO_OFERTA 
+			+ " integer not null default 0.0" 
+			+ ");";
 
-	public static final String DB_CREAR_MARCAS = "create table "
-			+ DB_TABLA_MARCAS + " (" + KEY_ID
-			+ " integer primary key autoincrement," + KEY_NOMBRE
+	public static final String DB_CREAR_MARCAS = "create table if not exists "
+			+ DB_TABLA_MARCAS 
+			+ " (" 
+			+ KEY_ID
+			+ " integer primary key autoincrement," 
+			+ KEY_NOMBRE
 			+ " text not null" + ");";
 
 	// Operaciones
@@ -153,6 +224,61 @@ public class AdaptadorBD implements InterfazBD {
 
 	public void close() {
 		bd.close();
+	}
+
+	public void crearLogs(){
+
+		if(sincronizador != null){
+
+			bd.execSQL(DB_CREAR_LOGS);
+
+			if(getUltimoLog() == -1){
+				ContentValues valores = new ContentValues();
+				valores.put(KEY_ID, 0);
+				bd.insert(DB_TABLA_LOGS, null, valores);
+			}
+
+		}
+	}
+
+	public int getUltimoLog(){
+
+		if(sincronizador != null){
+
+			int idLog = -1;
+
+			Cursor resultado = bd.query(DB_TABLA_LOGS, null, null, null, null, null, null);
+
+			if (resultado != null) {
+
+				resultado.moveToFirst();
+
+				if (!resultado.isAfterLast()) {
+
+					idLog = resultado.getInt(0);
+				}
+			}
+
+			return idLog;
+
+		} else {
+
+			return -2;
+		}
+	}
+
+	public int setUltimoLog(int idLog){
+
+		if(sincronizador != null){
+
+			ContentValues valores = new ContentValues();
+			valores.put(KEY_ID, idLog);
+			return bd.update(DB_TABLA_LOGS, valores, null, null);
+
+		} else {
+
+			return -1;
+		}
 	}
 
 	public void poblarBD() {
@@ -424,9 +550,9 @@ public class AdaptadorBD implements InterfazBD {
 		// Consulta
 		Cursor resultado = bd.query(DB_TABLA_PRODUCTOS, null,
 
-		KEY_NOMBRE + " LIKE '%" + cadena + "%'",
+				KEY_NOMBRE + " LIKE '%" + cadena + "%'",
 
-		null, null, null, KEY_NOMBRE + " DESC");
+				null, null, null, KEY_NOMBRE + " DESC");
 
 		List<Producto> productos = new ArrayList<Producto>();
 
@@ -483,7 +609,7 @@ public class AdaptadorBD implements InterfazBD {
 
 		return productos;
 	}
-	
+
 	/**
 	 * Devuelve todos los Productos aplicando un filtro y un orden
 	 * 
@@ -516,7 +642,7 @@ public class AdaptadorBD implements InterfazBD {
 
 		return productos;
 	}
-	
+
 	/**
 	 * Devuelve todos los Productos aplicando un orden
 	 * 
@@ -525,6 +651,7 @@ public class AdaptadorBD implements InterfazBD {
 	 * @return Lista de Productos filtrados y ordenados
 	 */
 	public List<Producto> OrdenarProducto(Orden orden) {
+
 		// Consulta
 		Cursor resultado = bd.query(DB_TABLA_PRODUCTOS, null,
 				null, null, null, null, orden.getOrden());
@@ -607,6 +734,11 @@ public class AdaptadorBD implements InterfazBD {
 	private boolean producto2bd(Producto producto, int operacion) {
 
 		ContentValues valores = new ContentValues();
+
+		//ID (si tiene)
+		if(producto.getId() > 0){
+			valores.put(KEY_ID, producto.getId());
+		}
 
 		// NOMBRE
 		valores.put(KEY_NOMBRE, producto.getNombre());
@@ -832,9 +964,9 @@ public class AdaptadorBD implements InterfazBD {
 		// Consulta
 		Cursor resultado = bd.query(DB_TABLA_MARCAS, null,
 
-		KEY_NOMBRE + " LIKE '%" + cadena + "%'",
+				KEY_NOMBRE + " LIKE '%" + cadena + "%'",
 
-		null, null, null, KEY_NOMBRE + " DESC");
+				null, null, null, KEY_NOMBRE + " DESC");
 
 		if (resultado != null) {
 
@@ -875,11 +1007,17 @@ public class AdaptadorBD implements InterfazBD {
 
 		ContentValues valores = new ContentValues();
 
+
 		// NOMBRE
 		valores.put(KEY_NOMBRE, marca.getNombre());
 
-		// METER A BD
+		// INSERTAR
 		if (operacion == DB_INSERTAR) {
+
+			//ID (si tiene)
+			if(marca.getId() > 0){
+				valores.put(KEY_ID, marca.getId());
+			}
 
 			// Inserta y actualiza el id de la marca
 			int id = (int) bd.insert(DB_TABLA_MARCAS, null, valores);
@@ -888,11 +1026,14 @@ public class AdaptadorBD implements InterfazBD {
 			// Si no ha habido errores devuelve true
 			return id != -1;
 
+			// ACTUALIZAR
 		} else if (operacion == DB_ACTUALIZAR && marca.getId() > 0) {
+
 			return bd.update(DB_TABLA_MARCAS, valores,
 					KEY_ID + "=" + marca.getId(), null) > 0;
 
 		} else {
+
 			return false;
 		}
 	}

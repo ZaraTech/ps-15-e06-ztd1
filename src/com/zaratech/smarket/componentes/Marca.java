@@ -39,7 +39,7 @@ public class Marca implements Serializable{
 	 */
 	public Marca(String nombre) {
 
-		this.id = 0;
+		this.id = -1;
 		this.nombre = nombre;
 	}
 	

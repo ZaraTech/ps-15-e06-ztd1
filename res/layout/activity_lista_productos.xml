@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:gravity="center"
     android:orientation="vertical" >
 
     <!-- Ordenar -->
@@ -28,14 +29,15 @@
     <ListView
         android:id="@+id/android:list"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="fill_parent" />
 
     <!-- Por si no hay productos -->
 
     <TextView
-        android:id="@+id/lista_vacio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@android:id/empty"
+        android:paddingTop="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:text="@string/lista_no_hay_productos" />
 
 </LinearLayout>

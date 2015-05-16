@@ -81,7 +81,7 @@ public class ListaProductos extends ListActivity {
 	 */
 	private static boolean admin = false;
 
-	private void cargarListado() {
+	public void cargarListado() {
 
 		// Rellenar lista		
 		List<Producto> productos = bd.OrdenarProducto(ultimoOrden);
@@ -103,16 +103,6 @@ public class ListaProductos extends ListActivity {
 
 		// Obtener BD
 		bd = new AdaptadorBD(this);
-		bd.open();
-		
-		// SINCRONIZACION REMOTA
-		bd.activarSincronizacionRemota();
-
-		// PARA PRUEBAS - BORRAR //////
-		if (bd.obtenerMarcas().size() == 0) {
-			bd.poblarBD();
-		}
-		// /////////////////////////////
 
 		// Separador personalizado de elementos de listado
 		int[] colors = { 0, 0xFFFFFFFF, 0 };
@@ -120,10 +110,12 @@ public class ListaProductos extends ListActivity {
 				new GradientDrawable(Orientation.RIGHT_LEFT, colors));
 		getListView().setDividerHeight(2);
 
+		
 		// PRUEBAS - BORRAR //////
 		admin = true;
 		// invalidateOptionsMenu();
 		// /////////////////////////////
+
 
 		// Hack para Barra de Acciones
 		// Simula que no hay boton de menu aunque si que lo haya
@@ -180,12 +172,13 @@ public class ListaProductos extends ListActivity {
 		}
 
 	}
-
+	
 	@Override
-	protected void onStop() {
-		super.onStop();
-
+	protected void onDestroy() {
+		
 		bd.close();
+		
+		super.onDestroy();
 	}
 
 	// REANUDAR Activity
@@ -195,8 +188,18 @@ public class ListaProductos extends ListActivity {
 		super.onResume();
 
 		bd.open();
+		
+		// SINCRONIZACION REMOTA
+		bd.setSincronizacionRemota();
+		bd.setSincronizacionRemotaPeriodica();
 
-		cargarListado();
+		// PARA PRUEBAS - BORRAR //////
+		/* if (bd.obtenerMarcas().size() == 0) {
+			bd.poblarBD();
+		}*/
+		// /////////////////////////////
+
+		//cargarListado();
 	}
 
 	// CLICK en Producto del listado
@@ -282,6 +285,12 @@ public class ListaProductos extends ListActivity {
 		} else if (id == R.id.lista_menu_test) {
 
 			startActivity(new Intent(this, LanzadorPruebas.class));
+			return true;
+
+			// ACTUALIZAR
+		} else if (id == R.id.lista_menu_actualizar) {
+
+			bd.pullRemoto();
 			return true;
 
 			// ???

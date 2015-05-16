@@ -7,5 +7,12 @@
         android:orderInCategory="1"
         android:showAsAction="ifRoom"
         android:title="@string/lista_menu_busqueda"/>
+    
+    <!-- Actualizacion de productos -->
+    <item
+        android:id="@+id/lista_menu_actualizar"
+        android:orderInCategory="5"
+        android:showAsAction="never"
+        android:title="@string/lista_menu_actualizar"/>
 
 </menu>

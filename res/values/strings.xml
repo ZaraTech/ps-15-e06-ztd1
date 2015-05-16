@@ -31,6 +31,7 @@
     <string name="lista_menu_busqueda">Búsqueda</string>
     <string name="lista_menu_iniciar_sesion">Iniciar Sesión</string>
     <string name="lista_menu_test">Tests</string>
+    <string name="lista_menu_actualizar">Actualizar</string>
 
     <!-- Menú contextual de la Lista de productos -->
 

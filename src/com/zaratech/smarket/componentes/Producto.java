@@ -139,7 +139,7 @@ public class Producto implements Parcelable{
 	 */
 	public Producto(String nombre, Marca marca, int tipo, double precio) {
 		
-		this.id = 0;
+		this.id = -1;
 		this.nombre = nombre;
 		this.tipo = tipo;
 		this.marca = marca;

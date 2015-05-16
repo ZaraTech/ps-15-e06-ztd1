@@ -56,10 +56,10 @@ public class AdaptadorBD implements InterfazBD {
 			+ ");";
 
 	public void setSincronizacionRemota(){
-		
+
 		EditorConfiguracion configuracion = new EditorConfiguracion(context);
 		Conexion conexion = new Conexion();
-		
+
 		conexion.setUsuario(configuracion.obtenerUsuarioBD());
 		conexion.setPass(configuracion.obtenerContraseniaBD());
 		conexion.setDireccion(configuracion.obtenerUsuarioBD());
@@ -69,6 +69,10 @@ public class AdaptadorBD implements InterfazBD {
 		sincronizador = new SincronizadorRemoto(this, conexion);
 	}
 
+	public void unSetSincronizacionRemota(){
+		sincronizador = null;
+	}
+
 	public boolean isSincronizacionRemota(){
 		return sincronizador != null;
 	}
@@ -76,15 +80,15 @@ public class AdaptadorBD implements InterfazBD {
 	public void setSincronizacionRemotaPeriodica(){
 		sincronizacionPeriodica = true;
 	}
-	
+
 	public void unSetSincronizacionRemotaPeriodica(){
 		sincronizacionPeriodica = false;
 	}
-	
+
 	public boolean isSincronizacionRemotaPeriodica(){
 		return sincronizacionPeriodica;
 	}
-	
+
 	public void setBdCreada(){
 		bdCreada = true;
 		pullRemoto();
@@ -93,11 +97,11 @@ public class AdaptadorBD implements InterfazBD {
 	public boolean isBdCreada(){
 		return bdCreada;
 	}
-	
+
 	public boolean isBdAbierta(){
 		return bdAbierta;
 	}
-	
+
 	public void initSincronizacionRemotaPeriodica() {
 
 		if (isSincronizacionRemota() && isSincronizacionRemotaPeriodica()) {
@@ -407,9 +411,9 @@ public class AdaptadorBD implements InterfazBD {
 	 * @return Lista de Productos
 	 */
 	public List<Producto> obtenerProductos(int ordenacion, int direccion) {
-		
+
 		String sentido = "";
-		
+
 		if(direccion == DB_ORDENACION_ASC){
 			sentido = " ASC";
 		} else {

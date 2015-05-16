@@ -197,6 +197,24 @@ public class ListaProductos extends ListActivity {
 
 	@Override
 	protected void onResume() {
+
+		// SINCRONIZACION REMOTA
+		EditorConfiguracion configuracion = new EditorConfiguracion(this);
+		if(!configuracion.usoBDLocal()){
+			bd.setSincronizacionRemota();
+
+			//if(configuracion.usoBdPeriodico()){
+			bd.setSincronizacionRemotaPeriodica();
+			//}
+
+		} else {
+			
+			if(bd.isSincronizacionRemotaPeriodica()){
+				bd.unSetSincronizacionRemotaPeriodica();
+			}
+			
+			bd.unSetSincronizacionRemota();
+		}
 		super.onResume();
 	}
 

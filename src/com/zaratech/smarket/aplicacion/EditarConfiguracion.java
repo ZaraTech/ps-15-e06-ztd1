@@ -51,6 +51,7 @@ public class EditarConfiguracion extends Activity {
 	private Toast mensajePasswordLongitud;
 	private Toast mensajePasswordModificar;
 	private Toast mensajeGuardar;
+	private Toast mensajeDatosBDError;
 
 	/**
 	 * Método a ejecutar en la creación de la actividad.
@@ -80,6 +81,9 @@ public class EditarConfiguracion extends Activity {
 		
 		mensajeGuardar = Toast.makeText(this,
 				R.string.configuracion_mensaje_guardar, Toast.LENGTH_LONG);
+		
+		mensajeDatosBDError = Toast.makeText(this,
+				R.string.configuracion_mensaje_datos_error, Toast.LENGTH_LONG);
 
 		rellenarCampos();
 
@@ -101,8 +105,10 @@ public class EditarConfiguracion extends Activity {
 			public void onClick(View view) {
 				Intent i = new Intent(EditarConfiguracion.this,
 						ListaProductos.class);
+				
+				
 				guardarConfiguracion();
-				mensajeGuardar.show();
+				
 				startActivity(i);
 			}
 		});
@@ -211,33 +217,27 @@ public class EditarConfiguracion extends Activity {
 	/**
 	 * Guarda la configuración actual de forma persistente
 	 */
-	private void guardarConfiguracion() {
+	private boolean guardarConfiguracion() {
+		
 		// Rellenar los campos con la información
 		String nuevoNombreBD, nuevoUsuarioBD, nuevaPasswordBD, nuevaDireccionBD, nuevoCorreoCaja, intervaloSegundos;
 		int nuevoPuertoBD, usoBD, tipoSincronizacion, intervalo;
 		// Obtener la información de los campos del layout
-		nuevoNombreBD = nombreBD.getText().toString();
-		nuevoUsuarioBD = usuarioBD.getText().toString();
-		nuevaPasswordBD = passwordBD.getText().toString();
-		nuevaDireccionBD = direccionBD.getText().toString();
+		nuevoNombreBD = nombreBD.getText().toString().trim();
+		nuevoUsuarioBD = usuarioBD.getText().toString().trim();
+		nuevaPasswordBD = passwordBD.getText().toString().trim();
+		nuevaDireccionBD = direccionBD.getText().toString().trim();
 		try {
-			nuevoPuertoBD = Integer.parseInt(puertoBD.getText().toString());
+			nuevoPuertoBD = Integer.parseInt(puertoBD.getText().toString().trim());
 		} catch (Exception e) {
 			nuevoPuertoBD = 0;
 		}
-		nuevoCorreoCaja = correoCaja.getText().toString();
+		nuevoCorreoCaja = correoCaja.getText().toString().trim();
 		usoBD = BDTipo.getCheckedRadioButtonId();
 		tipoSincronizacion = tipoSinc.getCheckedRadioButtonId();
 		intervaloSegundos = intervaloSinc.getText().toString();
 		intervalo = Integer.parseInt(intervaloSegundos.split(" ")[0]);
-		// Almacenar la configuración
-		configuracion.modificarNombreBD(nuevoNombreBD);
-		configuracion.modificarUsuarioBD(nuevoUsuarioBD);
-		configuracion.modificarPasswordBD(nuevaPasswordBD);
-		configuracion.modificarDireccionBD(nuevaDireccionBD);
-		configuracion.modificarPuertoBD(nuevoPuertoBD);
-		configuracion.modificarCorreoCaja(nuevoCorreoCaja);
-		configuracion.modificarIntervaloSinc(intervalo);
+		
 		if (usoBD == R.id.configuracion_BD_tipo_local) {
 			configuracion.modificarUsoBDLocal(true);
 		} else {
@@ -247,6 +247,35 @@ public class EditarConfiguracion extends Activity {
 			configuracion.modificarSincBDManual(true);
 		} else {
 			configuracion.modificarSincBDManual(false);
+		}
+		
+		if(usoBD != R.id.configuracion_BD_tipo_local){
+			
+			if (nuevoNombreBD.length() > 0 && nuevoUsuarioBD.length() > 0
+					&& nuevaPasswordBD.length() > 0
+					&& nuevaDireccionBD.length() > 0 && nuevoPuertoBD > 0) {
+				
+				// Almacenar la configuración
+				configuracion.modificarNombreBD(nuevoNombreBD);
+				configuracion.modificarUsuarioBD(nuevoUsuarioBD);
+				configuracion.modificarPasswordBD(nuevaPasswordBD);
+				configuracion.modificarDireccionBD(nuevaDireccionBD);
+				configuracion.modificarPuertoBD(nuevoPuertoBD);
+				configuracion.modificarCorreoCaja(nuevoCorreoCaja);
+				configuracion.modificarIntervaloSinc(intervalo);
+				
+				mensajeGuardar.show();
+				return true;
+				
+			} else {
+				
+				mensajeDatosBDError.show();
+				return false;
+			}
+		} else {
+			
+			mensajeGuardar.show();
+			return true;
 		}
 	}
 

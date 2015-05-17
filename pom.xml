@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.zaratech</groupId>
 	<artifactId>Smarket</artifactId>
-	<version>0.1.44</version>
+	<version>0.1.45</version>
 	<packaging>apk</packaging>
 	<name>Smarket</name>
 

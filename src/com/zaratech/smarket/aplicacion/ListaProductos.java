@@ -12,6 +12,7 @@ import com.zaratech.smarket.utiles.CargadorAsincrono;
 import com.zaratech.smarket.utiles.EditorConfiguracion;
 import com.zaratech.smarket.R;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.ListActivity;
 import android.content.Intent;
@@ -94,7 +95,7 @@ public class ListaProductos extends ListActivity implements Listado{
 	public void cargarListado() {
 		
 		CargadorAsincrono ca = new CargadorAsincrono(this, bd, ultimoOrden);
-		ca.execute();
+		ca.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
 	}
 
 	public void cargarListadoAsincrono(List<Producto> productos){
@@ -117,6 +118,7 @@ public class ListaProductos extends ListActivity implements Listado{
 		// Obtener BD
 		bd = new AdaptadorBD(this);
 		bd.open();
+		cargarListado();
 
 		// Separador personalizado de elementos de listado
 		int[] colors = { 0, 0xFFFFFFFF, 0 };
@@ -209,7 +211,6 @@ public class ListaProductos extends ListActivity implements Listado{
 			}
 
 			// CONFIG: DESACTIVAR BD REMOTA (si procede)
-			// CARGAR LISTADO
 		} else {
 
 			if(bd.isSincronizacionRemota()){
@@ -220,8 +221,6 @@ public class ListaProductos extends ListActivity implements Listado{
 
 				bd.unSetSincronizacionRemota();
 			}
-
-			cargarListado();
 		}
 
 
@@ -260,6 +259,7 @@ public class ListaProductos extends ListActivity implements Listado{
 		// EDICION
 		else if (requestCode == ACTIVITY_EDICION) {
 
+			cargarListado();
 		}
 		// INICIAR SESIÓN
 		else if (requestCode == ACTIVITY_INICIAR_SESION) {

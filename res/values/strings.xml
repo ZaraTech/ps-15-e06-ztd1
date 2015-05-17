@@ -52,7 +52,7 @@
     <string name="busqueda_ordenar">Ordenar por</string>
     <string name="busqueda_filtrar">Filtrar por</string>
     <string name="busqueda_avanzada">Busqueda avanzada</string>
-    <string name="busqueda_buscar">Buscar</string>
+    <string name="busqueda_aplicar">Aplicar</string>
     <string name="busqueda_solo_ofertas">Solo ofertas</string>
     <string name="ordenacion_nombre_ascendente">Nombre [A-Z]</string>
     <string name="ordenacion_nombre_descendente">Nombre [Z-A]</string>
@@ -94,6 +94,26 @@
     <string name="edicion_oferta">Oferta</string>
     <string name="edicion_guardar">Guardar</string>
 
+    <!-- Errores -->
+
+    <string name="edicion_error_marca_erronea">El nombre de la marca debe tener entre 1 y 30 caracteres</string>
+    <string name="edicion_error_precio_vacio">No se ha completado el campo del precio</string>
+    <string name="edicion_error_precio_erroneo">El dato del precio debe ser superior a 0</string>
+    <string name="edicion_error_nombre_vacio">No se ha completado el campo del nombre</string>
+    <string name="edicion_error_nombre_errorneo">El campo del nombre debe tener entre 5 y 30 caracteres</string>
+    <string name="edicion_error_tipo_vacio">No se ha selecionado un tipo</string>
+    <string name="edicion_error_descripcion_vacia">No se ha completado el campo de la descripción</string>
+    <string name="edicion_error_descripcion_erronea">El campo de la descripción debe tener como maximo 1000 caracteres</string>
+    <string name="edicion_error_pulgadas_vacias">No se ha completado el campo de las pulgadas</string>
+    <string name="edicion_error_pulgadas_erroneas">El dato de las pulgadas debe ser superior a 0</string>
+    <string name="edicion_error_so_vacio">No se ha selecionado un sistema operativo</string>
+    <string name="edicion_error_descuento_vacio">No se ha completado el campo de oferta</string>
+    <string name="edicion_error_descuento_erroneo">El dato del precio de oferta debe ser superior a 0</string>
+    <string name="edicion_error_descuento_superior_precio">El precio en descuento es mayor o igual al original</string>
+    <string name="edicion_error_recortar_no_disponible">Su dispositivo no soporta la acción de recortar</string>
+    <string name="edicion_error_marca_vacia">No se ha seleccionado una marca</string>
+    <string name="edicion_error_eliminar_marca">No se puede eliminar una marca que tiene productos asignados</string>
+    
     <!-- Inicio de sesión -->
 
     <string name="sesion_titulo">Inicio de sesión</string>
@@ -132,24 +152,8 @@
     <string name="configuracion_mensaje_password_fallo">Las dos contraseñas no coinciden, \n\t\t\t\trepita la contraseña</string>
     <string name="configuracion_mensaje_password_long">La contraseña debe tener entre 8 y 20 caracteres, y contener al menos una minúscula, una mayúscula y un número</string>
     <string name="configuracion_mensaje_guardar">Configuración guardada</string>
-
-    <!-- Errores -->
-
-    <string name="edicion_error_marca_erronea">El nombre de la marca debe tener entre 1 y 30 caracteres</string>
-    <string name="edicion_error_precio_vacio">No se ha completado el campo del precio</string>
-    <string name="edicion_error_precio_erroneo">El dato del precio debe ser superior a 0</string>
-    <string name="edicion_error_nombre_vacio">No se ha completado el campo del nombre</string>
-    <string name="edicion_error_nombre_errorneo">El campo del nombre debe tener entre 5 y 30 caracteres</string>
-    <string name="edicion_error_tipo_vacio">No se ha selecionado un tipo</string>
-    <string name="edicion_error_descripcion_vacia">No se ha completado el campo de la descripción</string>
-    <string name="edicion_error_descripcion_erronea">El campo de la descripción debe tener como maximo 1000 caracteres</string>
-    <string name="edicion_error_pulgadas_vacias">No se ha completado el campo de las pulgadas</string>
-    <string name="edicion_error_pulgadas_erroneas">El dato de las pulgadas debe ser superior a 0</string>
-    <string name="edicion_error_so_vacio">No se ha selecionado un sistema operativo</string>
-    <string name="edicion_error_descuento_vacio">No se ha completado el campo de oferta</string>
-    <string name="edicion_error_descuento_erroneo">El dato del precio de oferta debe ser superior a 0</string>
-    <string name="edicion_error_descuento_superior_precio">El precio en descuento es mayor o igual al original</string>
-    <string name="edicion_error_recortar_no_disponible">Su dispositivo no soporta la acción de recortar :(</string>
+    <string name="configuracion_mensaje_datos_error">Es necesario rellenar todos los datos de conexión con la Base de Datos remota</string>
+    
 
     <!-- Pruebas -->
     <string name="pruebas_titulo">Pruebas</string>

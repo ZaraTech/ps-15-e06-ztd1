@@ -177,8 +177,17 @@ public class EdicionProducto extends Activity {
 
 			public void onClick(View v) {
 				if (getMarcaSelecionadaString() != null) {
-					bd.borrarMarca(getMarcaSelecionada().getId());
-					actualizaSpinner();
+					
+					int idMarca = getMarcaSelecionada().getId();
+					
+					if(!bd.isMarcaUsada(idMarca)){
+						bd.borrarMarca(idMarca);
+						actualizaSpinner();
+					} else{
+						String error = getString(R.string.edicion_error_eliminar_marca);
+						Toast.makeText(EdicionProducto.this, error, Toast.LENGTH_SHORT).show();
+					}
+					
 				}
 			}
 		});
@@ -208,13 +217,15 @@ public class EdicionProducto extends Activity {
 		 */
 		if (getIntent().getExtras() != null
 				&& getIntent().getExtras().containsKey(EXTRA_PRODUCTO)) {
-			Producto p = this.getIntent().getExtras()
+			Producto p = getIntent().getExtras()
 					.getParcelable(EXTRA_PRODUCTO);
 			productoAFormulario(p);
+			setTitle(getString(R.string.edicion_titulo_editar));
 		} else {
 			ID = -1;
+			setTitle(getString(R.string.edicion_titulo_crear));
 		}
-		setTitle(getString(R.string.edicion_titulo_crear));
+		
 
 		/*
 		 * Recuperamos la imagen si es necesario
@@ -529,6 +540,12 @@ public class EdicionProducto extends Activity {
 
 		// Marca
 		Marca marca = getMarcaSelecionada();
+		
+		if (marca == null){
+			Toast.makeText(this, getString(R.string.edicion_error_marca_vacia),
+					Toast.LENGTH_SHORT).show();
+			return null;
+		}
 
 		// Oferta
 		CheckBox ofertaCheck = (CheckBox) findViewById(R.id.edicion_oferta);
@@ -678,7 +695,17 @@ public class EdicionProducto extends Activity {
 	 * @return Marca selecionada
 	 */
 	public Marca getMarcaSelecionada() {
-		return marcas.get(getMarcaSelecionadaPosicion());
+		
+		int pos = getMarcaSelecionadaPosicion();
+		
+		if(pos >= 0 && pos < marcas.size()){
+			return marcas.get(pos);
+			
+		} else{
+			return null;
+		}
+		
+		
 	}
 
 	/*

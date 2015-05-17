@@ -1088,6 +1088,24 @@ public class AdaptadorBD implements InterfazBD {
 
 		return borrado;
 	}
+	
+	public boolean isMarcaUsada(int id){
+		
+		String sql = "SELECT COUNT(*) FROM " + DB_TABLA_PRODUCTOS + " WHERE "
+				+ KEY_ID_MARCA + " = " + id;
+		
+		Cursor resultado = bd.rawQuery(sql, null);
+		
+		if (resultado != null) {
+
+			resultado.moveToFirst();
+
+			return resultado.getInt(0) > 0;
+		}
+		
+		//evitar que se borre por error
+		return true;
+	}
 
 	/**
 	 * Devuelve todos las Marcas que contengan [cadena] en su nombre <br/>

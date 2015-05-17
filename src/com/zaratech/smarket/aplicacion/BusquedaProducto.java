@@ -43,7 +43,6 @@ import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.text.Editable;
 import android.text.TextWatcher;
 
@@ -176,8 +175,6 @@ public class BusquedaProducto extends ListActivity implements TextWatcher, Lista
 		setListAdapter(adaptador);
 
 		setSelection(ultimaPosicion - 2);
-		
-		Toast.makeText(this, getString(R.string.lista_actualizar), Toast.LENGTH_SHORT).show();
 	}
 
 	/**
@@ -185,6 +182,7 @@ public class BusquedaProducto extends ListActivity implements TextWatcher, Lista
 	 */
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.activity_busqueda_producto);
 
 		bd = new AdaptadorBD(this);
@@ -275,14 +273,14 @@ public class BusquedaProducto extends ListActivity implements TextWatcher, Lista
 		Spinner spinnerMarcas = (Spinner) findViewById(R.id.busqueda_marca);
 		// Obtiene las marcas
 		marcas = bd.obtenerMarcas();
-		List<String> strs = new LinkedList<String>();
+		List<String> nombres = new LinkedList<String>();
 
 		for (Marca m : marcas) {
-			strs.add(m.getNombre());
+			nombres.add(m.getNombre());
 		}
 		// Actualiza spinner de las marcas
 		adp1 = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, getMarcas());
+				android.R.layout.simple_list_item_1, nombres);
 		spinnerMarcas.setAdapter(adp1);
 
 		/*
@@ -303,7 +301,7 @@ public class BusquedaProducto extends ListActivity implements TextWatcher, Lista
 		/*
 		 * Boton Buscar
 		 */
-		buscar = (Button) findViewById(R.id.busqueda_buscar);
+		buscar = (Button) findViewById(R.id.busqueda_aplicar);
 		final Context context = this;
 		buscar.setOnClickListener(new View.OnClickListener() {
 
@@ -440,21 +438,6 @@ public class BusquedaProducto extends ListActivity implements TextWatcher, Lista
 	}
 
 	/*
-	 * Obtiene las marcas
-	 */
-	private List<String> getMarcas() {
-
-		String[] marcas = bd.obtenerNombreMarcas();
-		List<String> strs = new LinkedList<String>();
-
-		for (int i = 0; i < marcas.length; i++) {
-			strs.add(marcas[i]);
-		}
-
-		return strs;
-	}
-
-	/*
 	 * Actualiza el AutoCompleteTextView
 	 */
 	private void actualizarSugerencias() {
@@ -537,16 +520,6 @@ public class BusquedaProducto extends ListActivity implements TextWatcher, Lista
 		startActivityForResult(i, ACTIVITY_INFO);
 	}
 
-	/**
-	 * Se ejecuta al volver de otra Activity
-	 */
-	protected void onResume() {
-
-		super.onResume();
-
-		cargarListado();
-	}
-
 	// MENU CONTEXTUAL
 
 	@Override
@@ -608,6 +581,20 @@ public class BusquedaProducto extends ListActivity implements TextWatcher, Lista
 		// EDICION
 		else if (requestCode == ACTIVITY_EDICION) {
 
+			Spinner spinnerMarcas = (Spinner) findViewById(R.id.busqueda_marca);
+			// Obtiene las marcas
+			marcas = bd.obtenerMarcas();
+			List<String> nombres = new LinkedList<String>();
+
+			for (Marca m : marcas) {
+				nombres.add(m.getNombre());
+			}
+			// Actualiza spinner de las marcas
+			ArrayAdapter<String> adpadtador = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, nombres);
+			spinnerMarcas.setAdapter(adpadtador);
+			
+			actualizarSugerencias();
 		}
 
 	}

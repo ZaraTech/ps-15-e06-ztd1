@@ -158,10 +158,15 @@ public class EnviarMail extends AsyncTask<String, Object, Object> {
 			Producto producto = enviarMailActivity.getIntent().getExtras().
 					getParcelable(EXTRA_PRODUCTO);
 			
+			String nombreMarca = "Sin Marca";
+			if(producto.getMarca() != null && producto.getMarca().getNombre() != null){
+				nombreMarca = producto.getMarca().getNombre();
+			}
+			
 			texto_msj = enviarMailActivity.getString(R.string.envio_pedido_realizado) + " "
 					+ idPedidoCliente[0] +"<br/><br/>"
 					+ "<strong>" + producto.getNombre() + "</strong>" + "<br/>"
-					+ producto.getMarca().getNombre() + "<br/>"
+					+ nombreMarca + "<br/>"
 					+ AdaptadorBD.obtenerTipo(producto.getTipo()) + "<br/>"
 					+ AdaptadorBD.obtenerSistemaOperativo(producto.getSistemaOperativo()) + "<br/>"
 					+ String.format("%.2f", producto.getPrecio())

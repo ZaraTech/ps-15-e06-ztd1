@@ -27,7 +27,7 @@ public class SincronizadorRemoto {
 		tpe1 = new ThreadPoolExecutor(1, 2, 60L, TimeUnit.SECONDS,
 				new LinkedBlockingQueue<Runnable>());
 
-		tpe2 = new ThreadPoolExecutor(1, 2, 60L, TimeUnit.SECONDS,
+		tpe2 = new ThreadPoolExecutor(1, 1, 60L, TimeUnit.SECONDS,
 				new LinkedBlockingQueue<Runnable>());
 
 		// Crea la BD remota si no existe

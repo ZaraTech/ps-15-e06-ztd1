@@ -155,14 +155,4 @@
     <string name="configuracion_mensaje_datos_error">Es necesario rellenar todos los datos de conexión con la Base de Datos remota</string>
     
 
-    <!-- Pruebas -->
-    <string name="pruebas_titulo">Pruebas</string>
-    <string name="pruebas_seleccion">Selecciona una prueba en el menu</string>
-    <string name="pruebas_insertar">Insertar producto</string>
-    <string name="pruebas_borrar">Borrar producto</string>
-    <string name="pruebas_editar">Editar producto</string>
-    <string name="pruebas_volumen">Volumen</string>
-    <string name="pruebas_deshacer_volumen">Deshacer volumen</string>
-    <string name="pruebas_sobrecarga">Sobrecarga</string>
-
 </resources>

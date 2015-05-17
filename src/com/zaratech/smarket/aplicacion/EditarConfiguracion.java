@@ -107,9 +107,9 @@ public class EditarConfiguracion extends Activity {
 						ListaProductos.class);
 				
 				
-				guardarConfiguracion();
-				
-				startActivity(i);
+				if(guardarConfiguracion()){
+					startActivity(i);
+				}
 			}
 		});
 

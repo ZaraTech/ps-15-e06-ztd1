@@ -31,17 +31,10 @@
         android:showAsAction="never"
         android:title="@string/lista_menu_configuracion"/>
 
-    <!-- Tests de la App -->
-    <item
-        android:id="@+id/lista_menu_test"
-        android:orderInCategory="5"
-        android:showAsAction="never"
-        android:title="@string/lista_menu_test"/>
-
     <!-- Actualizacion de productos -->
     <item
         android:id="@+id/lista_menu_cerrar_sesion"
-        android:orderInCategory="6"
+        android:orderInCategory="5"
         android:showAsAction="never"
         android:title="@string/lista_menu_cerrar_sesion"/>
 

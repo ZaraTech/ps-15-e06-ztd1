@@ -5,7 +5,6 @@ import java.util.List;
 import com.zaratech.smarket.componentes.Listado;
 import com.zaratech.smarket.componentes.Orden;
 import com.zaratech.smarket.componentes.Producto;
-import com.zaratech.smarket.pruebas.LanzadorPruebas;
 import com.zaratech.smarket.utiles.AdaptadorBD;
 import com.zaratech.smarket.utiles.AdaptadorProductos;
 import com.zaratech.smarket.utiles.CargadorAsincrono;
@@ -319,12 +318,6 @@ public class ListaProductos extends ListActivity implements Listado{
 			// CONFIGURACIÓN
 		} else if (id == R.id.lista_menu_configuracion) {
 			startActivity(new Intent(this, EditarConfiguracion.class));
-			return true;
-
-			// TESTS DE LA APP
-		} else if (id == R.id.lista_menu_test) {
-
-			startActivity(new Intent(this, LanzadorPruebas.class));
 			return true;
 
 			// ACTUALIZAR

@@ -3,7 +3,7 @@ package com.zaratech.smarket.aplicacion;
 import com.zaratech.smarket.R;
 import com.zaratech.smarket.utiles.EditTextSimboloFinal;
 import com.zaratech.smarket.utiles.EditorConfiguracion;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -45,36 +45,44 @@ public class EditarConfiguracion extends Activity {
 
 	// Editor para modificar las preferencias de la aplicación
 	private EditorConfiguracion configuracion;
-	
+
 	// Mensajes de retroalimentación para el usuario
 	private Toast mensajePasswordFallo;
+	private Toast mensajePasswordLongitud;
 	private Toast mensajePasswordModificar;
 	private Toast mensajeGuardar;
-	
 
 	/**
 	 * Método a ejecutar en la creación de la actividad.
 	 */
+	@SuppressLint("ShowToast")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_editar_configuracion);
+		
 		// Inicializar el editor para obtener y modificar la configuración
 		configuracion = new EditorConfiguracion(
 				EditarConfiguracion.this.getApplicationContext());
+		
 		// Creación de mensajes para el usuario
-		mensajePasswordFallo = Toast.makeText(this, 
-							R.string.configuracion_mensaje_password_fallo, 
-							Toast.LENGTH_LONG);
-		mensajePasswordModificar = Toast.makeText(this, 
-							R.string.configuracion_mensaje_password_modificar, 
-							Toast.LENGTH_LONG);
-		mensajeGuardar = Toast.makeText(this, 
-							R.string.configuracion_mensaje_guardar, 
-							Toast.LENGTH_LONG);
+		mensajePasswordFallo = Toast.makeText(this,
+				R.string.configuracion_mensaje_password_fallo,
+				Toast.LENGTH_LONG);
 		
+		mensajePasswordLongitud = Toast
+				.makeText(this, R.string.configuracion_mensaje_password_long,
+						Toast.LENGTH_LONG);
+		
+		mensajePasswordModificar = Toast.makeText(this,
+				R.string.configuracion_mensaje_password_modificar,
+				Toast.LENGTH_LONG);
+		
+		mensajeGuardar = Toast.makeText(this,
+				R.string.configuracion_mensaje_guardar, Toast.LENGTH_LONG);
+
 		rellenarCampos();
-		
+
 		/*
 		 * Asociar la pulsación del botón de guardar con el cambio a la
 		 * actividad ListaProductos
@@ -106,31 +114,31 @@ public class EditarConfiguracion extends Activity {
 		BDTipo.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				switch (checkedId) {
-					case R.id.configuracion_BD_tipo_local:
-						infoBDRemota.setVisibility(View.GONE);
-						break;
-					case R.id.configuracion_BD_tipo_remota:
-						infoBDRemota.setVisibility(View.VISIBLE);
-						break;
-					}
+				case R.id.configuracion_BD_tipo_local:
+					infoBDRemota.setVisibility(View.GONE);
+					break;
+				case R.id.configuracion_BD_tipo_remota:
+					infoBDRemota.setVisibility(View.VISIBLE);
+					break;
 				}
+			}
 		});
-		
+
 		/*
-		 * Muestra u oculta el intervalo de sincronización automática si su 
+		 * Muestra u oculta el intervalo de sincronización automática si su
 		 * opción está marcada o no respectivamente
 		 */
 		tipoSinc.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				switch (checkedId) {
-					case R.id.configuracion_BD_sinc_manual:
-						sincAutomaticaIntervalo.setVisibility(View.GONE);
-						break;
-					case R.id.configuracion_BD_sinc_automatica:
-						sincAutomaticaIntervalo.setVisibility(View.VISIBLE);
-						break;
-					}
+				case R.id.configuracion_BD_sinc_manual:
+					sincAutomaticaIntervalo.setVisibility(View.GONE);
+					break;
+				case R.id.configuracion_BD_sinc_automatica:
+					sincAutomaticaIntervalo.setVisibility(View.VISIBLE);
+					break;
 				}
+			}
 		});
 	}
 
@@ -147,19 +155,16 @@ public class EditarConfiguracion extends Activity {
 		passwordBD = (EditText) findViewById(R.id.configuracion_password_BD);
 		direccionBD = (EditText) findViewById(R.id.configuracion_direccion_BD);
 		puertoBD = (EditText) findViewById(R.id.configuracion_puerto_BD);
-		tipoSinc = (RadioGroup) findViewById
-								(R.id.configuracion_BD_sincronizacion);
-		sincAutomaticaIntervalo = (View) findViewById
-								(R.id.configuracion_BD_sinc_intervalo);
-		intervaloSinc = (EditText) findViewById
-								(R.id.configuracion_BD_sinc_intervalo_segundos);
+		tipoSinc = (RadioGroup) findViewById(R.id.configuracion_BD_sincronizacion);
+		sincAutomaticaIntervalo = (View) findViewById(R.id.configuracion_BD_sinc_intervalo);
+		intervaloSinc = (EditText) findViewById(R.id.configuracion_BD_sinc_intervalo_segundos);
 		correoCaja = (EditText) findViewById(R.id.configuracion_correo);
 		botonGuardar = (Button) findViewById(R.id.configuracion_boton_guardar);
-		
-		intervaloSinc.addTextChangedListener(
-				new EditTextSimboloFinal(intervaloSinc,
-				getString(R.string.app_ud_segundos_texto)));
-		
+
+		intervaloSinc
+		.addTextChangedListener(new EditTextSimboloFinal(intervaloSinc,
+				" " + getString(R.string.app_ud_segundos_texto)));
+
 		// Rellenar los campos con la información
 		boolean usoBDLocal = configuracion.usoBDLocal();
 		if (usoBDLocal) {
@@ -208,8 +213,7 @@ public class EditarConfiguracion extends Activity {
 	 */
 	private void guardarConfiguracion() {
 		// Rellenar los campos con la información
-		String nuevoNombreBD, nuevoUsuarioBD, nuevaPasswordBD, nuevaDireccionBD, 
-				nuevoCorreoCaja, intervaloSegundos;
+		String nuevoNombreBD, nuevoUsuarioBD, nuevaPasswordBD, nuevaDireccionBD, nuevoCorreoCaja, intervaloSegundos;
 		int nuevoPuertoBD, usoBD, tipoSincronizacion, intervalo;
 		// Obtener la información de los campos del layout
 		nuevoNombreBD = nombreBD.getText().toString();
@@ -218,15 +222,14 @@ public class EditarConfiguracion extends Activity {
 		nuevaDireccionBD = direccionBD.getText().toString();
 		try {
 			nuevoPuertoBD = Integer.parseInt(puertoBD.getText().toString());
-		} catch(Exception e) {
+		} catch (Exception e) {
 			nuevoPuertoBD = 0;
 		}
 		nuevoCorreoCaja = correoCaja.getText().toString();
 		usoBD = BDTipo.getCheckedRadioButtonId();
 		tipoSincronizacion = tipoSinc.getCheckedRadioButtonId();
 		intervaloSegundos = intervaloSinc.getText().toString();
-		intervalo = Integer.parseInt(intervaloSegundos.split(
-						getString(R.string.app_ud_segundos_texto))[0]);
+		intervalo = Integer.parseInt(intervaloSegundos.split(" ")[0]);
 		// Almacenar la configuración
 		configuracion.modificarNombreBD(nuevoNombreBD);
 		configuracion.modificarUsuarioBD(nuevoUsuarioBD);
@@ -246,26 +249,26 @@ public class EditarConfiguracion extends Activity {
 			configuracion.modificarSincBDManual(false);
 		}
 	}
-	
+
 	/*
 	 * Diálogo para modificar contraseña
 	 */
 	private void mostrarDialogoCambiarPassword() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		
-		LayoutInflater inflater = (LayoutInflater) getSystemService
-											(Context.LAYOUT_INFLATER_SERVICE);
-        
-		final View layout = inflater.inflate(R.layout.dialog_modificar_password, 
-					(ViewGroup) findViewById(R.id.configuracion_dialog_raiz));
-	    final EditText password1 = (EditText) layout.findViewById
-	    								(R.id.configuracion_dialog_password1);
-	    final EditText password2 = (EditText) layout.findViewById
-	    								(R.id.configuracion_dialog_password2);
-		
-	    builder.setTitle(getString(R.string.configuracion_cambiar_password));
+
+		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+		final View layout = inflater.inflate(
+				R.layout.dialog_modificar_password,
+				(ViewGroup) findViewById(R.id.configuracion_dialog_raiz));
+		final EditText password1 = (EditText) layout
+				.findViewById(R.id.configuracion_dialog_password1);
+		final EditText password2 = (EditText) layout
+				.findViewById(R.id.configuracion_dialog_password2);
+
+		builder.setTitle(getString(R.string.configuracion_cambiar_password));
 		builder.setView(layout);
-		
+
 		/*
 		 * Asociar la pulsación del botón de cancelar con el cierre del dialog
 		 */
@@ -276,9 +279,9 @@ public class EditarConfiguracion extends Activity {
 						dialog.cancel();
 					}
 				});
-		
-		builder.setPositiveButton(
-							getString(R.string.configuracion_confirmar), null);
+
+		builder.setPositiveButton(getString(R.string.configuracion_confirmar),
+				null);
 		final AlertDialog dialog = builder.show();
 		/*
 		 * Asociar la pulsación del botón de aceptar con el cambio de contraseña
@@ -289,16 +292,35 @@ public class EditarConfiguracion extends Activity {
 						String passwordEscrita1, passwordEscrita2;
 						passwordEscrita1 = password1.getText().toString();
 						passwordEscrita2 = password2.getText().toString();
-						if (passwordEscrita1.equals(passwordEscrita2)) {
-							// Las contraseñas coinciden
-							configuracion.modificarPassword(passwordEscrita1);
-							mensajePasswordModificar.show();
-							dialog.dismiss();
+
+						int longitud = passwordEscrita1.length();
+
+						if (longitud >= 8
+								&& longitud <= 20
+								&& passwordEscrita1.replaceAll("[a-z]", "")
+										.length() < longitud
+								&& passwordEscrita1.replaceAll("[A-Z]", "")
+										.length() < longitud
+								&& passwordEscrita1.replaceAll("[0-9]", "")
+										.length() < longitud) {
+
+							if (passwordEscrita1.equals(passwordEscrita2)) {
+								// Las contraseñas coinciden
+								configuracion
+								.modificarPassword(passwordEscrita1);
+								mensajePasswordModificar.show();
+								dialog.dismiss();
+							} else {
+								// Las contraseñas no coinciden
+								mensajePasswordFallo.show();
+								password2.setText("");
+							}
 						} else {
-							// Las contraseñas no coinciden
-							mensajePasswordFallo.show();
+							mensajePasswordLongitud.show();
+							password1.setText("");
 							password2.setText("");
 						}
+
 					}
 				});
 	}

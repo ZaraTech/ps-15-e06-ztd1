@@ -1,7 +1,10 @@
 package com.zaratech.smarket.utiles;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -35,9 +38,7 @@ public class SincronizadorRemotoAsincrono extends
 	public static final String DB_CREAR_LOGS = "create table if not exists logs "
 			+ "("
 			+ "id integer primary key auto_increment,"
-			+ "op integer not null," 
-			+ "id_componente integer not null" 
-			+ ");";
+			+ "op integer not null," + "id_componente integer not null" + ");";
 
 	public static final int LOG_OP_CREAR_PRODUCTO = 0;
 	public static final int LOG_OP_CREAR_MARCA = 1;
@@ -178,7 +179,7 @@ public class SincronizadorRemotoAsincrono extends
 					ResultSet resultado2 = consulta2.executeQuery(sql2);
 
 					if (resultado2.next()) {
-						insertarProducto(resultado2, LOG_OP_CREAR);
+						insertarProductoEnLocal(resultado2, LOG_OP_CREAR);
 					}
 					resultado2.close();
 
@@ -192,7 +193,7 @@ public class SincronizadorRemotoAsincrono extends
 					ResultSet resultado2 = consulta2.executeQuery(sql2);
 
 					if (resultado2.next()) {
-						insertarMarca(resultado2, LOG_OP_CREAR);
+						insertarMarcaEnLocal(resultado2, LOG_OP_CREAR);
 					}
 					resultado2.close();
 
@@ -216,7 +217,7 @@ public class SincronizadorRemotoAsincrono extends
 					ResultSet resultado2 = consulta2.executeQuery(sql2);
 
 					if (resultado2.next()) {
-						insertarProducto(resultado2, LOG_OP_ACTUALIZAR);
+						insertarProductoEnLocal(resultado2, LOG_OP_ACTUALIZAR);
 					}
 					resultado2.close();
 
@@ -230,7 +231,7 @@ public class SincronizadorRemotoAsincrono extends
 					ResultSet resultado2 = consulta2.executeQuery(sql2);
 
 					if (resultado2.next()) {
-						insertarMarca(resultado2, LOG_OP_ACTUALIZAR);
+						insertarMarcaEnLocal(resultado2, LOG_OP_ACTUALIZAR);
 					}
 					resultado2.close();
 				}
@@ -264,7 +265,8 @@ public class SincronizadorRemotoAsincrono extends
 	/**
 	 * Inserta Producto en BD local
 	 */
-	private void insertarProducto(ResultSet res, int op) throws SQLException {
+	private void insertarProductoEnLocal(ResultSet res, int op)
+			throws SQLException {
 
 		Producto p = new Producto();
 
@@ -295,8 +297,8 @@ public class SincronizadorRemotoAsincrono extends
 		p.setDescripcion(res.getString(8));
 
 		// IMAGEN
-		Bitmap imagen = BitmapFactory.decodeStream(
-				res.getBlob(9).getBinaryStream());
+		Bitmap imagen = BitmapFactory.decodeStream(res.getBlob(9)
+				.getBinaryStream());
 		p.setImagen(imagen);
 
 		// EN OFERTA
@@ -313,12 +315,12 @@ public class SincronizadorRemotoAsincrono extends
 
 		if (op == LOG_OP_CREAR) {
 
-			bdLocal.borrarProducto(p.getId());
-			bdLocal.crearProducto(p);
+			bdLocal.borrarProducto(p.getId(), AdaptadorBD.ORIGEN_SINCRONIZADOR);
+			bdLocal.crearProducto(p, AdaptadorBD.ORIGEN_SINCRONIZADOR);
 
 		} else {
 
-			bdLocal.actualizarProducto(p);
+			bdLocal.actualizarProducto(p, AdaptadorBD.ORIGEN_SINCRONIZADOR);
 		}
 
 	}
@@ -326,7 +328,8 @@ public class SincronizadorRemotoAsincrono extends
 	/**
 	 * Inserta Marca en BD local
 	 */
-	private void insertarMarca(ResultSet res, int op) throws SQLException {
+	private void insertarMarcaEnLocal(ResultSet res, int op)
+			throws SQLException {
 
 		Marca m = new Marca();
 
@@ -338,11 +341,11 @@ public class SincronizadorRemotoAsincrono extends
 
 		if (op == LOG_OP_CREAR) {
 
-			bdLocal.borrarMarca(m.getId());
-			bdLocal.crearMarca(m);
+			bdLocal.borrarMarca(m.getId(), AdaptadorBD.ORIGEN_SINCRONIZADOR);
+			bdLocal.crearMarca(m, AdaptadorBD.ORIGEN_SINCRONIZADOR);
 
 		} else {
-			bdLocal.actualizarMarca(m);
+			bdLocal.actualizarMarca(m, AdaptadorBD.ORIGEN_SINCRONIZADOR);
 		}
 
 	}
@@ -352,16 +355,202 @@ public class SincronizadorRemotoAsincrono extends
 	 */
 	private boolean push(int op, int id) {
 
-		//TODO
-		
-		// LOCK TABLES productos READ, marcas READ, LOGS READ;
-		// UNLOCK TABLES;
+		Log.d("smarket", "PUSH");
 
-		// subir cambios
+		Statement consulta = null;
 
-		// escribir log remoto
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
 
-		return true;
+			Connection conexion = DriverManager.getConnection(
+					datosConexion.generarConexionMySQL(),
+					datosConexion.getUsuario(), datosConexion.getPass());
+
+			// Bloquear tablas para escritura
+			consulta = conexion.createStatement();
+			consulta.executeUpdate("START TRANSACTION");
+
+			// Subir cambios y escribir log remoto
+
+			if (op == LOG_OP_CREAR_PRODUCTO) {
+
+				// Insertar
+				Producto p = bdLocal.obtenerProducto(id);
+				insertarProductoEnRemoto(conexion, p);
+
+				// Actualizar log
+				String sql = "INSERT INTO logs (op, id_componente) VALUES ("
+						+ LOG_OP_CREAR_PRODUCTO + "," + id + ");";
+				consulta.executeUpdate(sql);
+
+			} else if (op == LOG_OP_CREAR_MARCA) {
+
+				// Insertar
+				Marca m = bdLocal.obtenerMarca(id);
+				insertarMarcaEnRemoto(conexion, m);
+
+				// Actualizar log
+				String sql = "INSERT INTO logs (op, id_componente) VALUES ("
+						+ LOG_OP_CREAR_MARCA + "," + id + ");";
+				consulta.executeUpdate(sql);
+
+			} else if (op == LOG_OP_BORRAR_PRODUCTO) {
+
+				// Borrar
+				String sql = "DELETE FROM " + AdaptadorBD.DB_TABLA_PRODUCTOS
+						+ "WHERE " + AdaptadorBD.KEY_ID + " = " + id;
+				consulta.executeUpdate(sql);
+
+				// Actualizar log
+				sql = "INSERT INTO logs (op, id_componente) VALUES ("
+						+ LOG_OP_BORRAR_PRODUCTO + "," + id + ");";
+				consulta.executeUpdate(sql);
+
+			} else if (op == LOG_OP_BORRAR_MARCA) {
+
+				// Borrar
+				String sql = "DELETE FROM " + AdaptadorBD.DB_TABLA_MARCAS
+						+ "WHERE " + AdaptadorBD.KEY_ID + " = " + id;
+				consulta.executeUpdate(sql);
+
+				// Actualizar log
+				sql = "INSERT INTO logs (op, id_componente) VALUES ("
+						+ LOG_OP_BORRAR_MARCA + "," + id + ");";
+				consulta.executeUpdate(sql);
+
+			} else if (op == LOG_OP_ACTUALIZAR_PRODUCTO) {
+
+				// Borrar
+				String sql = "DELETE FROM " + AdaptadorBD.DB_TABLA_PRODUCTOS
+						+ "WHERE " + AdaptadorBD.KEY_ID + " = " + id;
+				consulta.executeUpdate(sql);
+
+				// Insertar
+				Producto p = bdLocal.obtenerProducto(id);
+				insertarProductoEnRemoto(conexion, p);
+
+				// Actualizar log
+				sql = "INSERT INTO logs (op, id_componente) VALUES ("
+						+ LOG_OP_ACTUALIZAR_PRODUCTO + "," + id + ");";
+				consulta.executeUpdate(sql);
+
+			} else if (op == LOG_OP_ACTUALIZAR_MARCA) {
+
+				// Borrar
+				String sql = "DELETE FROM " + AdaptadorBD.DB_TABLA_MARCAS
+						+ "WHERE " + AdaptadorBD.KEY_ID + " = " + id;
+				consulta.executeUpdate(sql);
+
+				// Insertar
+				Marca m = bdLocal.obtenerMarca(id);
+				insertarMarcaEnRemoto(conexion, m);
+
+				// Actualizar log
+				sql = "INSERT INTO logs (op, id_componente) VALUES ("
+						+ LOG_OP_ACTUALIZAR_MARCA + "," + id + ");";
+				consulta.executeUpdate(sql);
+
+			}
+
+			// Actualizar log local
+			bdLocal.setUltimoLog(bdLocal.getUltimoLog() + 1);
+
+			// Desbloquear tablas
+			consulta.executeUpdate("COMMIT");
+			consulta.close();
+
+			return false;
+
+		} catch (ClassNotFoundException e) {
+
+			Log.d("smarket", "ERROR PUSH 1");
+			return false;
+
+		} catch (SQLException e) {
+
+			Log.d("smarket", "ERROR PUSH 2");
+			Log.d("smarket", e.getMessage());
+
+			if (consulta != null) {
+				try {
+					consulta.executeUpdate("ROLLBACK");
+					
+				} catch (SQLException e1) {
+				}
+			}
+			return false;
+		}
+
+	}
+
+	private boolean insertarProductoEnRemoto(Connection conexion, Producto p)
+			throws SQLException {
+
+		String sql = "INSERT INTO " + AdaptadorBD.DB_TABLA_PRODUCTOS
+				+ " VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+
+		PreparedStatement consulta = conexion.prepareStatement(sql);
+
+		// ID
+		consulta.setInt(1, p.getId());
+
+		// NOMBRE
+		consulta.setString(2, p.getNombre());
+
+		// TIPO
+		consulta.setInt(3, p.getTipo());
+
+		// MARCA
+		consulta.setInt(4, p.getMarca().getId());
+
+		// DIMENSION PANTALLA
+		consulta.setDouble(5, p.getDimensionPantalla());
+
+		// SISTEMA OPERATIVO
+		consulta.setInt(6, p.getSistemaOperativo());
+
+		// PRECIO
+		consulta.setDouble(7, p.getPrecio());
+
+		// DESCRIPCION
+		consulta.setString(8, p.getDescripcion());
+
+		// IMAGEN
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		Bitmap imagen = p.getImagen();
+		imagen.compress(Bitmap.CompressFormat.PNG, 100, stream);
+		byte[] bitImagen = stream.toByteArray();
+		ByteArrayInputStream imagenStream = new ByteArrayInputStream(bitImagen);
+		consulta.setBlob(9, imagenStream);
+
+		// EN OFERTA
+		if (p.isOferta()) {
+			consulta.setInt(10, 1);
+		} else {
+			consulta.setInt(10, 0);
+		}
+
+		// PRECIO EN OFERTA
+		consulta.setDouble(11, p.getPrecioOferta());
+
+		return consulta.executeUpdate() > 0;
+	}
+
+	private boolean insertarMarcaEnRemoto(Connection conexion, Marca m)
+			throws SQLException {
+
+		String sql = "INSERT INTO " + AdaptadorBD.DB_TABLA_MARCAS
+				+ " VALUES (?,?)";
+
+		PreparedStatement consulta = conexion.prepareStatement(sql);
+
+		// ID
+		consulta.setInt(1, m.getId());
+
+		// NOMBRE
+		consulta.setString(2, m.getNombre());
+
+		return consulta.executeUpdate() > 0;
 	}
 
 	/**
@@ -406,10 +595,10 @@ public class SincronizadorRemotoAsincrono extends
 			}
 
 		} else if (operacion == OP_PUSH) {
-			int componente = params[1];
+			int op = params[1];
 			int id = params[2];
 
-			return push(componente, id);
+			return push(op, id);
 
 		} else if (operacion == OP_TMP) {
 			int segundos = params[1];

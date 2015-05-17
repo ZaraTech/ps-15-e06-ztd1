@@ -2,11 +2,13 @@ package com.zaratech.smarket.aplicacion;
 
 import java.util.List;
 
+import com.zaratech.smarket.componentes.Listado;
 import com.zaratech.smarket.componentes.Orden;
 import com.zaratech.smarket.componentes.Producto;
 import com.zaratech.smarket.pruebas.LanzadorPruebas;
 import com.zaratech.smarket.utiles.AdaptadorBD;
 import com.zaratech.smarket.utiles.AdaptadorProductos;
+import com.zaratech.smarket.utiles.CargadorAsincrono;
 import com.zaratech.smarket.utiles.EditorConfiguracion;
 import com.zaratech.smarket.R;
 
@@ -27,6 +29,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.lang.reflect.Field;
 
@@ -35,7 +38,7 @@ import java.lang.reflect.Field;
  * 
  * @author Juan
  */
-public class ListaProductos extends ListActivity {
+public class ListaProductos extends ListActivity implements Listado{
 
 	/**
 	 * Guarda la ultima posicion en la que se quedo el listado
@@ -89,9 +92,12 @@ public class ListaProductos extends ListActivity {
 	private static boolean admin = false;
 
 	public void cargarListado() {
+		
+		CargadorAsincrono ca = new CargadorAsincrono(this, bd, ultimoOrden);
+		ca.execute();
+	}
 
-		// Rellenar lista		
-		List<Producto> productos = bd.OrdenarProducto(ultimoOrden);
+	public void cargarListadoAsincrono(List<Producto> productos){
 
 		AdaptadorProductos adaptador = new AdaptadorProductos(this, productos);
 
@@ -111,18 +117,6 @@ public class ListaProductos extends ListActivity {
 		// Obtener BD
 		bd = new AdaptadorBD(this);
 		bd.open();
-
-		// SINCRONIZACION REMOTA
-		EditorConfiguracion configuracion = new EditorConfiguracion(this);
-		if(!configuracion.usoBDLocal()){
-			bd.setSincronizacionRemota();
-
-			//if(configuracion.usoBdPeriodico()){
-			bd.setSincronizacionRemotaPeriodica();
-			//}
-
-		}
-
 
 		// Separador personalizado de elementos de listado
 		int[] colors = { 0, 0xFFFFFFFF, 0 };
@@ -160,7 +154,7 @@ public class ListaProductos extends ListActivity {
 		}
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, ordenacion);
+				android.R.layout.simple_list_item_1, ordenacion);
 		ordenar.setAdapter(adapter);
 
 		ordenar.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -200,21 +194,37 @@ public class ListaProductos extends ListActivity {
 
 		// SINCRONIZACION REMOTA
 		EditorConfiguracion configuracion = new EditorConfiguracion(this);
+
+		// CONFIG: ACTIVAR BD REMOTA
 		if(!configuracion.usoBDLocal()){
+
 			bd.setSincronizacionRemota();
 
-			//if(configuracion.usoBdPeriodico()){
-			bd.setSincronizacionRemotaPeriodica();
-			//}
-
-		} else {
-			
-			if(bd.isSincronizacionRemotaPeriodica()){
+			if(!configuracion.sincBDManual() && !bd.isSincronizacionRemotaPeriodica()){
+				bd.setSincronizacionRemotaPeriodica();
+				bd.initSincronizacionRemotaPeriodica();
+				
+			} else if (configuracion.sincBDManual()) {
 				bd.unSetSincronizacionRemotaPeriodica();
 			}
-			
-			bd.unSetSincronizacionRemota();
+
+			// CONFIG: DESACTIVAR BD REMOTA (si procede)
+			// CARGAR LISTADO
+		} else {
+
+			if(bd.isSincronizacionRemota()){
+
+				if(bd.isSincronizacionRemotaPeriodica()){
+					bd.unSetSincronizacionRemotaPeriodica();
+				}
+
+				bd.unSetSincronizacionRemota();
+			}
+
+			cargarListado();
 		}
+
+
 		super.onResume();
 	}
 
@@ -319,8 +329,15 @@ public class ListaProductos extends ListActivity {
 
 			// ACTUALIZAR
 		} else if (id == R.id.lista_menu_actualizar) {
+			
+			Toast.makeText(this, getString(R.string.lista_actualizar), Toast.LENGTH_SHORT).show();
 
-			bd.pullRemoto();
+			if(bd.isSincronizacionRemota()){
+				bd.pullRemoto();
+			} else {
+				cargarListado();
+			}
+
 			return true;
 
 			// CERRAR SESIÓN
@@ -328,6 +345,8 @@ public class ListaProductos extends ListActivity {
 			admin = false;
 			invalidateOptionsMenu();
 			unregisterForContextMenu(getListView());
+			Toast.makeText(this, getString(R.string.sesion_mensaje_cerrar), Toast.LENGTH_SHORT).show();
+
 			return true;
 
 			// ???

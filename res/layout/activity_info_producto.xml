@@ -1,19 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.zaratech.smarket.aplicacion.InfoProducto" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingRight="@dimen/activity_horizontal_margin" >
-		
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin" >
+
         <!-- Tipo de producto -->
 
         <TextView
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAppearance="?android:attr/textAppearanceLarge" />
-        
+
         <!-- Nombre del producto -->
 
         <TextView
@@ -37,10 +37,10 @@
             android:id="@+id/info_imagen"
             android:layout_width="match_parent"
             android:layout_height="151dp"
+            android:layout_marginTop="10sp"
             android:layout_weight="1"
             android:contentDescription="@string/app_descripcion_foto"
-            android:src="@drawable/smarket"
-            android:layout_marginTop="10sp" />
+            android:src="@drawable/smarket" />
 
         <!-- Línea de separación -->
 
@@ -55,8 +55,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" 
-            android:layout_marginTop="10sp" >
+            android:layout_marginTop="10sp"
+            android:orientation="vertical" >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -78,16 +78,16 @@
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:background="@android:color/darker_gray" 
-            android:layout_marginTop="10sp" />
+            android:layout_marginTop="10sp"
+            android:background="@android:color/darker_gray" />
 
         <!-- Marca del teléfono -->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" 
-            android:layout_marginTop="10sp" >
+            android:layout_marginTop="10sp"
+            android:orientation="horizontal" >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -156,7 +156,7 @@
             android:orientation="horizontal" >
 
             <TextView
-				android:layout_width="wrap_content"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
                 android:text="@string/app_precio"
@@ -187,11 +187,12 @@
         <!-- Botón de compra -->
 
         <Button
-            android:id="@+id/info_boton_comprar" style="@style/Boton"
+            android:id="@+id/info_boton_comprar"
+            style="@style/Boton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/info_comprar"
-            android:layout_marginTop="10sp" />
+            android:layout_marginTop="10sp"
+            android:text="@string/info_comprar" />
     </LinearLayout>
 
 </ScrollView>

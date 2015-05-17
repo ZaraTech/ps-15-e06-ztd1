@@ -23,9 +23,11 @@
     <string name="app_ud_segundos_texto"> segundos</string>
     <string name="app_separador_descripcion">Separador horizontal</string>
 
-    <!-- Lista de productos -->
+    <!-- Lista de productos (&#8230;  ==  ...) -->
 
-    <string name="lista_no_hay_productos">No hay productos que mostrar.</string>
+    <string name="lista_no_hay_productos">No hay productos que mostrar</string>
+    <string name="lista_actualizar">Actualizando</string>
+    <string name="lista_cargando">Cargando&#8230;</string>
 
     <!-- Menú de opciones de la Lista de productos -->
 
@@ -36,7 +38,7 @@
     <string name="lista_menu_test">Tests</string>
     <string name="lista_menu_actualizar">Actualizar</string>
     <string name="lista_menu_cerrar_sesion">Cerrar Sesión</string>
-    
+
     <!-- Menú contextual de la Lista de productos -->
 
     <string name="lista_menu_editar">Editar Producto</string>
@@ -98,10 +100,11 @@
     <string name="sesion_peticion_password">Introduzca su contraseña</string>
     <string name="sesion_iniciar_sesion">Iniciar sesión</string>
     <string name="sesion_mensaje_iniciar">Sesión iniciada</string>
+    <string name="sesion_mensaje_cerrar">Sesión cerrada</string>
     <string name="sesion_mensaje_fallo">Contraseña introducida no válida</string>
 
-       <!-- Configuración -->
-    
+    <!-- Configuración -->
+
     <string name="configuracion_titulo">Configuración</string>
     <string name="configuracion_cambiar_password">Cambiar contraseña</string>
     <string name="configuracion_cancelar_password">Cancelar</string>
@@ -117,8 +120,8 @@
     <string name="configuracion_BD_sincronizacion">Sincronización de la base de datos</string>
     <string name="configuracion_BD_sinc_manual">Manual</string>
     <string name="configuracion_BD_sinc_automatica">Automatica</string>
-	<string name="configuracion_BD_sinc_intervalo">Intervalo</string>
-	<string name="configuracion_BD_sinc_segundos">Segundos</string>
+    <string name="configuracion_BD_sinc_intervalo">Intervalo</string>
+    <string name="configuracion_BD_sinc_segundos">Segundos</string>
     <string name="configuracion_caja_registradora">Caja registradora</string>
     <string name="configuracion_correo">Correo</string>
     <string name="configuracion_guardar">Guardar configuración</string>
@@ -127,8 +130,9 @@
     <string name="configuracion_confirmar">Confirmar</string>
     <string name="configuracion_mensaje_password_modificar">Contraseña modificada</string>
     <string name="configuracion_mensaje_password_fallo">Las dos contraseñas no coinciden, \n\t\t\t\trepita la contraseña</string>
+    <string name="configuracion_mensaje_password_long">La contraseña debe tener entre 8 y 20 caracteres, y contener al menos una minúscula, una mayúscula y un número</string>
     <string name="configuracion_mensaje_guardar">Configuración guardada</string>
-    
+
     <!-- Errores -->
 
     <string name="edicion_error_marca_erronea">El nombre de la marca debe tener entre 1 y 30 caracteres</string>

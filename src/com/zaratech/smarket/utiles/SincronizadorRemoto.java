@@ -30,12 +30,20 @@ public class SincronizadorRemoto {
 		tpe2 = new ThreadPoolExecutor(1, 2, 60L, TimeUnit.SECONDS,
 				new LinkedBlockingQueue<Runnable>());
 
+		// Crea la BD remota si no existe
+		crear();
+	}
+	
+	/**
+	 * Obtiene cambios de BD remota, y los aplica en BD local
+	 */
+	public void crear() {
+
 		SincronizadorRemotoAsincrono sra = new SincronizadorRemotoAsincrono(
 				bdLocal, bdRemota);
-
+		
 		// Crea la BD remota si no existe
 		sra.executeOnExecutor(tpe1, SincronizadorRemotoAsincrono.OP_CREAR);
-
 	}
 
 	/**

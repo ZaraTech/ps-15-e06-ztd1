@@ -2,9 +2,8 @@ package com.zaratech.smarket.aplicacion;
 
 import com.zaratech.smarket.R;
 import com.zaratech.smarket.utiles.EditorConfiguracion;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +34,7 @@ public class IniciarSesion extends Activity {
 	 * Método a ejecutar en la creación de la actividad
 	 */
 	@Override
+	@SuppressLint("ShowToast")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_inicio_sesion);

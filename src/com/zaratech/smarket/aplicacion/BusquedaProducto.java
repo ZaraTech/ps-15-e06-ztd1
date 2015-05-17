@@ -6,11 +6,13 @@ import java.util.List;
 
 import com.zaratech.smarket.R;
 import com.zaratech.smarket.componentes.Filtro;
+import com.zaratech.smarket.componentes.Listado;
 import com.zaratech.smarket.componentes.Marca;
 import com.zaratech.smarket.componentes.Orden;
 import com.zaratech.smarket.componentes.Producto;
 import com.zaratech.smarket.utiles.AdaptadorBD;
 import com.zaratech.smarket.utiles.AdaptadorProductos;
+import com.zaratech.smarket.utiles.CargadorAsincrono;
 import com.zaratech.smarket.utiles.EditTextSimboloFinal;
 
 import android.os.Bundle;
@@ -41,6 +43,7 @@ import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.text.Editable;
 import android.text.TextWatcher;
 
@@ -51,7 +54,7 @@ import android.text.TextWatcher;
  * @author Cristian Romám Morte
  */
 @SuppressLint("DefaultLocale")
-public class BusquedaProducto extends ListActivity implements TextWatcher {
+public class BusquedaProducto extends ListActivity implements TextWatcher, Listado {
 
 	/**
 	 * Guarda la ultima posicion en la que se quedo el listado
@@ -159,18 +162,22 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 
 	/**
 	 * Método privado que carga el istado de productos de la BD
-	 */
-	private void cargarListado() {
+	 */	
+	public void cargarListado() {
+		
+		CargadorAsincrono ca = new CargadorAsincrono(this, bd);
+		ca.execute();
+	}
 
-		// Rellenar lista
-		ArrayList<Producto> productos = (ArrayList<Producto>) bd
-				.obtenerProductos();
+	public void cargarListadoAsincrono(List<Producto> productos){
 
 		AdaptadorProductos adaptador = new AdaptadorProductos(this, productos);
 
 		setListAdapter(adaptador);
 
 		setSelection(ultimaPosicion - 2);
+		
+		Toast.makeText(this, getString(R.string.lista_actualizar), Toast.LENGTH_SHORT).show();
 	}
 
 	/**
@@ -208,7 +215,7 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 		}
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, filtros);
+				android.R.layout.simple_list_item_1, filtros);
 		filtrar.setAdapter(adapter);
 
 		filtrar.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -259,7 +266,7 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 				.obtenerSistemaOperativo(Producto.SO_WINDOWSPHONE);
 
 		ArrayAdapter<String> adp1 = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, arr);
+				android.R.layout.simple_list_item_1, arr);
 		so.setAdapter(adp1);
 
 		/*
@@ -275,7 +282,7 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 		}
 		// Actualiza spinner de las marcas
 		adp1 = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, getMarcas());
+				android.R.layout.simple_list_item_1, getMarcas());
 		spinnerMarcas.setAdapter(adp1);
 
 		/*
@@ -290,7 +297,7 @@ public class BusquedaProducto extends ListActivity implements TextWatcher {
 		}
 
 		adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, ordenacion);
+				android.R.layout.simple_list_item_1, ordenacion);
 		ordenarSpinner.setAdapter(adapter);
 
 		/*

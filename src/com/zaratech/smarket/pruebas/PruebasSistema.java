@@ -21,10 +21,10 @@ import com.zaratech.smarket.utiles.AdaptadorBD;
 public class PruebasSistema{
 
 	/** Numero de productos que se crean en la prueba */
-	private static final int MAX_PRODUCTOS = 50; //1000
+	private static final int MAX_PRODUCTOS = 1000; //1000
 	
 	/** Numero de marcas que se crean en la prueba */
-	private static final int MAX_MARCAS = 10; // 100
+	private static final int MAX_MARCAS = 100; // 100
 	
 	/** Nombre asignado a los productos de prueba */
 	private static final String NOMBRE_PRODUCTO = "Prueba_Producto ";

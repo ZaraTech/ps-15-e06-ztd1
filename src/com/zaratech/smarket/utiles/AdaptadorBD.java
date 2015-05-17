@@ -47,6 +47,9 @@ public class AdaptadorBD implements InterfazBD {
 	private static boolean bdCreada = false;
 	private static boolean bdAbierta = false;
 	private static boolean sincronizacionPeriodica = false;
+	
+	public static final int ORIGEN_APP = 0;
+	public static final int ORIGEN_SINCRONIZADOR = 1;
 
 
 	public static final String DB_TABLA_LOGS = "logs";
@@ -57,16 +60,23 @@ public class AdaptadorBD implements InterfazBD {
 
 	public void setSincronizacionRemota(){
 
-		EditorConfiguracion configuracion = new EditorConfiguracion(context);
-		Conexion conexion = new Conexion();
+		if (sincronizador == null){
 
-		conexion.setUsuario(configuracion.obtenerUsuarioBD());
-		conexion.setPass(configuracion.obtenerPasswordBD());
-		conexion.setDireccion(configuracion.obtenerUsuarioBD());
-		conexion.setPuerto(String.valueOf(configuracion.obtenerPuertoBD()));
-		//conexion.setBd(configuracion.obtenerBD());
+			EditorConfiguracion configuracion = new EditorConfiguracion(context);
+			Conexion conexion = new Conexion();
 
-		sincronizador = new SincronizadorRemoto(this, conexion);
+			conexion.setUsuario(configuracion.obtenerUsuarioBD());
+			conexion.setPass(configuracion.obtenerPasswordBD());
+			conexion.setDireccion(configuracion.obtenerDireccionBD());
+			conexion.setPuerto(String.valueOf(configuracion.obtenerPuertoBD()));
+			conexion.setBd(configuracion.obtenerNombreBD());
+
+			sincronizador = new SincronizadorRemoto(this, conexion);
+
+		} else if(!isBdCreada()){
+
+			sincronizador.crear();
+		}
 	}
 
 	public void unSetSincronizacionRemota(){
@@ -105,7 +115,8 @@ public class AdaptadorBD implements InterfazBD {
 	public void initSincronizacionRemotaPeriodica() {
 
 		if (isSincronizacionRemota() && isSincronizacionRemotaPeriodica()) {
-			sincronizador.temporizador(30);
+			EditorConfiguracion configuracion = new EditorConfiguracion(context);
+			sincronizador.temporizador(configuracion.obtenerIntervaloSinc());
 		}
 	}
 
@@ -181,7 +192,7 @@ public class AdaptadorBD implements InterfazBD {
 			+ KEY_EN_OFERTA
 			+ " integer not null default 0,"
 			+ KEY_PRECIO_OFERTA 
-			+ " integer not null default 0.0" 
+			+ " real not null default 0.0" 
 			+ ");";
 
 	public static final String DB_CREAR_MARCAS = "create table if not exists "
@@ -534,7 +545,26 @@ public class AdaptadorBD implements InterfazBD {
 	 */
 	public boolean crearProducto(Producto producto) {
 
-		return producto2bd(producto, DB_INSERTAR);
+		return crearProducto(producto, ORIGEN_APP);
+
+	}
+
+	public boolean crearProducto(Producto producto, int origen) {
+		
+		// Actualizar BD local por si acaso
+		if (origen == ORIGEN_APP && isSincronizacionRemota()) {
+			sincronizador.pull();
+		}
+
+		boolean resultado = producto2bd(producto, DB_INSERTAR);
+
+		if (origen == ORIGEN_APP && isSincronizacionRemota()) {
+			sincronizador.push(
+					SincronizadorRemotoAsincrono.LOG_OP_CREAR_PRODUCTO,
+					producto.getId());
+		}
+
+		return resultado;
 	}
 
 	/**
@@ -547,7 +577,25 @@ public class AdaptadorBD implements InterfazBD {
 	 */
 	public boolean actualizarProducto(Producto producto) {
 
-		return producto2bd(producto, DB_ACTUALIZAR);
+		return actualizarProducto(producto, ORIGEN_APP);
+	}
+	
+	public boolean actualizarProducto(Producto producto, int origen) {
+		
+		// Actualizar BD local por si acaso
+		if (origen == ORIGEN_APP && isSincronizacionRemota()) {
+			sincronizador.pull();
+		}
+
+		boolean resultado = producto2bd(producto, DB_ACTUALIZAR);
+
+		if (origen == ORIGEN_APP && isSincronizacionRemota()) {
+			sincronizador.push(
+					SincronizadorRemotoAsincrono.LOG_OP_ACTUALIZAR_PRODUCTO,
+					producto.getId());
+		}
+
+		return resultado;
 	}
 
 	/**
@@ -560,7 +608,24 @@ public class AdaptadorBD implements InterfazBD {
 	 */
 	public boolean borrarProducto(int id) {
 
-		return bd.delete(DB_TABLA_PRODUCTOS, KEY_ID + "=" + id, null) > 0;
+		return borrarProducto(id, ORIGEN_APP);
+	}
+	
+	public boolean borrarProducto(int id, int origen) {
+		
+		// Actualizar BD local por si acaso
+		if (origen == ORIGEN_APP && isSincronizacionRemota()) {
+			sincronizador.pull();
+		}
+
+		boolean resultado = bd.delete(DB_TABLA_PRODUCTOS, KEY_ID + "=" + id, null) > 0;
+
+		if (origen == ORIGEN_APP && isSincronizacionRemota()) {
+			sincronizador.push(
+					SincronizadorRemotoAsincrono.LOG_OP_BORRAR_PRODUCTO, id);
+		}
+
+		return resultado;
 	}
 
 	/**
@@ -936,7 +1001,24 @@ public class AdaptadorBD implements InterfazBD {
 	 */
 	public boolean crearMarca(Marca marca) {
 
-		return marca2bd(marca, DB_INSERTAR);
+		return crearMarca(marca, ORIGEN_APP);
+	}
+	
+	public boolean crearMarca(Marca marca, int origen) {
+		
+		// Actualizar BD local por si acaso
+		if (origen == ORIGEN_APP && isSincronizacionRemota()) {
+			sincronizador.pull();
+		}
+
+		boolean resultado = marca2bd(marca, DB_INSERTAR);
+
+		if (origen == ORIGEN_APP && isSincronizacionRemota()) {
+			sincronizador.push(
+					SincronizadorRemotoAsincrono.LOG_OP_CREAR_MARCA, marca.getId());
+		}
+
+		return resultado;
 	}
 
 	/**
@@ -949,7 +1031,24 @@ public class AdaptadorBD implements InterfazBD {
 	 */
 	public boolean actualizarMarca(Marca marca) {
 
-		return marca2bd(marca, DB_ACTUALIZAR);
+		return actualizarMarca(marca, ORIGEN_APP);
+	}
+	
+	public boolean actualizarMarca(Marca marca, int origen) {
+		
+		// Actualizar BD local por si acaso
+		if (origen == ORIGEN_APP && isSincronizacionRemota()) {
+			sincronizador.pull();
+		}
+
+		boolean resultado = marca2bd(marca, DB_ACTUALIZAR);
+
+		if (origen == ORIGEN_APP && isSincronizacionRemota()) {
+			sincronizador.push(
+					SincronizadorRemotoAsincrono.LOG_OP_ACTUALIZAR_MARCA, marca.getId());
+		}
+
+		return resultado;
 	}
 
 	/**
@@ -962,6 +1061,16 @@ public class AdaptadorBD implements InterfazBD {
 	 */
 	public boolean borrarMarca(int id) {
 
+		return borrarMarca(id, ORIGEN_APP);
+	}
+	
+	public boolean borrarMarca(int id, int origen) {
+		
+		// Actualizar BD local por si acaso
+		if (origen == ORIGEN_APP && isSincronizacionRemota()) {
+			sincronizador.pull();
+		}
+
 		boolean borrado = bd.delete(DB_TABLA_MARCAS, KEY_ID + "=" + id, null) > 0;
 
 		if (borrado) {
@@ -970,6 +1079,11 @@ public class AdaptadorBD implements InterfazBD {
 
 			bd.update(DB_TABLA_PRODUCTOS, valores, KEY_ID_MARCA + " = " + id,
 					null);
+		}
+
+		if (origen == ORIGEN_APP && isSincronizacionRemota()) {
+			sincronizador.push(
+					SincronizadorRemotoAsincrono.LOG_OP_BORRAR_MARCA, id);
 		}
 
 		return borrado;

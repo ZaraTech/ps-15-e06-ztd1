@@ -34,6 +34,7 @@ public class AdaptadorProductos extends ArrayAdapter<Producto> {
 	 * @param bd conexion a una base de datos
 	 */
 	public AdaptadorProductos(Context context, List<Producto> productos) {
+		
 		super(context, 0, productos);
 
 		this.context = context;

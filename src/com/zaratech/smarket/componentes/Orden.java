@@ -39,16 +39,21 @@ public class Orden {
 		String dir = "";
 		String ord = "";
 
+
+		if (variable == AdaptadorBD.DB_ORDENACION_NOMBRE) {
+			ord = "LOWER(" + AdaptadorBD.KEY_NOMBRE + ")";
+		} else {
+			ord = "CASE " + AdaptadorBD.KEY_EN_OFERTA + " WHEN 1 THEN "
+					+ AdaptadorBD.KEY_PRECIO_OFERTA + " ELSE "
+					+ AdaptadorBD.KEY_PRECIO + " END";
+		}
+		
 		if (direcion == AdaptadorBD.DB_ORDENACION_ASC) {
 			dir = "ASC";
 		} else {
 			dir = "DESC";
 		}
-		if (variable == AdaptadorBD.DB_ORDENACION_NOMBRE) {
-			ord = AdaptadorBD.KEY_NOMBRE;
-		} else {
-			ord = AdaptadorBD.KEY_PRECIO;
-		}
+		
 		orden = ord + " " + dir;
 	}
 

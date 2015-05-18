@@ -20,9 +20,6 @@ import android.annotation.SuppressLint;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.view.ContextMenu;
@@ -605,11 +602,6 @@ public class BusquedaProducto extends ListActivity implements TextWatcher, Lista
 	@SuppressLint("DefaultLocale")
 	private void realizarBusqueda(String cadena) {
 
-		// Obtener imagen
-		Resources res = getBaseContext().getResources();
-		int id = R.drawable.smarket;
-		Bitmap imagen = BitmapFactory.decodeResource(res, id);
-
 		// Creamos 2 arrays en uno metemos todos y en el otro los que coincidan
 		// con la busqueda
 		ArrayList<Producto> productos = (ArrayList<Producto>) bd
@@ -622,24 +614,20 @@ public class BusquedaProducto extends ListActivity implements TextWatcher, Lista
 
 			// Vemos si la entrada es vacia
 			if (cadena.equals("")) {
-				p.setImagen(imagen);
 				productosBusqueda.add(p);
 
 				// Vemos si la entrada esta contenido en algun nombre
 			} else if (p.getNombre().toLowerCase().indexOf(cadena) != -1) {
-				p.setImagen(imagen);
 				productosBusqueda.add(p);
 
 				// Vemos si la entrada esta contenido en alguna marca
 			} else if (p.getMarca() != null
 					&& p.getMarca().getNombre() != null
 					&& p.getMarca().getNombre().toLowerCase().indexOf(cadena) != -1) {
-				p.setImagen(imagen);
 				productosBusqueda.add(p);
 
 				// Vemos si la entrada esta contenido en algun dispositivo
 			} else if (tipoDispositivo.toLowerCase().indexOf(cadena) != -1) {
-				p.setImagen(imagen);
 				productosBusqueda.add(p);
 			}
 		}

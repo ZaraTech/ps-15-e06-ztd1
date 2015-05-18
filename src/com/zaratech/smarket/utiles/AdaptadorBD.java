@@ -748,8 +748,10 @@ public class AdaptadorBD implements InterfazBD {
 	public List<Producto> OrdenarProducto(Orden orden) {
 
 		// Consulta
-		Cursor resultado = bd.query(DB_TABLA_PRODUCTOS, null,
-				null, null, null, null, orden.getOrden());
+		Cursor resultado;
+
+		resultado = bd.query(DB_TABLA_PRODUCTOS, null,
+					null, null, null, null, orden.getOrden());
 
 		List<Producto> productos = new ArrayList<Producto>();
 

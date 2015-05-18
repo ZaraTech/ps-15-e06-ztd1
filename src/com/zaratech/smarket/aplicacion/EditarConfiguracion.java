@@ -249,6 +249,8 @@ public class EditarConfiguracion extends Activity {
 			configuracion.modificarSincBDManual(false);
 		}
 		
+		configuracion.modificarCorreoCaja(nuevoCorreoCaja);
+		
 		if(usoBD != R.id.configuracion_BD_tipo_local){
 			
 			if (nuevoNombreBD.length() > 0 && nuevoUsuarioBD.length() > 0
@@ -261,7 +263,6 @@ public class EditarConfiguracion extends Activity {
 				configuracion.modificarPasswordBD(nuevaPasswordBD);
 				configuracion.modificarDireccionBD(nuevaDireccionBD);
 				configuracion.modificarPuertoBD(nuevoPuertoBD);
-				configuracion.modificarCorreoCaja(nuevoCorreoCaja);
 				configuracion.modificarIntervaloSinc(intervalo);
 				
 				mensajeGuardar.show();

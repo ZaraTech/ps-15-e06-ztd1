@@ -83,23 +83,29 @@ public class EditTextSimboloFinal implements TextWatcher {
 		String v = s.toString().replace(fin, "");
 		text.removeTextChangedListener(this);
 
-		// Corrige el numero
-		float f;
+		double f;
+
 		try {
-			f = Float.parseFloat(v);
+			f = Double.parseDouble(v);
 		} catch (Exception e) {
 			f = 0;
 		}
-		f -= Math.pow(10, -(decimales + 1)) * 4;// Redondea a la baja
-		f = Math.round(f * Math.pow(10, decimales));
-		f = (float) (f != 0 ? f / Math.pow(10, decimales) : 0f);
+		
+		// Corrige el numero
+		f=(f*Math.pow(10, decimales)-(f*Math.pow(10, decimales))%1)*Math.pow(10, -decimales);
+
 		f = f > maximo ? maximo : f;
 		f = f < minimo ? minimo : f;
-		v = Math.round(f) != f ? Float.toString(f) : Integer.toString(Math
-				.round(f));
-		v = !v.contains(DECIMAL + "") && s.toString().contains(DECIMAL + "") ? v
-				+ DECIMAL
-				: v;
+		v = Math.round(f) != f ? Double.toString(f) : Integer
+				.toString((int) Math.round(f));
+
+		if (!v.contains(DECIMAL + "0") && s.toString().contains(DECIMAL + "0")) {
+			v = v + DECIMAL + "0";
+		} else if (!v.contains(DECIMAL + "")
+				&& s.toString().contains(DECIMAL + "")) {
+			v = v + DECIMAL;
+		}
+
 		v += fin;
 
 		// Cambia la posición en la que se esta escribiendo

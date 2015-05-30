@@ -16,15 +16,23 @@ public class SincronizadorRemoto {
 	private AdaptadorBD bdLocal;
 	private Conexion bdRemota;
 
+	/**
+	 * Conjunto de hilos dedicados a las operaciones basicas
+	 */
 	private ThreadPoolExecutor tpe1 = null;
+	
+	/**
+	 * Hilo dedicado a la ejecución de una tarea bloqueante
+	 */
 	private ThreadPoolExecutor tpe2 = null;
 
+	
 	public SincronizadorRemoto(AdaptadorBD bdLocal, Conexion bdRemota) {
 
 		this.bdLocal = bdLocal;
 		this.bdRemota = bdRemota;
 
-		tpe1 = new ThreadPoolExecutor(1, 2, 60L, TimeUnit.SECONDS,
+		tpe1 = new ThreadPoolExecutor(1, 1, 60L, TimeUnit.SECONDS,
 				new LinkedBlockingQueue<Runnable>());
 
 		tpe2 = new ThreadPoolExecutor(1, 1, 60L, TimeUnit.SECONDS,
@@ -40,7 +48,7 @@ public class SincronizadorRemoto {
 	public void crear() {
 
 		SincronizadorRemotoAsincrono sra = new SincronizadorRemotoAsincrono(
-				bdLocal, bdRemota);
+				bdLocal, bdRemota, this);
 		
 		// Crea la BD remota si no existe
 		sra.executeOnExecutor(tpe1, SincronizadorRemotoAsincrono.OP_CREAR);
@@ -52,7 +60,7 @@ public class SincronizadorRemoto {
 	public void pull() {
 
 		SincronizadorRemotoAsincrono sra = new SincronizadorRemotoAsincrono(
-				bdLocal, bdRemota);
+				bdLocal, bdRemota, this);
 
 		sra.executeOnExecutor(tpe1, SincronizadorRemotoAsincrono.OP_PULL);
 	}
@@ -63,7 +71,7 @@ public class SincronizadorRemoto {
 	public void push(int op, int id) {
 
 		SincronizadorRemotoAsincrono sra = new SincronizadorRemotoAsincrono(
-				bdLocal, bdRemota);
+				bdLocal, bdRemota, this);
 
 		sra.executeOnExecutor(tpe1, 
 				SincronizadorRemotoAsincrono.OP_PUSH, op, id);
@@ -76,7 +84,7 @@ public class SincronizadorRemoto {
 	public void temporizador(int segundos) {
 
 		SincronizadorRemotoAsincrono sra = new SincronizadorRemotoAsincrono(
-				bdLocal, bdRemota);
+				bdLocal, bdRemota, this);
 
 		tpe2.setKeepAliveTime(segundos * 2, TimeUnit.SECONDS);
 

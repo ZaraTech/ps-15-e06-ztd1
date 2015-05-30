@@ -53,7 +53,7 @@
     <string name="busqueda_filtrar">Filtrar por</string>
     <string name="busqueda_avanzada">Busqueda avanzada</string>
     <string name="busqueda_aplicar">Aplicar</string>
-    <string name="busqueda_solo_ofertas">Solo ofertas</string>
+    <string name="busqueda_solo_ofertas">Sólo ofertas</string>
     <string name="ordenacion_nombre_ascendente">Nombre [A-Z]</string>
     <string name="ordenacion_nombre_descendente">Nombre [Z-A]</string>
     <string name="ordenacion_precio_ascendente">Precio más bajo</string>

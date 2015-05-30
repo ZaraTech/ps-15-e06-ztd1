@@ -217,9 +217,16 @@ public class BusquedaProducto extends ListActivity implements TextWatcher, Lista
 
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
+				
 				esconderTodos(LAYOUT_FILTROS);
+				
 				if (position >= 0 && position < LAYOUT_FILTROS.length) {
 					mostrar((LinearLayout) findViewById(LAYOUT_FILTROS[position]));
+				}
+				//mostrar solo ofertas
+				else if (position == LAYOUT_FILTROS.length){
+					// cambia la imagen del boton de extender
+					extender.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_action_collapse);
 				}
 			}
 

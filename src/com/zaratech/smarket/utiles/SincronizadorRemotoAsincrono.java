@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.LinkedList;
 
 import com.zaratech.smarket.componentes.Conexion;
 import com.zaratech.smarket.componentes.Marca;
@@ -18,6 +19,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 
+
 /**
  * Sincroniza una BD remota con una BD local. Si la BD remota no esta completa
  * crea las tablas que faltan.
@@ -26,6 +28,27 @@ import android.util.Log;
  */
 public class SincronizadorRemotoAsincrono extends
 		AsyncTask<Integer, Integer, Boolean> {
+	
+	/**
+	 * Clase privada que almacena una peticion pendiente
+	 */
+	private class Peticion{
+		private int op;
+		private int id;
+		
+		public Peticion(int op, int id){
+			this.op = op;
+			this.id = id;
+		}
+
+		public int getOp() {
+			return op;
+		}
+
+		public int getId() {
+			return id;
+		}
+	}
 
 	public static final int OP_CREAR = 0;
 	public static final int OP_PULL = 1;
@@ -52,14 +75,22 @@ public class SincronizadorRemotoAsincrono extends
 
 	private AdaptadorBD bdLocal = null;
 	private Conexion datosConexion = null;
+	private SincronizadorRemoto lanzador = null;
+	
+	private static LinkedList<Peticion> pendientes = null;
 
 	private int operacion;
 
 	public SincronizadorRemotoAsincrono(AdaptadorBD bdLocal,
-			Conexion datosConexion) {
+			Conexion datosConexion, SincronizadorRemoto lanzador) {
 		this.bdLocal = bdLocal;
 		this.datosConexion = datosConexion;
 		this.operacion = -1;
+		this.lanzador = lanzador;
+		
+		if(pendientes == null){
+			pendientes = new LinkedList<Peticion>();
+		}
 	}
 
 	/**
@@ -134,11 +165,7 @@ public class SincronizadorRemotoAsincrono extends
 	/**
 	 * Obtiene cambios de BD remota, y los aplica en BD local
 	 */
-	private boolean pull() {
-
-		Log.d("smarket", "PULL");
-
-		int idUltimoLog = -1;
+	private synchronized boolean pull() {
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -147,103 +174,7 @@ public class SincronizadorRemotoAsincrono extends
 					datosConexion.generarConexionMySQL(),
 					datosConexion.getUsuario(), datosConexion.getPass());
 
-			Statement consulta = conexion.createStatement();
-
-			// comprobar log remoto
-
-			int ultimoLogLocal = bdLocal.getUltimoLog();
-
-			String sql1 = "select * from logs where id > " + ultimoLogLocal
-					+ " order by id asc";
-
-			ResultSet resultado = consulta.executeQuery(sql1);
-
-			while (resultado.next()) {
-
-				Log.d("smarket", "PULL COMPONENTE");
-
-				// por cada log
-				idUltimoLog = resultado.getInt(1);
-				int op = resultado.getInt(2);
-				int idComponente = resultado.getInt(3);
-
-				Statement consulta2 = conexion.createStatement();
-
-				// CREAR PRODUCTO
-				if (op == LOG_OP_CREAR_PRODUCTO) {
-
-					String sql2 = "select * from "
-							+ AdaptadorBD.DB_TABLA_PRODUCTOS + " where "
-							+ AdaptadorBD.KEY_ID + " = " + idComponente;
-
-					ResultSet resultado2 = consulta2.executeQuery(sql2);
-
-					if (resultado2.next()) {
-						insertarProductoEnLocal(resultado2, LOG_OP_CREAR);
-					}
-					resultado2.close();
-
-					// CREAR MARCA
-				} else if (op == LOG_OP_CREAR_MARCA) {
-
-					String sql2 = "select * from "
-							+ AdaptadorBD.DB_TABLA_MARCAS + " where "
-							+ AdaptadorBD.KEY_ID + " = " + idComponente;
-
-					ResultSet resultado2 = consulta2.executeQuery(sql2);
-
-					if (resultado2.next()) {
-						insertarMarcaEnLocal(resultado2, LOG_OP_CREAR);
-					}
-					resultado2.close();
-
-					// BORRAR PRODUCTO
-				} else if (op == LOG_OP_BORRAR_PRODUCTO) {
-
-					bdLocal.borrarProducto(idComponente);
-
-					// BORRAR MARCA
-				} else if (op == LOG_OP_BORRAR_MARCA) {
-
-					bdLocal.borrarMarca(idComponente);
-
-					// ACTUALIZAR PRODUCTO
-				} else if (op == LOG_OP_ACTUALIZAR_PRODUCTO) {
-
-					String sql2 = "select * from "
-							+ AdaptadorBD.DB_TABLA_PRODUCTOS + " where "
-							+ AdaptadorBD.KEY_ID + " = " + idComponente;
-
-					ResultSet resultado2 = consulta2.executeQuery(sql2);
-
-					if (resultado2.next()) {
-						insertarProductoEnLocal(resultado2, LOG_OP_ACTUALIZAR);
-					}
-					resultado2.close();
-
-					// ACTUALIZAR MARCA
-				} else if (op == LOG_OP_ACTUALIZAR_MARCA) {
-
-					String sql2 = "select * from "
-							+ AdaptadorBD.DB_TABLA_MARCAS + " where "
-							+ AdaptadorBD.KEY_ID + " = " + idComponente;
-
-					ResultSet resultado2 = consulta2.executeQuery(sql2);
-
-					if (resultado2.next()) {
-						insertarMarcaEnLocal(resultado2, LOG_OP_ACTUALIZAR);
-					}
-					resultado2.close();
-				}
-
-			}
-
-			resultado.close();
-
-			// actualizar log local
-			if (idUltimoLog > ultimoLogLocal) {
-				bdLocal.setUltimoLog(idUltimoLog);
-			}
+			pullAux(conexion);
 
 			conexion.close();
 
@@ -259,6 +190,111 @@ public class SincronizadorRemotoAsincrono extends
 			Log.d("smarket", "ERROR PULL 2");
 			Log.d("smarket", e.getMessage());
 			return false;
+		}
+	}
+	
+	private void pullAux(Connection conexion) throws SQLException{
+		
+		Log.d("smarket", "PULL");
+		
+		int idUltimoLog = -1;
+		
+		Statement consulta = conexion.createStatement();
+
+		// comprobar log remoto
+
+		int ultimoLogLocal = bdLocal.getUltimoLog();
+
+		String sql1 = "select * from logs where id > " + ultimoLogLocal
+				+ " order by id asc";
+
+		ResultSet resultado = consulta.executeQuery(sql1);
+
+		while (resultado.next()) {
+
+			Log.d("smarket", "PULL COMPONENTE");
+
+			// por cada log
+			idUltimoLog = resultado.getInt(1);
+			int op = resultado.getInt(2);
+			int idComponente = resultado.getInt(3);
+
+			Statement consulta2 = conexion.createStatement();
+
+			// CREAR PRODUCTO
+			if (op == LOG_OP_CREAR_PRODUCTO) {
+
+				String sql2 = "select * from "
+						+ AdaptadorBD.DB_TABLA_PRODUCTOS + " where "
+						+ AdaptadorBD.KEY_ID + " = " + idComponente;
+
+				ResultSet resultado2 = consulta2.executeQuery(sql2);
+
+				if (resultado2.next()) {
+					insertarProductoEnLocal(resultado2, LOG_OP_CREAR);
+				}
+				resultado2.close();
+
+				// CREAR MARCA
+			} else if (op == LOG_OP_CREAR_MARCA) {
+
+				String sql2 = "select * from "
+						+ AdaptadorBD.DB_TABLA_MARCAS + " where "
+						+ AdaptadorBD.KEY_ID + " = " + idComponente;
+
+				ResultSet resultado2 = consulta2.executeQuery(sql2);
+
+				if (resultado2.next()) {
+					insertarMarcaEnLocal(resultado2, LOG_OP_CREAR);
+				}
+				resultado2.close();
+
+				// BORRAR PRODUCTO
+			} else if (op == LOG_OP_BORRAR_PRODUCTO) {
+
+				bdLocal.borrarProducto(idComponente, AdaptadorBD.ORIGEN_SINCRONIZADOR);
+
+				// BORRAR MARCA
+			} else if (op == LOG_OP_BORRAR_MARCA) {
+
+				bdLocal.borrarMarca(idComponente, AdaptadorBD.ORIGEN_SINCRONIZADOR);
+
+				// ACTUALIZAR PRODUCTO
+			} else if (op == LOG_OP_ACTUALIZAR_PRODUCTO) {
+
+				String sql2 = "select * from "
+						+ AdaptadorBD.DB_TABLA_PRODUCTOS + " where "
+						+ AdaptadorBD.KEY_ID + " = " + idComponente;
+
+				ResultSet resultado2 = consulta2.executeQuery(sql2);
+
+				if (resultado2.next()) {
+					insertarProductoEnLocal(resultado2, LOG_OP_ACTUALIZAR);
+				}
+				resultado2.close();
+
+				// ACTUALIZAR MARCA
+			} else if (op == LOG_OP_ACTUALIZAR_MARCA) {
+
+				String sql2 = "select * from "
+						+ AdaptadorBD.DB_TABLA_MARCAS + " where "
+						+ AdaptadorBD.KEY_ID + " = " + idComponente;
+
+				ResultSet resultado2 = consulta2.executeQuery(sql2);
+
+				if (resultado2.next()) {
+					insertarMarcaEnLocal(resultado2, LOG_OP_ACTUALIZAR);
+				}
+				resultado2.close();
+			}
+
+		}
+
+		resultado.close();
+
+		// actualizar log local
+		if (idUltimoLog > ultimoLogLocal) {
+			bdLocal.setUltimoLog(idUltimoLog);
 		}
 	}
 
@@ -353,7 +389,7 @@ public class SincronizadorRemotoAsincrono extends
 	/**
 	 * Aplica cambios en BD local a BD remota
 	 */
-	private boolean push(int op, int id) {
+	private synchronized boolean push(int op, int id) {
 
 		Log.d("smarket", "PUSH");
 
@@ -366,10 +402,14 @@ public class SincronizadorRemotoAsincrono extends
 					datosConexion.generarConexionMySQL(),
 					datosConexion.getUsuario(), datosConexion.getPass());
 
-			// Bloquear tablas para escritura
+			// Iniciar transaccion
 			consulta = conexion.createStatement();
 			consulta.executeUpdate("START TRANSACTION");
+			
+			// Actualizar BD local
+			pullAux(conexion);
 
+			
 			// Subir cambios y escribir log remoto
 
 			if (op == LOG_OP_CREAR_PRODUCTO) {
@@ -398,7 +438,7 @@ public class SincronizadorRemotoAsincrono extends
 
 				// Borrar
 				String sql = "DELETE FROM " + AdaptadorBD.DB_TABLA_PRODUCTOS
-						+ "WHERE " + AdaptadorBD.KEY_ID + " = " + id;
+						+ " WHERE " + AdaptadorBD.KEY_ID + " = " + id;
 				consulta.executeUpdate(sql);
 
 				// Actualizar log
@@ -410,7 +450,7 @@ public class SincronizadorRemotoAsincrono extends
 
 				// Borrar
 				String sql = "DELETE FROM " + AdaptadorBD.DB_TABLA_MARCAS
-						+ "WHERE " + AdaptadorBD.KEY_ID + " = " + id;
+						+ " WHERE " + AdaptadorBD.KEY_ID + " = " + id;
 				consulta.executeUpdate(sql);
 
 				// Actualizar log
@@ -422,7 +462,7 @@ public class SincronizadorRemotoAsincrono extends
 
 				// Borrar
 				String sql = "DELETE FROM " + AdaptadorBD.DB_TABLA_PRODUCTOS
-						+ "WHERE " + AdaptadorBD.KEY_ID + " = " + id;
+						+ " WHERE " + AdaptadorBD.KEY_ID + " = " + id;
 				consulta.executeUpdate(sql);
 
 				// Insertar
@@ -438,7 +478,7 @@ public class SincronizadorRemotoAsincrono extends
 
 				// Borrar
 				String sql = "DELETE FROM " + AdaptadorBD.DB_TABLA_MARCAS
-						+ "WHERE " + AdaptadorBD.KEY_ID + " = " + id;
+						+ " WHERE " + AdaptadorBD.KEY_ID + " = " + id;
 				consulta.executeUpdate(sql);
 
 				// Insertar
@@ -459,7 +499,7 @@ public class SincronizadorRemotoAsincrono extends
 			consulta.executeUpdate("COMMIT");
 			consulta.close();
 
-			return false;
+			return true;
 
 		} catch (ClassNotFoundException e) {
 
@@ -478,6 +518,8 @@ public class SincronizadorRemotoAsincrono extends
 				} catch (SQLException e1) {
 				}
 			}
+			
+			pendientes.addLast(new Peticion(op, id));
 			return false;
 		}
 
@@ -625,6 +667,13 @@ public class SincronizadorRemotoAsincrono extends
 				bdLocal.initSincronizacionRemotaPeriodica();
 			}
 
+		}
+		
+		if (operacion == OP_PUSH && pendientes.size() > 0) {
+			
+			Peticion p = pendientes.pollFirst();
+			
+			lanzador.push(p.getOp(), p.getId());
 		}
 
 		super.onPostExecute(result);

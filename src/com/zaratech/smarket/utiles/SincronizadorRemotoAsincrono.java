@@ -406,10 +406,6 @@ public class SincronizadorRemotoAsincrono extends
 			consulta = conexion.createStatement();
 			consulta.executeUpdate("START TRANSACTION");
 			
-			// Actualizar BD local
-			pullAux(conexion);
-
-			
 			// Subir cambios y escribir log remoto
 
 			if (op == LOG_OP_CREAR_PRODUCTO) {

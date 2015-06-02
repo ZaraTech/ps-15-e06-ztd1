@@ -551,12 +551,10 @@ public class AdaptadorBD implements InterfazBD {
 
 	public boolean crearProducto(Producto producto, int origen) {
 		
-//		// Actualizar BD local por si acaso
-//		if (origen == ORIGEN_APP && isSincronizacionRemota()) {
-//			sincronizador.pull();
-//		}
-		
-		//TODO meter en bd local desde sincronizador, si todo ha ido bien
+		// Actualizar BD local
+		if (origen == ORIGEN_APP && isSincronizacionRemota()) {
+			sincronizador.pull();
+		}
 
 		boolean resultado = producto2bd(producto, DB_INSERTAR);
 
@@ -584,12 +582,10 @@ public class AdaptadorBD implements InterfazBD {
 	
 	public boolean actualizarProducto(Producto producto, int origen) {
 		
-//		// Actualizar BD local por si acaso
-//		if (origen == ORIGEN_APP && isSincronizacionRemota()) {
-//			sincronizador.pull();
-//		}
-		
-		//TODO meter en bd local desde sincronizador, si todo ha ido bien
+		// Actualizar BD local
+		if (origen == ORIGEN_APP && isSincronizacionRemota()) {
+			sincronizador.pull();
+		}
 
 		boolean resultado = producto2bd(producto, DB_ACTUALIZAR);
 
@@ -617,12 +613,10 @@ public class AdaptadorBD implements InterfazBD {
 	
 	public boolean borrarProducto(int id, int origen) {
 		
-//		// Actualizar BD local por si acaso
-//		if (origen == ORIGEN_APP && isSincronizacionRemota()) {
-//			sincronizador.pull();
-//		}
-		
-		//TODO meter en bd local desde sincronizador, si todo ha ido bien
+		// Actualizar BD local
+		if (origen == ORIGEN_APP && isSincronizacionRemota()) {
+			sincronizador.pull();
+		}
 
 		boolean resultado = bd.delete(DB_TABLA_PRODUCTOS, KEY_ID + "=" + id, null) > 0;
 
@@ -1014,12 +1008,10 @@ public class AdaptadorBD implements InterfazBD {
 	
 	public boolean crearMarca(Marca marca, int origen) {
 		
-//		// Actualizar BD local por si acaso
-//		if (origen == ORIGEN_APP && isSincronizacionRemota()) {
-//			sincronizador.pull();
-//		}
-		
-		//TODO meter en bd local desde sincronizador, si todo ha ido bien
+		// Actualizar BD local
+		if (origen == ORIGEN_APP && isSincronizacionRemota()) {
+			sincronizador.pull();
+		}
 
 		boolean resultado = marca2bd(marca, DB_INSERTAR);
 
@@ -1046,12 +1038,10 @@ public class AdaptadorBD implements InterfazBD {
 	
 	public boolean actualizarMarca(Marca marca, int origen) {
 		
-//		// Actualizar BD local por si acaso
-//		if (origen == ORIGEN_APP && isSincronizacionRemota()) {
-//			sincronizador.pull();
-//		}
-		
-		//TODO meter en bd local desde sincronizador, si todo ha ido bien
+		// Actualizar BD local
+		if (origen == ORIGEN_APP && isSincronizacionRemota()) {
+			sincronizador.pull();
+		}
 
 		boolean resultado = marca2bd(marca, DB_ACTUALIZAR);
 
@@ -1078,12 +1068,10 @@ public class AdaptadorBD implements InterfazBD {
 	
 	public boolean borrarMarca(int id, int origen) {
 		
-//		// Actualizar BD local por si acaso
-//		if (origen == ORIGEN_APP && isSincronizacionRemota()) {
-//			sincronizador.pull();
-//		}
-		
-		//TODO meter en bd local desde sincronizador, si todo ha ido bien
+		// Actualizar BD local
+		if (origen == ORIGEN_APP && isSincronizacionRemota()) {
+			sincronizador.pull();
+		}
 
 		boolean borrado = bd.delete(DB_TABLA_MARCAS, KEY_ID + "=" + id, null) > 0;
 

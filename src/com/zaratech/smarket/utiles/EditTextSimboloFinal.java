@@ -83,20 +83,33 @@ public class EditTextSimboloFinal implements TextWatcher {
 		String v = s.toString().replace(fin, "");
 		text.removeTextChangedListener(this);
 
-		double f;
-
+		//Corrige los decimales
+		boolean t=false;
+		int n=0;
+		String vv="";
+		for (int i=0;i<v.length();i++) {
+			if(v.charAt(i)==DECIMAL){
+				t=true;
+			}else if(t){
+				n++;
+			}
+			if(n<=decimales){
+				vv+=v.charAt(i);
+			}
+		}
+		v=vv;
+		
+		float f;
 		try {
-			f = Double.parseDouble(v);
+			f = Float.valueOf(v);
 		} catch (Exception e) {
 			f = 0;
 		}
-		
-		// Corrige el numero
-		f=(f*Math.pow(10, decimales)-(f*Math.pow(10, decimales))%1)*Math.pow(10, -decimales);
 
+		// Corrige el numero
 		f = f > maximo ? maximo : f;
 		f = f < minimo ? minimo : f;
-		v = Math.round(f) != f ? Double.toString(f) : Integer
+		v = Math.round(f) != f ? f+"" : Integer
 				.toString((int) Math.round(f));
 
 		if (!v.contains(DECIMAL + "0") && s.toString().contains(DECIMAL + "0")) {
